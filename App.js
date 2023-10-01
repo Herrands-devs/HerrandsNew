@@ -1,13 +1,29 @@
-import { useFonts } from "expo-font";
-import { StatusBar } from "expo-status-bar";
+import * as Font from "expo-font";
+import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
+import {
+  DisabledRoundedBtn,
+  DisabledSquareBtn,
+  RoundedButton,
+  SquareButton,
+} from "./screens/components/common/Button";
+import { colors } from "./themes/colors";
 
 export default function App() {
-  const [fontsLoaded] = useFonts({
-    MontserratRegular: require("./assets/fonts/Montserrat-Regular.ttf"),
-  });
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  if (!fontsLoaded) {
+  useEffect(() => {
+    async function loadCustomFonts() {
+      await Font.loadAsync({
+        MontserratRegular: require("./assets/fonts/Montserrat-Regular.ttf"),
+      });
+      setFontLoaded(true);
+    }
+
+    loadCustomFonts();
+  }, []);
+
+  if (!fontLoaded) {
     return null;
   }
 
@@ -16,7 +32,33 @@ export default function App() {
       <Text className={`text-[30px] font-montserratRegular text-center`}>
         Welcome to Herrand Customer App
       </Text>
-      <StatusBar style="auto" />
+
+      <RoundedButton text={"Rounded Button"} />
+      <SquareButton
+        text={"Square Button"}
+        styles={{ backgroundColor: "#0066F5" }}
+      />
+      <SquareButton
+        text={"Black Flex Start"}
+        styles={{
+          backgroundColor: colors.blackBackground,
+          justifyContent: "flex-start",
+        }}
+      />
+      <SquareButton
+        text={"Square Green"}
+        styles={{
+          backgroundColor: colors.green,
+        }}
+      />
+      <SquareButton
+        text={"Red Button"}
+        styles={{
+          backgroundColor: colors.red,
+        }}
+      />
+      <DisabledSquareBtn text={"Square Disabled"} />
+      <DisabledRoundedBtn text={"Rounded Disabled"} />
     </View>
   );
 }
