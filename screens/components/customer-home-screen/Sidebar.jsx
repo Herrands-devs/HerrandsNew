@@ -41,27 +41,27 @@ const Sidebar = ({ isOpen, onClose }) => {
   const sidebarItems = [
     {
       title: "My errands",
-      icon: require("../../../assets/user-icon.png"),
+      icon: require("../../../assets/icons/user-icon.png"),
     },
     {
       title: "Payments",
-      icon: require("../../../assets/payments-icon.png"),
+      icon: require("../../../assets/icons/payments-icon.png"),
     },
     {
       title: "Report an issue",
-      icon: require("../../../assets/report-icon.png"),
+      icon: require("../../../assets/icons/report-icon.png"),
     },
     {
       title: "Safety",
-      icon: require("../../../assets/safety-icon.png"),
+      icon: require("../../../assets/icons/safety-icon.png"),
     },
     {
       title: "Rate us",
-      icon: require("../../../assets/rate-icon.png"),
+      icon: require("../../../assets/icons/rate-icon.png"),
     },
     {
       title: "Log out",
-      icon: require("../../../assets/logout-icon.png"),
+      icon: require("../../../assets/icons/logout-icon.png"),
     },
   ];
 

@@ -125,7 +125,7 @@ const ButtonComp = (props) => {
         title="You need a Dialog?"
         subTitle={"By clicking proceed it means you are on your way to deliver"}
         btnBackground={colors.primaryColor}
-        image={require("./assets/question.gif")}
+        image={require("./assets/gifs/question.gif")}
       />
     </View>
   );
