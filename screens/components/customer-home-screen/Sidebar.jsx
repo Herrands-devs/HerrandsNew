@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { SquareButton } from "../common/Button";
 import { colors } from "../../../themes/colors";
+import { AntDesign } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
 
@@ -70,11 +71,8 @@ const Sidebar = ({ isOpen, onClose }) => {
         className={`bg-white h-full flex-column relative`}
         style={styles.innerContainer}
       >
-        <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-          <Text style={styles.closeButtonText}>Close</Text>
-        </TouchableOpacity>
         <View
-          className={`flex-row items-center space-x-4 justify-start w-full px-[18px]`}
+          className={`flex-row items-center space-x-4 justify-start w-full px-[18px] relative`}
         >
           <Image
             source={require("../../../assets/herrand-profile.png")}
@@ -94,6 +92,9 @@ const Sidebar = ({ isOpen, onClose }) => {
               </Text>
             </TouchableOpacity>
           </View>
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <AntDesign name="left" size={24} color={colors.primaryColor} />
+          </TouchableOpacity>
         </View>
 
         <View className={`mt-[28px] bg-[#F7F7F7]`}>
@@ -134,13 +135,17 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     top: 0,
     left: 0,
+    zIndex: 10,
   },
   innerContainer: {
     width: width * 0.8,
-    paddingTop: 36,
+    paddingTop: 50,
   },
   closeButton: {
     padding: 20,
+    position: "absolute",
+    right: 18,
+    top: 0,
   },
   closeButtonText: {
     color: "blue",
