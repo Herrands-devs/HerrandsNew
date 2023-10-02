@@ -1,6 +1,6 @@
 import * as Font from "expo-font";
-import { useEffect, useState } from "react";
-import { Button, Text, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Animated, Button, ScrollView, Text, View } from "react-native";
 import {
   DisabledRoundedBtn,
   DisabledSquareBtn,
@@ -20,29 +20,14 @@ import { DropDownPicker } from "./screens/components/common/Dropdown";
 import HomeScreen from "./screens/Agent/screens/HomeScreen";
 import Sidebar from "./screens/components/customer-home-screen/Sidebar";
 import Notification from "./screens/components/common/Notification";
+import EmptyComponent from "./screens/components/common/EmptyComponent";
+import SpinSplash from "./screens/components/onboarding/SpinSplash";
+import Swapper from "./screens/components/onboarding/swapper/Swapper";
+import VideoChoice from "./screens/components/onboarding/VideoChoice";
 
 export default function App() {
-  //const
-  const Stack = createNativeStackNavigator();
-  return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="ButtonComp" component={ButtonComp} />
-        <Stack.Screen name="InputComp" component={InputComp} />
-        <Stack.Screen name="AgentScreen" component={HomeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-const ButtonComp = (props) => {
   const [fontLoaded, setFontLoaded] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const Stack = createNativeStackNavigator();
 
   useEffect(() => {
     async function loadCustomFonts() {
@@ -59,6 +44,42 @@ const ButtonComp = (props) => {
   if (!fontLoaded) {
     return null;
   }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="SpinSplash" component={SpinSplash} />
+        <Stack.Screen name="Swapper" component={Swapper} />
+        <Stack.Screen name="ButtonComp" component={ButtonComp} />
+        <Stack.Screen name="InputComp" component={InputComp} />
+        <Stack.Screen name="AgentScreen" component={HomeScreen} />
+        <Stack.Screen name="VideoChoice" component={VideoChoice} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+const ButtonComp = (props) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const opacityValue = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(opacityValue, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, [opacityValue]);
+
+  const screenOpacity = opacityValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -77,57 +98,59 @@ const ButtonComp = (props) => {
   };
 
   return (
-    <View className={`flex-1 justify-center items-center`}>
-      <Text className={`text-[30px] font-montserratRegular text-center`}>
-        Welcome to Herrand Customer App
-      </Text>
+    <ScrollView>
+      <View className={`flex-1 justify-center items-center`}>
+        <RoundedButton text={"Open Sidebar"} onPress={toggleSidebar} />
+        <SquareButton
+          text={"Square Button"}
+          styles={{ backgroundColor: "#0066F5" }}
+        />
+        <SquareButton
+          text={"Black Flex Start"}
+          styles={{
+            backgroundColor: colors.blackBackground,
+            justifyContent: "flex-start",
+          }}
+        />
+        <SquareButton
+          text={"Square Green"}
+          styles={{
+            backgroundColor: colors.green,
+          }}
+        />
+        <SquareButton
+          text={"Red Button"}
+          styles={{
+            backgroundColor: colors.red,
+          }}
+          onPress={() => props.navigation.navigate("SpinSplash")}
+        />
+        <DisabledSquareBtn text={"Square Disabled"} />
+        <DisabledRoundedBtn text={"Rounded Disabled"} />
+        <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
 
-      <RoundedButton text={"Open Sidebar"} onPress={toggleSidebar} />
-      <SquareButton
-        text={"Square Button"}
-        styles={{ backgroundColor: "#0066F5" }}
-      />
-      <SquareButton
-        text={"Black Flex Start"}
-        styles={{
-          backgroundColor: colors.blackBackground,
-          justifyContent: "flex-start",
-        }}
-      />
-      <SquareButton
-        text={"Square Green"}
-        styles={{
-          backgroundColor: colors.green,
-        }}
-      />
-      <SquareButton
-        text={"Red Button"}
-        styles={{
-          backgroundColor: colors.red,
-        }}
-      />
-      <DisabledSquareBtn text={"Square Disabled"} />
-      <DisabledRoundedBtn text={"Rounded Disabled"} />
-      <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
-
-      <Button
-        title="Go to Inputs"
-        onPress={() => props.navigation.navigate("InputComp")}
-      />
-      <Button
-        title="Go to Agent Dashbaord"
-        onPress={() => props.navigation.replace("AgentScreen")}
-      />
-      <RoundedButton text={"Open Modal"} onPress={showDialog} />
-      <Notification
-        isVisible={modalOpen}
-        onClose={hideDialog}
-        title="You need a Dialog?"
-        subTitle={"By clicking proceed it means you are on your way to deliver"}
-        btnBackground={colors.primaryColor}
-        image={require("./assets/gifs/question.gif")}
-      />
-    </View>
+        <Button
+          title="Go to Inputs"
+          onPress={() => props.navigation.navigate("InputComp")}
+        />
+        <Button
+          title="Go to Agent Dashbaord"
+          onPress={() => props.navigation.replace("AgentScreen")}
+        />
+        <RoundedButton text={"Open Modal"} onPress={showDialog} />
+        <EmptyComponent message={"There are no items here yet."} />
+        <Notification
+          isVisible={modalOpen}
+          onClose={hideDialog}
+          title="You need a Dialog?"
+          subTitle={
+            "By clicking proceed it means you are on your way to deliver"
+          }
+          btnBackground={colors.primaryColor}
+          image={require("./assets/gifs/question.gif")}
+        />
+      </View>
+    </ScrollView>
   );
 };
 
