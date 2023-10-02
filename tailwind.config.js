@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       fontFamily: {
         montserratRegular: ["MontserratRegular"],
+        montserratBold: ["MontserratBold"],
       },
       colors: {
         primaryColor: "#0066F5",
@@ -18,6 +19,7 @@ module.exports = {
         title: "#000E23",
         subTitle: "#6B7C97",
         green: "#34A853",
+        sidebarText: "#021D48",
       },
     },
   },
