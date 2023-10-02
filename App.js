@@ -8,7 +8,6 @@ import {
   SquareButton,
 } from "./screens/components/common/Button";
 import { colors } from "./themes/colors";
-import Sidebar from "./screens/components/customer-home-screen/Sidebar";
 //Navigation import
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -19,6 +18,7 @@ import {
 } from "./screens/components/common/Inputs";
 import { DropDownPicker } from "./screens/components/common/Dropdown";
 import HomeScreen from "./screens/Agent/screens/HomeScreen";
+import Sidebar from "./screens/components/customer-home-screen/Sidebar";
 import Notification from "./screens/components/common/Notification";
 
 export default function App() {
