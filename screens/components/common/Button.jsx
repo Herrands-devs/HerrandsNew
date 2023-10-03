@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text } from "react-native";
+import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
 
 export const RoundedButton = ({ text, onPress }) => {
   return (
@@ -16,7 +16,7 @@ export const RoundedButton = ({ text, onPress }) => {
   );
 };
 
-export const SquareButton = ({ text, styles, onPress }) => {
+export const SquareButton = ({ text, styles, onPress, loading }) => {
   return (
     <TouchableOpacity
       className={`w-[80%] 
@@ -24,11 +24,15 @@ export const SquareButton = ({ text, styles, onPress }) => {
       style={styles}
       onPress={onPress}
     >
-      <Text
-        className={`text-white text-[14px] font-semibold font-montserratRegular`}
-      >
-        {text}
-      </Text>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <Text
+          className={`text-white text-[14px] font-semibold font-montserratRegular`}
+        >
+          {text}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };

@@ -15,13 +15,13 @@ import NextArrow from "../../../../assets/icons/next-arrows.png";
 import { SquareButton } from "../../common/Button";
 import { colors } from "../../../../themes/colors";
 import BackIcon from "../../../../assets/icons/back-icon.png";
+import * as Notifications from "expo-notifications";
+import * as Location from "expo-location";
 
 const Swapper = ({ navigation }) => {
   const swiperRef = React.createRef();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const firstImage = require("../../../../assets/first-bg.png");
-  const secondImage = require("../../../../assets/second-bg.png");
-  const thirdImage = require("../../../../assets/third-bg.png");
+  const [getStartedLoading, setGetStartedLoading] = useState(false);
 
   const handleNext = () => {
     if (currentIndex === 2) {
@@ -41,11 +41,51 @@ const Swapper = ({ navigation }) => {
     setCurrentIndex(index);
   };
 
+  const handleGetStarted = async () => {
+    setGetStartedLoading(true);
+
+    const registerForPushNotificationsAsync = async () => {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+    };
+
+    registerForPushNotificationsAsync().then(() => {
+      const requestLocationPermission = async () => {
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          alert("Permission to access location was denied");
+        }
+      };
+
+      requestLocationPermission();
+
+      // Access user's location data
+      const getLocation = async () => {
+        const { coords } = await Location.getCurrentPositionAsync({});
+        console.log("User location:", coords);
+      };
+
+      getLocation().then(() => {
+        setGetStartedLoading(false);
+        navigation.navigate("VideoChoice");
+      });
+    });
+  };
+
   return (
     <ImageBackground className={`flex-1`}>
-      <View
-        className={`flex-1 absolute top-0 left-0 w-full h-full `}
-      >
+      <View className={`flex-1 absolute top-0 left-0 w-full h-full `}>
         {currentIndex > 0 && (
           <TouchableOpacity
             onPress={handlePrevious}
@@ -90,7 +130,8 @@ const Swapper = ({ navigation }) => {
                     justifyContent: "center",
                     width: "100%",
                   }}
-                  onPress={() => navigation.navigate("VideoChoice")}
+                  onPress={handleGetStarted}
+                  loading={getStartedLoading}
                 />
               </View>
             ) : (
