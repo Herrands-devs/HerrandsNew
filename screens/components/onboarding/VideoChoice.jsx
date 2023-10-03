@@ -30,7 +30,9 @@ function VideoChoice() {
       <View
         className={`absolute top-0 left-0 w-full h-full bg-[#000000a9] flex-col justify-end`}
       >
-        <View className={`flex-row bottom-[100px] justify-evenly w-full`}>
+        <View
+          className={`flex-row bottom-[100px] justify-evenly w-full space-x-5`}
+        >
           <LayeredBtn
             text={"Become an agent"}
             subText={"run errands"}

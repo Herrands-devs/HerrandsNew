@@ -68,8 +68,8 @@ export const DisabledRoundedBtn = ({ text, styles }) => {
 export const LayeredBtn = ({ text, styles, subText, subTextTop }) => {
   return (
     <TouchableOpacity
-      className={`mt-[30px] w-[170px] 
-      p-[12px] flex flex-col justify-center items-center rounded-[4px] border border-[#99C2FB]`}
+      className={`mt-[30px] p-[12px] flex flex-col justify-center 
+      items-center rounded-[4px] border border-[#99C2FB] flex-1 mx-[10px]`}
       style={styles}
     >
       <Text
