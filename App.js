@@ -24,6 +24,7 @@ import EmptyComponent from "./screens/components/common/EmptyComponent";
 import SpinSplash from "./screens/components/onboarding/SpinSplash";
 import Swapper from "./screens/components/onboarding/swapper/Swapper";
 import VideoChoice from "./screens/components/onboarding/VideoChoice";
+import SupportScreen from "./screens/Agent/screens/SupportScreen";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -34,6 +35,7 @@ export default function App() {
       await Font.loadAsync({
         MontserratRegular: require("./assets/fonts/Montserrat-Regular.ttf"),
         MontserratBold: require("./assets/fonts/Montserrat-Bold.ttf"),
+        MontserratMedium: require("./assets/fonts/Montserrat-Medium.ttf"),
       });
       setFontLoaded(true);
     }
@@ -51,12 +53,13 @@ export default function App() {
           headerShown: false,
         }}
       >
-        <Stack.Screen name="SpinSplash" component={SpinSplash} />
+        <Stack.Screen name="AgentScreen" component={HomeScreen} />
         <Stack.Screen name="Swapper" component={Swapper} />
         <Stack.Screen name="ButtonComp" component={ButtonComp} />
         <Stack.Screen name="InputComp" component={InputComp} />
-        <Stack.Screen name="AgentScreen" component={HomeScreen} />
+        <Stack.Screen name="SpinSplash" component={SpinSplash} />
         <Stack.Screen name="VideoChoice" component={VideoChoice} />
+        <Stack.Screen name="Support" component={SupportScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
