@@ -1,45 +1,50 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DashboardScreen from './DashboardScreen';
-import { Ionicons } from '@expo/vector-icons';
 import ErrandsScreen from './ErrandsScreen';
+import { Image } from 'react-native';
+import { iconsPack } from '../../components/icons';
+import Profilescreen from './ProfileScreen';
+
 
 const HomeScreen = () => {
    const Tab = createBottomTabNavigator();
+   const {homeHover,chatIcon ,chatHoverIcon,errandsIcon,earningsIcon,profileIcon} = iconsPack()
    return (
          <Tab.Navigator 
          screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
   
-               if (route.name === 'Dashboard') {
-                  iconName = focused? 'mail-open-sharp': 'mail-open-sharp';
+               if (route.name === 'Home') {
+                  iconName = focused? homeHover: homeHover;
                } 
                else if (route.name === 'Errands') {
-                  iconName = focused ? 'home' : 'home';
+                  iconName = focused ? errandsIcon : errandsIcon;
                }
                else if (route.name === 'Chats') {
-                  iconName = focused ? 'home' : 'home';
+                  iconName = focused ? chatHoverIcon : chatIcon;
                }
                else if (route.name === 'Earnings') {
-                  iconName = focused ? 'home' : 'home';
+                  iconName = focused ? earningsIcon : earningsIcon;
                }
                else if (route.name === 'Profile') {
-                  iconName = focused ? 'home' : 'home';
+                  iconName = focused ? profileIcon : profileIcon;
                }
               // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
+              return <Image source={iconName} size={size} color={color} />;
             },
             tabBarActiveTintColor: '#0066F5',
             tabBarInactiveTintColor: 'gray',
-            tabBarLabelStyle : {fontSize : 12 , fontWeight: '600'},
+            tabBarStyle : { height: 100},
+            tabBarLabelStyle : {fontSize : 12 , fontWeight: '700'},
             headerShown: false
           })}>
-            <Tab.Screen name="Dashboard"  component={DashboardScreen} />
+            <Tab.Screen name="Home"  component={DashboardScreen} />
             <Tab.Screen name="Errands"  component={ErrandsScreen} />
             <Tab.Screen name="Chats"  component={DashboardScreen} />
             <Tab.Screen name="Earnings"  component={DashboardScreen} />
-            <Tab.Screen name="Profile"  component={DashboardScreen} />
+            <Tab.Screen name="Profile"  component={Profilescreen} options={{ headerShown: false , tabBarStyle : {display : 'none'}}}/>
          </Tab.Navigator>
     );
 }

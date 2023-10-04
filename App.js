@@ -27,6 +27,7 @@ import VideoChoice from "./screens/components/onboarding/VideoChoice";
 import CreateAccount from "./screens/customer/Auth/CreateAccount";
 import OneMoreStep from "./screens/customer/Auth/OneMoreStep";
 import EnterYourNumber from "./screens/customer/Auth/EnterYourNumber";
+import SupportScreen from "./screens/Agent/screens/SupportScreen";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -58,13 +59,14 @@ export default function App() {
       >
         <Stack.Screen name="SpinSplash" component={SpinSplash} />
         <Stack.Screen name="Swapper" component={Swapper} />
+        <Stack.Screen name="AgentScreen" component={HomeScreen} />
         <Stack.Screen name="ButtonComp" component={ButtonComp} />
         <Stack.Screen name="InputComp" component={InputComp} />
-        <Stack.Screen name="AgentScreen" component={HomeScreen} />
         <Stack.Screen name="VideoChoice" component={VideoChoice} />
         <Stack.Screen name="CreateAccountCustomer" component={CreateAccount} />
         <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
         <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
+        <Stack.Screen name="Support" component={SupportScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
