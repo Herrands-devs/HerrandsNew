@@ -8,7 +8,7 @@ export const RoundedButton = ({ text, onPress }) => {
       onPress={onPress}
     >
       <Text
-        className={`text-white text-[14px] font-semibold font-montserratRegular`}
+        className={`text-white text-[14px] font-semibold font-montserratBold`}
       >
         {text}
       </Text>
@@ -28,7 +28,7 @@ export const SquareButton = ({ text, styles, onPress, loading }) => {
         <ActivityIndicator />
       ) : (
         <Text
-          className={`text-white text-[14px] font-semibold font-montserratRegular`}
+          className={`text-white text-[14px] font-semibold font-montserratBold`}
         >
           {text}
         </Text>
@@ -45,7 +45,7 @@ export const DisabledSquareBtn = ({ text, styles }) => {
       style={styles}
     >
       <Text
-        className={`text-white text-[14px] font-semibold font-montserratRegular`}
+        className={`text-white text-[14px] font-semibold font-montserratBold`}
       >
         {text}
       </Text>
@@ -61,7 +61,7 @@ export const DisabledRoundedBtn = ({ text, styles }) => {
       style={styles}
     >
       <Text
-        className={`text-white text-[14px] font-semibold font-montserratRegular`}
+        className={`text-white text-[14px] font-semibold font-montserratBold`}
       >
         {text}
       </Text>
@@ -69,20 +69,21 @@ export const DisabledRoundedBtn = ({ text, styles }) => {
   );
 };
 
-export const LayeredBtn = ({ text, styles, subText, subTextTop }) => {
+export const LayeredBtn = ({ text, styles, subText, subTextTop, onPress }) => {
   return (
     <TouchableOpacity
       className={`mt-[30px] p-[12px] flex flex-col justify-center 
       items-center rounded-[4px] border border-[#99C2FB] flex-1 mx-[10px]`}
       style={styles}
+      onPress={onPress}
     >
       <Text
-        className={`text-white text-[14px] font-semibold font-montserratRegular`}
+        className={`text-white text-[14px] font-semibold font-montserratBold`}
       >
         {text}
       </Text>
       <Text
-        className={`text-white text-[8px] font-semibold font-montserratRegular`}
+        className={`text-white text-[8px] font-semibold font-montserratBold`}
         style={{ marginTop: subTextTop }}
       >
         {subText}

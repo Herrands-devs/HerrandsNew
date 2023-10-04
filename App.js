@@ -24,6 +24,9 @@ import EmptyComponent from "./screens/components/common/EmptyComponent";
 import SpinSplash from "./screens/components/onboarding/SpinSplash";
 import Swapper from "./screens/components/onboarding/swapper/Swapper";
 import VideoChoice from "./screens/components/onboarding/VideoChoice";
+import CreateAccount from "./screens/customer/Auth/CreateAccount";
+import OneMoreStep from "./screens/customer/Auth/OneMoreStep";
+import EnterYourNumber from "./screens/customer/Auth/EnterYourNumber";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -34,6 +37,8 @@ export default function App() {
       await Font.loadAsync({
         MontserratRegular: require("./assets/fonts/Montserrat-Regular.ttf"),
         MontserratBold: require("./assets/fonts/Montserrat-Bold.ttf"),
+        MontserratSemiBold: require("./assets/fonts/Montserrat-SemiBold.ttf"),
+        MontserratMedium: require("./assets/fonts/Montserrat-Medium.ttf"),
       });
       setFontLoaded(true);
     }
@@ -57,6 +62,9 @@ export default function App() {
         <Stack.Screen name="InputComp" component={InputComp} />
         <Stack.Screen name="AgentScreen" component={HomeScreen} />
         <Stack.Screen name="VideoChoice" component={VideoChoice} />
+        <Stack.Screen name="CreateAccountCustomer" component={CreateAccount} />
+        <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
+        <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
       </Stack.Navigator>
     </NavigationContainer>
   );
