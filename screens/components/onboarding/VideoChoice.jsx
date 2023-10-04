@@ -4,7 +4,7 @@ import { Video } from "expo-av";
 import { LayeredBtn } from "../common/Button";
 import { colors } from "../../../themes/colors";
 
-function VideoChoice() {
+function VideoChoice({ navigation }) {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -44,6 +44,7 @@ function VideoChoice() {
             subText={"send errands"}
             styles={{ backgroundColor: colors.primaryColor }}
             subTextTop={8}
+            onPress={() => navigation.navigate("CreateAccountCustomer")}
           />
         </View>
       </View>

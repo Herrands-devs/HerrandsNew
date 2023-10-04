@@ -73,12 +73,12 @@ const Swapper = ({ navigation }) => {
       // Access user's location data
       const getLocation = async () => {
         const { coords } = await Location.getCurrentPositionAsync({});
-        console.log("User location:", coords);
+        // console.log("User location:", coords);
       };
 
       getLocation().then(() => {
         setGetStartedLoading(false);
-        navigation.navigate("VideoChoice");
+        navigation.replace("VideoChoice");
       });
     });
   };
@@ -106,9 +106,7 @@ const Swapper = ({ navigation }) => {
           <ThirdSlide />
         </Swiper>
 
-        <View
-          className={`absolute bottom-0 w-full h-[15%] flex-col items-center`}
-        >
+        <View className={`absolute bottom-0 w-full h-[15%] items-center`}>
           <View className={`space-x-3 flex-row items-center`}>
             {[0, 1, 2].map((index) => (
               <View
@@ -120,7 +118,7 @@ const Swapper = ({ navigation }) => {
             ))}
           </View>
 
-          <View className={`mt-[22px]`}>
+          <View className={`mt-[22px] w-full relative`}>
             {currentIndex === 2 ? (
               <View>
                 <SquareButton
@@ -128,7 +126,9 @@ const Swapper = ({ navigation }) => {
                   styles={{
                     backgroundColor: colors.primaryColor,
                     justifyContent: "center",
-                    width: "100%",
+                    width: "90%",
+                    position: "absolute",
+                    left: "5%",
                   }}
                   onPress={handleGetStarted}
                   loading={getStartedLoading}
@@ -136,7 +136,7 @@ const Swapper = ({ navigation }) => {
               </View>
             ) : (
               <TouchableOpacity
-                className={`flex-row items-center`}
+                className={`flex-row items-center text-center justify-center`}
                 onPress={handleNext}
               >
                 <Text

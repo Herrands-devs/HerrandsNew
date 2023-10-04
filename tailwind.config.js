@@ -10,6 +10,8 @@ module.exports = {
       fontFamily: {
         montserratRegular: ["MontserratRegular"],
         montserratBold: ["MontserratBold"],
+        montserratSemiBold: ["MontserratSemiBold"],
+        montserratMedium: ["MontserratMedium"],
       },
       colors: {
         primaryColor: "#0066F5",

@@ -13,7 +13,8 @@ const ThirdSlide = () => {
             Don’t carry it all alone
           </Text>
           <Text
-            className={`text-white text-[12px] font-montserratRegular max-w-[216px] text-center mt-[8px]`}
+            className={`text-white text-[12px] font-montserratRegular 
+            max-w-[216px] text-center mt-[8px]`}
           >
             The more, the merrier! Connect with thousands of people who are
             eager to share their time with you and help you get things done
