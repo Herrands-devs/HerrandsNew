@@ -28,6 +28,7 @@ import CreateAccount from "./screens/customer/Auth/CreateAccount";
 import OneMoreStep from "./screens/customer/Auth/OneMoreStep";
 import EnterYourNumber from "./screens/customer/Auth/EnterYourNumber";
 import SupportScreen from "./screens/Agent/screens/SupportScreen";
+import OtpScreen from "./screens/customer/Auth/OtpScreen";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -67,6 +68,7 @@ export default function App() {
         <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
         <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
         <Stack.Screen name="Support" component={SupportScreen} />
+        <Stack.Screen name="OtpScreen" component={OtpScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

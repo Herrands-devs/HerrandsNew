@@ -118,10 +118,11 @@ export const PhoneNumberInput = ({
 export const OtpInputs = () => {
   const [isFocused, setFocused] = useState(false);
   return (
-    <View className="w-[80%]">
+    <View className="w-[100%]">
       <View className="flex flex-row justify-between">
         <TextInput
-          className="w-[76px] h-[64px] rounded-[5px] flex justify-center items-center  text-center text-xl font-bold bg-[#D5D7DA]"
+          className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
+          items-center  text-center text-xl font-bold bg-[#D5D7DA]"
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={[
@@ -131,10 +132,12 @@ export const OtpInputs = () => {
               backgroundColor: "white",
             },
           ]}
+          keyboardType="phone-pad"
         />
 
         <TextInput
-          className="w-[76px] h-[64px] rounded-[5px] flex justify-center items-center  text-center text-xl font-bold bg-[#D5D7DA]"
+          className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
+          items-center  text-center text-xl font-bold bg-[#D5D7DA]"
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={[
@@ -144,10 +147,12 @@ export const OtpInputs = () => {
               backgroundColor: "white",
             },
           ]}
+          keyboardType="phone-pad"
         />
 
         <TextInput
-          className="w-[76px] h-[64px] rounded-[5px] flex justify-center items-center  text-center text-xl font-bold bg-[#D5D7DA]"
+          className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
+          items-center  text-center text-xl font-bold bg-[#D5D7DA]"
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={[
@@ -157,10 +162,12 @@ export const OtpInputs = () => {
               backgroundColor: "white",
             },
           ]}
+          keyboardType="phone-pad"
         />
 
         <TextInput
-          className="w-[76px] h-[64px] rounded-[5px] flex justify-center items-center  text-center text-xl font-bold bg-[#D5D7DA]"
+          className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
+          items-center  text-center text-xl font-bold bg-[#D5D7DA]"
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           style={[
@@ -170,6 +177,7 @@ export const OtpInputs = () => {
               backgroundColor: "white",
             },
           ]}
+          keyboardType="phone-pad"
         />
       </View>
     </View>

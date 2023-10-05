@@ -8,23 +8,17 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BackIcon from "../../../assets/icons/back-icon-black.png";
 import { PhoneNumberInput, PrimaryInput } from "../../components/common/Inputs";
 import { RoundedButton } from "../../components/common/Button";
+import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 
 const { width, height } = Dimensions.get("window");
 
 const CreateAccount = ({ navigation }) => {
-  const insets = useSafeAreaInsets();
   console.log("width:::", width, "---", "height", height);
   return (
-    <ScrollView
-      style={[
-        { paddingTop: insets.top, backgroundColor: "#fff", height: "100%" },
-      ]}
-      className={`flex-1`}
-    >
+    <SafeAreaComponent>
       <View className={``} style={{ height: height * 0.6 }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -92,7 +86,7 @@ const CreateAccount = ({ navigation }) => {
           Send us your errands and enjoy more quality time in your day.
         </Text>
       </View>
-    </ScrollView>
+    </SafeAreaComponent>
   );
 };
 
