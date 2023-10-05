@@ -7,22 +7,16 @@ import {
   View,
 } from "react-native";
 import React from "react";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { PrimaryInput } from "../../components/common/Inputs";
 import { colors } from "../../../themes/colors";
 import { RoundedButton } from "../../components/common/Button";
+import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 
 const { width, height } = Dimensions.get("window");
 
 const OneMoreStep = ({ navigation }) => {
-  const insets = useSafeAreaInsets();
   return (
-    <ScrollView
-      style={[
-        { paddingTop: insets.top, backgroundColor: "#fff", height: "100%" },
-      ]}
-      className={`flex-1`}
-    >
+    <SafeAreaComponent>
       <View style={{ height: height * 0.85 }}>
         <Text
           className={`text-[24px] font-montserratBold text-center text-black`}
@@ -43,7 +37,7 @@ const OneMoreStep = ({ navigation }) => {
         <View className={`items-center mt-[70px]`}>
           <RoundedButton
             text={"Let's Rock"}
-            onPress={() => navigation.navigate("EnterYourNumber")}
+            onPress={() => navigation.navigate("OtpScreen")}
           />
         </View>
       </View>
@@ -77,7 +71,7 @@ const OneMoreStep = ({ navigation }) => {
           </Text>
         </View>
       </View>
-    </ScrollView>
+    </SafeAreaComponent>
   );
 };
 
