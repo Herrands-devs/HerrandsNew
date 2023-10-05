@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -115,70 +115,57 @@ export const PhoneNumberInput = ({
   );
 };
 
-export const OtpInputs = () => {
+export const OtpInputs = ({ otpValues, onOtpChange, onOtpComplete }) => {
   const [isFocused, setFocused] = useState(false);
+  const inputRefs = useRef(new Array(4).fill(null));
+  const [focusedIndex, setFocusedIndex] = useState(0);
+
+  const handleInputChange = (text, index) => {
+    if (/^\d*$/.test(text)) {
+      const newOtpValues = [...otpValues];
+      newOtpValues[index] = text;
+      onOtpChange(newOtpValues);
+
+      if (text !== "" && index < otpValues.length - 1) {
+        inputRefs.current[index + 1].focus();
+        setFocusedIndex(index + 1);
+      }
+    }
+  };
+
+  useEffect(() => {
+    inputRefs.current[0].focus();
+  }, []);
+
+  useEffect(() => {
+    if (otpValues.every((value) => value !== "")) {
+      onOtpComplete();
+    }
+  }, [otpValues]);
+
   return (
     <View className="w-[100%]">
       <View className="flex flex-row justify-between">
-        <TextInput
-          className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
+        {otpValues.map((digit, i) => (
+          <TextInput
+            key={i}
+            className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
           items-center  text-center text-xl font-bold bg-[#D5D7DA]"
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          style={[
-            isFocused && {
-              borderWidth: 2,
-              borderColor: "#0066F5",
-              backgroundColor: "white",
-            },
-          ]}
-          keyboardType="phone-pad"
-        />
-
-        <TextInput
-          className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
-          items-center  text-center text-xl font-bold bg-[#D5D7DA]"
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          style={[
-            isFocused && {
-              borderWidth: 2,
-              borderColor: "#0066F5",
-              backgroundColor: "white",
-            },
-          ]}
-          keyboardType="phone-pad"
-        />
-
-        <TextInput
-          className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
-          items-center  text-center text-xl font-bold bg-[#D5D7DA]"
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          style={[
-            isFocused && {
-              borderWidth: 2,
-              borderColor: "#0066F5",
-              backgroundColor: "white",
-            },
-          ]}
-          keyboardType="phone-pad"
-        />
-
-        <TextInput
-          className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
-          items-center  text-center text-xl font-bold bg-[#D5D7DA]"
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          style={[
-            isFocused && {
-              borderWidth: 2,
-              borderColor: "#0066F5",
-              backgroundColor: "white",
-            },
-          ]}
-          keyboardType="phone-pad"
-        />
+            style={[
+              i === focusedIndex && {
+                borderWidth: 2,
+                borderColor: "#0066F5",
+                backgroundColor: "white",
+              },
+            ]}
+            onFocus={() => setFocusedIndex(i)}
+            keyboardType="phone-pad"
+            value={digit}
+            onChangeText={(text) => handleInputChange(text, i)}
+            maxLength={1}
+            ref={(ref) => (inputRefs.current[i] = ref)}
+          />
+        ))}
       </View>
     </View>
   );

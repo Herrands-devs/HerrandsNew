@@ -13,7 +13,12 @@ import BySms from "../../../assets/icons/by-sms-icon.png";
 import ByCall from "../../../assets/icons/by-call-icon.png";
 import EditNumber from "../../../assets/icons/edit-number-icon.png";
 
-export const ResendModal = ({ isVisible, closeModal }) => {
+export const ResendModal = ({
+  isVisible,
+  closeModal,
+  navigation,
+  resendAction,
+}) => {
   const translateY = useRef(new Animated.Value(500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -95,6 +100,7 @@ export const ResendModal = ({ isVisible, closeModal }) => {
             </View>
             <TouchableOpacity
               className={`flex-row items-center w-full px-[10px] mt-[20px] space-x-2`}
+              onPress={resendAction}
             >
               <Image source={BySms} className={`w-[16px] h-[16px]`} />
               <Text className={`tet-[16px] font-montserratBold text-subTitle`}>
@@ -113,6 +119,10 @@ export const ResendModal = ({ isVisible, closeModal }) => {
             <View className={`w-full h-[1px] bg-[#ccc] my-[11px]`} />
             <TouchableOpacity
               className={`flex-row items-center w-full px-[10px] mt-[20px] space-x-2 mb-[11px]`}
+              onPress={() => {
+                navigation.navigate("EnterYourNumber");
+                slideDown();
+              }}
             >
               <Image source={EditNumber} className={`w-[16px] h-[16px]`} />
               <Text className={`tet-[16px] font-montserratBold text-subTitle`}>

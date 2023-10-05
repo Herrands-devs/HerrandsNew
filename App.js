@@ -29,6 +29,9 @@ import OneMoreStep from "./screens/customer/Auth/OneMoreStep";
 import EnterYourNumber from "./screens/customer/Auth/EnterYourNumber";
 import SupportScreen from "./screens/Agent/screens/SupportScreen";
 import OtpScreen from "./screens/customer/Auth/OtpScreen";
+import CustomerHome from "./screens/customer/Main/CustomerHome";
+import SignInPhone from "./screens/customer/Auth/SignInPhone";
+import SignInEmail from "./screens/customer/Auth/SignInEmail";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -65,10 +68,13 @@ export default function App() {
         <Stack.Screen name="InputComp" component={InputComp} />
         <Stack.Screen name="VideoChoice" component={VideoChoice} />
         <Stack.Screen name="CreateAccountCustomer" component={CreateAccount} />
+        <Stack.Screen name="SignInPhone" component={SignInPhone} />
+        <Stack.Screen name="SignInEmail" component={SignInEmail} />
         <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
         <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
         <Stack.Screen name="Support" component={SupportScreen} />
         <Stack.Screen name="OtpScreen" component={OtpScreen} />
+        <Stack.Screen name="CustomerHome" component={CustomerHome} />
       </Stack.Navigator>
     </NavigationContainer>
   );
