@@ -71,6 +71,7 @@ const CreateAccount = ({ navigation }) => {
           <TouchableOpacity>
             <Text
               className={`text-[14px] font-montserratSemiBold text-primaryColor`}
+              onPress={() => navigation.navigate("SignInPhone")}
             >
               Sign in
             </Text>

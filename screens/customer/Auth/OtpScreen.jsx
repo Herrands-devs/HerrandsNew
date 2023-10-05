@@ -12,14 +12,39 @@ import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import { TouchableOpacity } from "react-native";
 import { OtpInputs } from "../../components/common/Inputs";
 import { ResendModal } from "../../components/common/Modals";
+import Loading from "../../components/common/Loading";
 
 const { width, height } = Dimensions.get("window");
 
-const OtpScreen = () => {
+const OtpScreen = ({ navigation }) => {
   const [moveup, setMoveup] = useState(false);
   const [countdown, setCountdown] = useState(20);
   const [resend, setResend] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [otpValues, setOtpValues] = useState(["", "", "", ""]);
+  const [loading, setLoading] = useState(false);
+
+  const handleOtpChange = (newValues) => {
+    setOtpValues(newValues);
+  };
+
+  const handleOtpComplete = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+      navigation.replace("CustomerHome");
+    }, 3000);
+  };
+
+  const resendCodeBySms = () => {
+    closeModal();
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  };
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -90,7 +115,11 @@ const OtpScreen = () => {
           className={``}
           style={{ height: moveup ? height * 0.3 : height * 0.6 }}
         >
-          <OtpInputs />
+          <OtpInputs
+            otpValues={otpValues}
+            onOtpChange={handleOtpChange}
+            onOtpComplete={handleOtpComplete}
+          />
         </View>
 
         {!resend ? (
@@ -116,8 +145,14 @@ const OtpScreen = () => {
             </Text>
           </TouchableOpacity>
         )}
-        <ResendModal isVisible={isModalVisible} closeModal={closeModal} />
+        <ResendModal
+          isVisible={isModalVisible}
+          closeModal={closeModal}
+          resendAction={resendCodeBySms}
+          navigation={navigation}
+        />
       </SafeAreaComponent>
+      {loading && <Loading />}
     </>
   );
 };
