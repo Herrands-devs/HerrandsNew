@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Modal,
   Image,
+  Platform,
 } from "react-native";
 import ResendClose from "../../../assets/icons/resend-close.png";
 import BySms from "../../../assets/icons/by-sms-icon.png";
@@ -25,7 +26,7 @@ export const ResendModal = ({
   const slideUp = () => {
     Animated.parallel([
       Animated.timing(translateY, {
-        toValue: 280,
+        toValue: Platform.OS === "android" ? 250 : 280,
         duration: 300,
         useNativeDriver: false,
       }),
