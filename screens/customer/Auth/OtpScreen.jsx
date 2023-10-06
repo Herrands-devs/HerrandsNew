@@ -113,7 +113,13 @@ const OtpScreen = ({ navigation }) => {
 
         <View
           className={``}
-          style={{ height: moveup ? height * 0.3 : height * 0.6 }}
+          style={{
+            height: moveup
+              ? Platform.OS === "android"
+                ? height * 0.25
+                : height * 0.3
+              : height * 0.6,
+          }}
         >
           <OtpInputs
             otpValues={otpValues}
