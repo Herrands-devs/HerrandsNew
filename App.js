@@ -32,6 +32,9 @@ import OtpScreen from "./screens/customer/Auth/OtpScreen";
 import CustomerHome from "./screens/customer/Main/CustomerHome";
 import SignInPhone from "./screens/customer/Auth/SignInPhone";
 import SignInEmail from "./screens/customer/Auth/SignInEmail";
+import AuthScreen from "./screens/Agent/screens/AuthScreen";
+import LoginScreen from "./screens/Agent/screens/Auth/LoginScreen";
+import SignUpScreen from "./screens/Agent/screens/Auth/SignUpScreen";
 import CustomerEditProfile from "./screens/customer/Main/CustomerEditProfile";
 import CustomerdeleteAccount from "./screens/customer/Main/CustomerdeleteAccount";
 
@@ -65,9 +68,9 @@ export default function App() {
       >
         <Stack.Screen name="SpinSplash" component={SpinSplash} />
         <Stack.Screen name="Swapper" component={Swapper} />
-        <Stack.Screen name="AgentScreen" component={HomeScreen} />
         <Stack.Screen name="ButtonComp" component={ButtonComp} />
         <Stack.Screen name="InputComp" component={InputComp} />
+        <Stack.Screen name="AgentScreen" component={HomeScreen} />
         <Stack.Screen name="VideoChoice" component={VideoChoice} />
         <Stack.Screen name="CreateAccountCustomer" component={CreateAccount} />
         <Stack.Screen name="SignInPhone" component={SignInPhone} />
@@ -77,6 +80,12 @@ export default function App() {
         <Stack.Screen name="Support" component={SupportScreen} />
         <Stack.Screen name="OtpScreen" component={OtpScreen} />
         <Stack.Screen name="CustomerHome" component={CustomerHome} />
+
+
+        {/* Agent Navigation */}
+        <Stack.Screen name="AuthScreen" component={AuthScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
         <Stack.Screen
           name="CustomerEditProfile"
           component={CustomerEditProfile}

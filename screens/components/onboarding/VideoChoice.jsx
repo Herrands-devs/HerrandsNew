@@ -38,6 +38,7 @@ function VideoChoice({ navigation }) {
             subText={"run errands"}
             styles={{ backgroundColor: "#313943" }}
             subTextTop={8}
+            onPress={() => navigation.navigate('AuthScreen')}
           />
           <LayeredBtn
             text={"Become an customer"}
