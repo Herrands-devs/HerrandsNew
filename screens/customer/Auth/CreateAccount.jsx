@@ -40,7 +40,7 @@ const CreateAccount = ({ navigation }) => {
             </Text>
           </View>
 
-          <View className={`items-center mt-[48px]`}>
+          <View className={`items-center mt-[48px] px-[48px]`}>
             <PhoneNumberInput
               placeHolder={"Phone number"}
               type={"phone-pad"}

@@ -25,7 +25,7 @@ const EnterYourNumber = () => {
           Enter your number
         </Text>
 
-        <View className={`items-center mt-[40px]`}>
+        <View className={`items-center mt-[40px] px-[48px]`}>
           <PhoneNumberInput
             placeHolder={"Phone number"}
             type={"phone-pad"}

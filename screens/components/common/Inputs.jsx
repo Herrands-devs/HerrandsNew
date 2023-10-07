@@ -18,7 +18,7 @@ export const PrimaryInput = ({
 }) => {
   const [isFocused, setFocused] = useState(false);
   return (
-    <View className={`w-[80%] ${classes}`}>
+    <View className={`w-[100%] ${classes}`}>
       {/* if Icon */}
       <View className="flex flex-row items-center gap-2">
         {iconName && (
@@ -64,11 +64,12 @@ export const PhoneNumberInput = ({
   iconName,
   iconSize,
   iconColor,
+  disabled,
   ...rest
 }) => {
   const [isFocused, setFocused] = useState(false);
   return (
-    <View className="w-[80%]">
+    <View className="w-[100%]">
       {/* if Icon */}
       <View className="flex flex-row items-center gap-2">
         <TouchableOpacity>

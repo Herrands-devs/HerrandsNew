@@ -7,7 +7,7 @@ import { DropDownPicker } from "../../components/common/Dropdown";
 import { SquareButton } from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
 
-const CustomerHome = () => {
+const CustomerHome = ({ navigation }) => {
   const videoRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -75,7 +75,11 @@ const CustomerHome = () => {
           className={`w-[24px] h-[24px] absolute top-[60px] left-[30px]`}
         />
       </TouchableOpacity>
-      <Sidebar isOpen={isOpen} onClose={handleCloseSidebar} />
+      <Sidebar
+        isOpen={isOpen}
+        onClose={handleCloseSidebar}
+        navigation={navigation}
+      />
     </View>
   );
 };
