@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "owner": "kelliebrighty",
+    "extra": {
+      "eas": {
+        "projectId": "b721965d-b4f1-4af0-9fe9-e065ffe120a1"
+      }
     }
   }
 }

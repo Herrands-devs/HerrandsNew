@@ -36,7 +36,7 @@ const CustomerHome = ({ navigation }) => {
         isMuted
       />
       <View
-        className={`absolute bottom-[30%] top-0 left-0 right-0 bg-[#00000077]`}
+        className={`absolute bottom-[30%] top-0 left-0 right-0 bg-[#0000009f]`}
       />
       <View
         className={`absolute bottom-0 h-[30%] bg-white w-full px-[16px] py-[8.5px]`}

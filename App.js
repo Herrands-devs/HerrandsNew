@@ -34,6 +34,7 @@ import SignInPhone from "./screens/customer/Auth/SignInPhone";
 import SignInEmail from "./screens/customer/Auth/SignInEmail";
 import CustomerEditProfile from "./screens/customer/Main/CustomerEditProfile";
 import CustomerdeleteAccount from "./screens/customer/Main/CustomerdeleteAccount";
+import MyErrandsCustomer from "./screens/customer/Main/MyErrandsCustomer";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -85,6 +86,7 @@ export default function App() {
           name="CustomerDeleteAccount"
           component={CustomerdeleteAccount}
         />
+        <Stack.Screen name="MyErrandsCustomer" component={MyErrandsCustomer} />
       </Stack.Navigator>
     </NavigationContainer>
   );

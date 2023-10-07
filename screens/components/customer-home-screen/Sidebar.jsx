@@ -9,7 +9,7 @@ import {
   Image,
   Modal,
 } from "react-native";
-import { SquareButton } from "../common/Button";
+import { LayeredBtn, SquareButton } from "../common/Button";
 import { colors } from "../../../themes/colors";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -44,7 +44,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
     {
       title: "My errands",
       icon: require("../../../assets/icons/user-icon.png"),
-      href: "",
+      href: "MyErrandsCustomer",
     },
     {
       title: "Payments",
@@ -94,7 +94,6 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                onClose();
                 navigation.navigate("CustomerEditProfile");
               }}
             >
@@ -118,6 +117,8 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
               onPress={() => {
                 if (item.title === "Log out") {
                   setLogoutModal(true);
+                } else if (item.href !== "") {
+                  navigation.navigate(item.href);
                 }
               }}
             >
@@ -132,8 +133,9 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
         <View
           className={`flex-row w-full justify-center bottom-[30px] absolute px-[20px]`}
         >
-          <SquareButton
+          <LayeredBtn
             text={"Become an agent"}
+            subText={"Get paid for your time"}
             styles={{
               backgroundColor: colors.primaryColor,
               justifyContent: "flex-start",
