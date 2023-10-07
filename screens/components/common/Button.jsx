@@ -16,11 +16,11 @@ export const RoundedButton = ({ text, onPress }) => {
   );
 };
 
-export const SquareButton = ({ text, styles, onPress, loading }) => {
+export const SquareButton = ({ text, styles, onPress, loading ,textStyle }) => {
   return (
     <TouchableOpacity
-      className={`w-[100%] 
-      p-[12px] flex flex-row justify-center rounded-[4px]`}
+      className={`w-[80%] 
+      p-[14px] flex flex-row justify-center rounded-[4px]`}
       style={styles}
       onPress={onPress}
     >
@@ -29,6 +29,7 @@ export const SquareButton = ({ text, styles, onPress, loading }) => {
       ) : (
         <Text
           className={`text-white text-[14px] font-semibold font-montserratBold`}
+          style={textStyle}
         >
           {text}
         </Text>
