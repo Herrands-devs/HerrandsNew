@@ -34,7 +34,7 @@ const OneMoreStep = ({ navigation }) => {
             type={"email-address"}
           />
         </View>
-        <View className={`items-center mt-[70px]`}>
+        <View className={`items-center mt-[70px] px-[48px]`}>
           <RoundedButton
             text={"Let's Rock"}
             onPress={() => navigation.navigate("OtpScreen")}

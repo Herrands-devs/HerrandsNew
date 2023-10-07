@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
 export const RoundedButton = ({ text, onPress }) => {
   return (
     <TouchableOpacity
-      className={`mt-[30px] bg-primaryColor w-[80%] 
+      className={`mt-[30px] bg-primaryColor w-[100%] 
       p-[12px] flex flex-row justify-center rounded-[40px]`}
       onPress={onPress}
     >
@@ -16,10 +16,10 @@ export const RoundedButton = ({ text, onPress }) => {
   );
 };
 
-export const SquareButton = ({ text, styles, onPress, loading ,textStyle }) => {
+export const SquareButton = ({ text, styles, onPress, loading, textStyle }) => {
   return (
     <TouchableOpacity
-      className={`w-[80%] 
+      className={`w-[100%] 
       p-[14px] flex flex-row justify-center rounded-[4px]`}
       style={styles}
       onPress={onPress}
@@ -41,7 +41,7 @@ export const SquareButton = ({ text, styles, onPress, loading ,textStyle }) => {
 export const DisabledSquareBtn = ({ text, styles }) => {
   return (
     <TouchableOpacity
-      className={`mt-[30px] w-[80%] 
+      className={`mt-[30px] w-[100%] 
       p-[12px] flex flex-row justify-center rounded-[4px] bg-disabledBtn`}
       style={styles}
     >
@@ -57,7 +57,7 @@ export const DisabledSquareBtn = ({ text, styles }) => {
 export const DisabledRoundedBtn = ({ text, styles }) => {
   return (
     <TouchableOpacity
-      className={`mt-[30px] w-[80%] 
+      className={`mt-[30px] w-[100%] 
       p-[12px] flex flex-row justify-center rounded-[40px] bg-disabledBtn`}
       style={styles}
     >

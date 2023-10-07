@@ -59,7 +59,10 @@ const CreateAccount = ({ navigation }) => {
         </View>
       </View>
 
-      <View className={`items-center`} style={{ height: height * 0.25 }}>
+      <View
+        className={`items-center px-[48px]`}
+        style={{ height: height * 0.25 }}
+      >
         <RoundedButton
           text={"Continue"}
           onPress={() => navigation.navigate("OneMoreStep")}

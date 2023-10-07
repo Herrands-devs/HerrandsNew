@@ -207,7 +207,7 @@ export const OtpInputs = ({ otpValues, onOtpChange, onOtpComplete }) => {
   }, [otpValues]);
 
   return (
-    <View className="w-[80%]">
+    <View className="w-[100%]">
       <View className="flex flex-row justify-between">
         {otpValues.map((digit, i) => (
           <TextInput
