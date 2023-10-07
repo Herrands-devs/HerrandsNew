@@ -36,14 +36,17 @@ function VideoChoice({ navigation }) {
           <LayeredBtn
             text={"Become an agent"}
             subText={"run errands"}
-            styles={{ backgroundColor: "#313943" }}
+            styles={{ backgroundColor: "#313943", alignItems: "center" }}
             subTextTop={8}
             onPress={() => navigation.navigate('AuthScreen')}
           />
           <LayeredBtn
             text={"Become an customer"}
             subText={"send errands"}
-            styles={{ backgroundColor: colors.primaryColor }}
+            styles={{
+              backgroundColor: colors.primaryColor,
+              alignItems: "center",
+            }}
             subTextTop={8}
             onPress={() => navigation.navigate("CreateAccountCustomer")}
           />
