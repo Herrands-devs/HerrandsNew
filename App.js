@@ -32,6 +32,8 @@ import OtpScreen from "./screens/customer/Auth/OtpScreen";
 import CustomerHome from "./screens/customer/Main/CustomerHome";
 import SignInPhone from "./screens/customer/Auth/SignInPhone";
 import SignInEmail from "./screens/customer/Auth/SignInEmail";
+import CustomerEditProfile from "./screens/customer/Main/CustomerEditProfile";
+import CustomerdeleteAccount from "./screens/customer/Main/CustomerdeleteAccount";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -75,6 +77,14 @@ export default function App() {
         <Stack.Screen name="Support" component={SupportScreen} />
         <Stack.Screen name="OtpScreen" component={OtpScreen} />
         <Stack.Screen name="CustomerHome" component={CustomerHome} />
+        <Stack.Screen
+          name="CustomerEditProfile"
+          component={CustomerEditProfile}
+        />
+        <Stack.Screen
+          name="CustomerDeleteAccount"
+          component={CustomerdeleteAccount}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

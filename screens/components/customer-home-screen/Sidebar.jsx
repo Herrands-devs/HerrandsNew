@@ -7,6 +7,7 @@ import {
   Animated,
   Dimensions,
   Image,
+  Modal,
 } from "react-native";
 import { SquareButton } from "../common/Button";
 import { colors } from "../../../themes/colors";
@@ -14,8 +15,9 @@ import { AntDesign } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, navigation }) => {
   const [animation] = useState(new Animated.Value(0));
+  const [logoutModal, setLogoutModal] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -42,26 +44,32 @@ const Sidebar = ({ isOpen, onClose }) => {
     {
       title: "My errands",
       icon: require("../../../assets/icons/user-icon.png"),
+      href: "",
     },
     {
       title: "Payments",
       icon: require("../../../assets/icons/payments-icon.png"),
+      href: "",
     },
     {
       title: "Report an issue",
       icon: require("../../../assets/icons/report-icon.png"),
+      href: "",
     },
     {
       title: "Safety",
       icon: require("../../../assets/icons/safety-icon.png"),
+      href: "",
     },
     {
       title: "Rate us",
       icon: require("../../../assets/icons/rate-icon.png"),
+      href: "",
     },
     {
       title: "Log out",
       icon: require("../../../assets/icons/logout-icon.png"),
+      href: "",
     },
   ];
 
@@ -84,7 +92,12 @@ const Sidebar = ({ isOpen, onClose }) => {
             <Text className={`text-sidebarText font-montserratBold`}>
               John doe
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                onClose();
+                navigation.navigate("CustomerEditProfile");
+              }}
+            >
               <Text
                 className={`text-primaryColor font-montserratRegular text-[12px]`}
               >
@@ -102,6 +115,11 @@ const Sidebar = ({ isOpen, onClose }) => {
             <TouchableOpacity
               className={`flex-row items-center space-x-[6px] p-[18px]`}
               key={item.title}
+              onPress={() => {
+                if (item.title === "Log out") {
+                  setLogoutModal(true);
+                }
+              }}
             >
               <Image source={item.icon} className={`w-[24px] h-[24px]`} />
               <Text className={`font-montserratBold text-sidebarText`}>
@@ -112,7 +130,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         </View>
 
         <View
-          className={`flex-row w-full justify-center bottom-[30px] absolute`}
+          className={`flex-row w-full justify-center bottom-[30px] absolute px-[20px]`}
         >
           <SquareButton
             text={"Become an agent"}
@@ -123,6 +141,40 @@ const Sidebar = ({ isOpen, onClose }) => {
           />
         </View>
       </View>
+
+      <Modal visible={logoutModal} transparent={true} animationType="none">
+        <View className={`bg-[#00419b64] justify-center items-start flex-1`}>
+          <View
+            className={`bg-white p-[16px] rounded-[16px] ml-[16px]`}
+            style={{ width: width * 0.6389 }}
+          >
+            <Text className={`text-center text-[16px] font-montserratMedium`}>
+              Do you want to log out?
+            </Text>
+            <View
+              className={`flex-row justify-end items-center space-x-5 mt-[16px]`}
+            >
+              <TouchableOpacity onPress={() => setLogoutModal(false)}>
+                <Text
+                  className={`text-primaryColor text-[14px] font-montserratMedium`}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("SignInPhone");
+                  setLogoutModal(false);
+                }}
+              >
+                <Text className={`text-red  text-[14px] font-montserratMedium`}>
+                  Log out
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </Animated.View>
   );
 };

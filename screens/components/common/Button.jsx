@@ -19,7 +19,7 @@ export const RoundedButton = ({ text, onPress }) => {
 export const SquareButton = ({ text, styles, onPress, loading }) => {
   return (
     <TouchableOpacity
-      className={`w-[80%] 
+      className={`w-[100%] 
       p-[12px] flex flex-row justify-center rounded-[4px]`}
       style={styles}
       onPress={onPress}

@@ -20,7 +20,7 @@ const SignInPhone = ({ navigation }) => {
           </Text>
         </View>
 
-        <View className={`items-center mt-[40px]`}>
+        <View className={`items-center mt-[40px] px-[48px]`}>
           <PhoneNumberInput
             placeHolder={"Phone number"}
             type={"phone-pad"}
