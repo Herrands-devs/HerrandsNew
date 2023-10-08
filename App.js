@@ -38,6 +38,7 @@ import SignUpScreen from "./screens/Agent/screens/Auth/SignUpScreen";
 import CustomerEditProfile from "./screens/customer/Main/CustomerEditProfile";
 import CustomerdeleteAccount from "./screens/customer/Main/CustomerdeleteAccount";
 import MyErrandsCustomer from "./screens/customer/Main/MyErrandsCustomer";
+import CustomerErrandDetails from "./screens/customer/Main/CustomerErrandDetails";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -81,7 +82,7 @@ export default function App() {
         <Stack.Screen name="Support" component={SupportScreen} />
         <Stack.Screen name="OtpScreen" component={OtpScreen} />
         <Stack.Screen name="CustomerHome" component={CustomerHome} />
-
+        <Stack.Screen name="CustomerErrandDetails" component={CustomerErrandDetails} />
 
         {/* Agent Navigation */}
         <Stack.Screen name="AuthScreen" component={AuthScreen} />
