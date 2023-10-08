@@ -30,7 +30,7 @@ const SignInEmail = ({ navigation }) => {
             type={"email-address"}
           />
         </View>
-        <View className={`items-center mt-[70px]`}>
+        <View className={`items-center mt-[70px] px-[48px]`}>
           <RoundedButton
             text={"Sign in"}
             onPress={() => navigation.navigate("OtpScreen")}

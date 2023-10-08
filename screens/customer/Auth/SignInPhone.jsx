@@ -27,7 +27,7 @@ const SignInPhone = ({ navigation }) => {
             label={"Phone number"}
           />
         </View>
-        <View className={`items-center mt-[70px]`}>
+        <View className={`items-center mt-[70px] px-[48px]`}>
           <RoundedButton
             text={"Sign in"}
             onPress={() => navigation.navigate("OtpScreen")}

@@ -131,7 +131,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
         </View>
 
         <View
-          className={`flex-row w-full justify-center bottom-[30px] absolute px-[20px]`}
+          className={`flex-row w-full justify-center bottom-[30px] absolute px-[5px]`}
         >
           <LayeredBtn
             text={"Become an agent"}
@@ -139,6 +139,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
             styles={{
               backgroundColor: colors.primaryColor,
               justifyContent: "flex-start",
+              width: "100%",
             }}
           />
         </View>
