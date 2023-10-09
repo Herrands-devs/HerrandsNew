@@ -1,13 +1,18 @@
 {
   "build": {
-    "development": {
-      "distribution": "internal"
-    },
     "preview": {
-      "distribution": "store"
+      "android": {
+        "buildType": "apk"
+      }
     },
-    "production": {
-      "distribution": "store"
-    }
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    },
+    "production": {}
   }
 }

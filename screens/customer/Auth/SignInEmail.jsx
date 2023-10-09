@@ -21,7 +21,12 @@ const SignInEmail = ({ navigation }) => {
           </Text>
         </View>
 
-        <View className={`items-center mt-[40px] px-[48px]`}>
+        <View
+          className={`items-center mt-[40px]`}
+          style={{
+            paddingHorizontal: width * 0.0569,
+          }}
+        >
           <PrimaryInput
             iconName={"mail"}
             label={"Email"}
@@ -30,7 +35,12 @@ const SignInEmail = ({ navigation }) => {
             type={"email-address"}
           />
         </View>
-        <View className={`items-center mt-[70px] px-[48px]`}>
+        <View
+          className={`items-center mt-[70px]`}
+          style={{
+            paddingHorizontal: width * 0.0569,
+          }}
+        >
           <RoundedButton
             text={"Sign in"}
             onPress={() => navigation.navigate("OtpScreen")}

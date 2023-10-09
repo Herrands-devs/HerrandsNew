@@ -25,7 +25,12 @@ const OneMoreStep = ({ navigation }) => {
           One more step!
         </Text>
 
-        <View className={`items-center mt-[40px] px-[48px]`}>
+        <View
+          className={`items-center mt-[40px]`}
+          style={{
+            paddingHorizontal: width * 0.0569,
+          }}
+        >
           <PrimaryInput
             iconName={"mail"}
             label={"Email"}
@@ -34,7 +39,12 @@ const OneMoreStep = ({ navigation }) => {
             type={"email-address"}
           />
         </View>
-        <View className={`items-center mt-[70px] px-[48px]`}>
+        <View
+          className={`items-center mt-[70px]`}
+          style={{
+            paddingHorizontal: width * 0.0569,
+          }}
+        >
           <RoundedButton
             text={"Let's Rock"}
             onPress={() => navigation.navigate("OtpScreen")}

@@ -16,10 +16,9 @@ import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 const { width, height } = Dimensions.get("window");
 
 const CreateAccount = ({ navigation }) => {
-  console.log("width:::", width, "---", "height", height);
   return (
     <SafeAreaComponent>
-      <View className={``} style={{ height: height * 0.6 }}>
+      <View className={``} style={{ marginBottom: height * 0.0877 }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           className={`absolute ml-[30px] z-20`}
@@ -40,7 +39,10 @@ const CreateAccount = ({ navigation }) => {
             </Text>
           </View>
 
-          <View className={`items-center mt-[48px] px-[48px]`}>
+          <View
+            className={`items-center mt-[48px]`}
+            style={{ paddingHorizontal: width * 0.0569 }}
+          >
             <PhoneNumberInput
               placeHolder={"Phone number"}
               type={"phone-pad"}
@@ -60,8 +62,11 @@ const CreateAccount = ({ navigation }) => {
       </View>
 
       <View
-        className={`items-center px-[48px]`}
-        style={{ height: height * 0.25 }}
+        className={`items-center`}
+        style={{
+          marginBottom: height * 0.15,
+          paddingHorizontal: width * 0.0569,
+        }}
       >
         <RoundedButton
           text={"Continue"}
@@ -82,7 +87,7 @@ const CreateAccount = ({ navigation }) => {
         </View>
       </View>
 
-      <View className={`items-center `} style={{ height: height * 0.1 }}>
+      <View className={`items-center`}>
         <Text
           className={`font-montserratMedium text-center text-subTitle`}
           style={{ width: width * 0.7 }}

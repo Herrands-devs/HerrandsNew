@@ -165,10 +165,11 @@ const MyErrandsCustomer = ({ navigation }) => {
           <>
             {errandLists.length > 0 ? (
               <>
-                {errandLists.map((errands) => (
+                {errandLists.map((errands, i) => (
                   <View
                     className={`w-full border border-r-[2px] border-t-0 border-l-0 border-b-0 
               rounded-tr-[4px] rounded-br-[4px] border-r-primaryColor pr-[4px] bg-[#F7F7F7] mt-[14px]`}
+                    key={i}
                   >
                     <View className={`flex-row items-center justify-between`}>
                       <Text
@@ -247,11 +248,12 @@ const MyErrandsCustomer = ({ navigation }) => {
           <>
             {completedList.length > 0 ? (
               <>
-                {completedList.map((errands) => (
+                {completedList.map((errands, i) => (
                   <View
                     className={`w-full border border-r-[2px] border-t-0 border-l-0 border-b-0 
              rounded-tr-[4px] rounded-br-[4px] 
              border-r-[#C6C6C6] pr-[4px] bg-[#F7F7F7] mt-[14px]`}
+                    key={i}
                   >
                     <View className={`flex-row items-center justify-between`}>
                       <Text

@@ -25,14 +25,24 @@ const EnterYourNumber = () => {
           Enter your number
         </Text>
 
-        <View className={`items-center mt-[40px] px-[48px]`}>
+        <View
+          className={`items-center mt-[40px] `}
+          style={{
+            paddingHorizontal: width * 0.0569,
+          }}
+        >
           <PhoneNumberInput
             placeHolder={"Phone number"}
             type={"phone-pad"}
             label={"Phone number"}
           />
         </View>
-        <View className={`items-center mt-[70px] px-[48px]`}>
+        <View
+          className={`items-center mt-[70px] `}
+          style={{
+            paddingHorizontal: width * 0.0569,
+          }}
+        >
           <RoundedButton text={"Continue"} />
         </View>
       </View>

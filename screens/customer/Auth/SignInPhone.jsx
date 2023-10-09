@@ -14,20 +14,30 @@ const SignInPhone = ({ navigation }) => {
         <View className={`items-center`}>
           <Text
             className={`text-[24px] font-montserratBold text-center text-black`}
-            style={{ marginTop: height * 0.2, maxWidth: width * 0.5 }}
+            style={{ marginTop: height * 0.2, maxWidth: width * 0.6 }}
           >
             Enter your registered number
           </Text>
         </View>
 
-        <View className={`items-center mt-[40px] px-[48px]`}>
+        <View
+          className={`items-center mt-[40px]`}
+          style={{
+            paddingHorizontal: width * 0.0569,
+          }}
+        >
           <PhoneNumberInput
             placeHolder={"Phone number"}
             type={"phone-pad"}
             label={"Phone number"}
           />
         </View>
-        <View className={`items-center mt-[70px] px-[48px]`}>
+        <View
+          className={`items-center mt-[70px]`}
+          style={{
+            paddingHorizontal: width * 0.0569,
+          }}
+        >
           <RoundedButton
             text={"Sign in"}
             onPress={() => navigation.navigate("OtpScreen")}

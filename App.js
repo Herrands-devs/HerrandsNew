@@ -39,6 +39,10 @@ import CustomerEditProfile from "./screens/customer/Main/CustomerEditProfile";
 import CustomerdeleteAccount from "./screens/customer/Main/CustomerdeleteAccount";
 import MyErrandsCustomer from "./screens/customer/Main/MyErrandsCustomer";
 import CustomerErrandDetails from "./screens/customer/Main/CustomerErrandDetails";
+import CustomerPayments from "./screens/customer/Main/CustomerPaymnets";
+import CustomerAddCard from "./screens/customer/Main/CustomerAddCard";
+import { GlobalProvider } from "./context/context.store";
+import CustomerManageCard from "./screens/customer/Main/CustomerManageCard";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -62,198 +66,54 @@ export default function App() {
     return null;
   }
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen name="SpinSplash" component={SpinSplash} />
-        <Stack.Screen name="Swapper" component={Swapper} />
-        <Stack.Screen name="ButtonComp" component={ButtonComp} />
-        <Stack.Screen name="InputComp" component={InputComp} />
-        <Stack.Screen name="AgentScreen" component={HomeScreen} />
-        <Stack.Screen name="VideoChoice" component={VideoChoice} />
-        <Stack.Screen name="CreateAccountCustomer" component={CreateAccount} />
-        <Stack.Screen name="SignInPhone" component={SignInPhone} />
-        <Stack.Screen name="SignInEmail" component={SignInEmail} />
-        <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
-        <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
-        <Stack.Screen name="Support" component={SupportScreen} />
-        <Stack.Screen name="OtpScreen" component={OtpScreen} />
-        <Stack.Screen name="CustomerHome" component={CustomerHome} />
-        <Stack.Screen name="CustomerErrandDetails" component={CustomerErrandDetails} />
+    <GlobalProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="SpinSplash" component={SpinSplash} />
+          <Stack.Screen name="Swapper" component={Swapper} />
+          <Stack.Screen name="AgentScreen" component={HomeScreen} />
+          <Stack.Screen name="VideoChoice" component={VideoChoice} />
+          <Stack.Screen
+            name="CreateAccountCustomer"
+            component={CreateAccount}
+          />
+          <Stack.Screen name="SignInPhone" component={SignInPhone} />
+          <Stack.Screen name="SignInEmail" component={SignInEmail} />
+          <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
+          <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
+          <Stack.Screen name="Support" component={SupportScreen} />
+          <Stack.Screen name="OtpScreen" component={OtpScreen} />
+          <Stack.Screen name="CustomerHome" component={CustomerHome} />
+          <Stack.Screen
+            name="CustomerErrandDetails"
+            component={CustomerErrandDetails}
+          />
+          <Stack.Screen name="CustomerPayments" component={CustomerPayments} />
+          <Stack.Screen name="CustomerAddCard" component={CustomerAddCard} />
+          <Stack.Screen name="CustomerManageCard" component={CustomerManageCard} />
 
-        {/* Agent Navigation */}
-        <Stack.Screen name="AuthScreen" component={AuthScreen} />
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-        <Stack.Screen
-          name="CustomerEditProfile"
-          component={CustomerEditProfile}
-        />
-        <Stack.Screen
-          name="CustomerDeleteAccount"
-          component={CustomerdeleteAccount}
-        />
-        <Stack.Screen name="MyErrandsCustomer" component={MyErrandsCustomer} />
-      </Stack.Navigator>
-    </NavigationContainer>
+          {/* Agent Navigation */}
+          <Stack.Screen name="AuthScreen" component={AuthScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+          <Stack.Screen
+            name="CustomerEditProfile"
+            component={CustomerEditProfile}
+          />
+          <Stack.Screen
+            name="CustomerDeleteAccount"
+            component={CustomerdeleteAccount}
+          />
+          <Stack.Screen
+            name="MyErrandsCustomer"
+            component={MyErrandsCustomer}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GlobalProvider>
   );
 }
-
-const ButtonComp = (props) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const opacityValue = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(opacityValue, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-  }, [opacityValue]);
-
-  const screenOpacity = opacityValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 1],
-  });
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
-
-  const showDialog = () => {
-    setModalOpen(true);
-  };
-
-  const hideDialog = () => {
-    setModalOpen(false);
-  };
-
-  return (
-    <ScrollView>
-      <View className={`flex-1 justify-center items-center`}>
-        <RoundedButton text={"Open Sidebar"} onPress={toggleSidebar} />
-        <SquareButton
-          text={"Square Button"}
-          styles={{ backgroundColor: "#0066F5" }}
-        />
-        <SquareButton
-          text={"Black Flex Start"}
-          styles={{
-            backgroundColor: colors.blackBackground,
-            justifyContent: "flex-start",
-          }}
-        />
-        <SquareButton
-          text={"Square Green"}
-          styles={{
-            backgroundColor: colors.green,
-          }}
-        />
-        <SquareButton
-          text={"Red Button"}
-          styles={{
-            backgroundColor: colors.red,
-          }}
-          onPress={() => props.navigation.navigate("SpinSplash")}
-        />
-        <DisabledSquareBtn text={"Square Disabled"} />
-        <DisabledRoundedBtn text={"Rounded Disabled"} />
-        <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
-
-        <Button
-          title="Go to Inputs"
-          onPress={() => props.navigation.navigate("InputComp")}
-        />
-        <Button
-          title="Go to Agent Dashbaord"
-          onPress={() => props.navigation.replace("AgentScreen")}
-        />
-        <RoundedButton text={"Open Modal"} onPress={showDialog} />
-        <EmptyComponent message={"There are no items here yet."} />
-        <Notification
-          isVisible={modalOpen}
-          onClose={hideDialog}
-          title="You need a Dialog?"
-          subTitle={
-            "By clicking proceed it means you are on your way to deliver"
-          }
-          btnBackground={colors.primaryColor}
-          image={require("./assets/gifs/question.gif")}
-        />
-      </View>
-    </ScrollView>
-  );
-};
-
-const InputComp = (props) => {
-  const [fontLoaded, setFontLoaded] = useState(false);
-
-  useEffect(() => {
-    async function loadCustomFonts() {
-      await Font.loadAsync({
-        MontserratRegular: require("./assets/fonts/Montserrat-Regular.ttf"),
-      });
-      setFontLoaded(true);
-    }
-
-    loadCustomFonts();
-  }, []);
-
-  if (!fontLoaded) {
-    return null;
-  }
-
-  return (
-    <View className={`flex-1 justify-center items-center`}>
-      <PrimaryInput
-        label={"Active Input"}
-        style="w-full"
-        placeHolder={"Enter Placeholder"}
-      />
-      <PrimaryInput
-        value={"Disabled"}
-        label={"Disabled Input"}
-        style="w-full"
-        placeHolder={"Enter Placeholder"}
-        disabled="true"
-      />
-      <PhoneNumberInput
-        iconName={"mail-sharp"}
-        iconSize={"15"}
-        label={"Enter Label"}
-        style="w-full h-[45px]"
-        placeHolder={"Enter Placeholder"}
-      />
-      <DropDownPicker
-        placeHolder={"Search"}
-        label={"Enter Drop Label"}
-        defaultOption={"Within Lagos"}
-        options={[
-          { label: "Within Ogun", value: "" },
-          { label: "Within Abuja", value: "" },
-          { label: "Within Ogun", value: "" },
-          { label: "Within Abuja", value: "" },
-          { label: "Within Ogun", value: "" },
-          { label: "Within Abuja", value: "" },
-          { label: "Within Ogun", value: "" },
-          { label: "Within Abuja", value: "" },
-        ]}
-      />
-
-      <OtpInputs />
-      <Button
-        title="Go to Buttons"
-        onPress={() => props.navigation.navigate("ButtonComp")}
-      />
-    </View>
-  );
-};

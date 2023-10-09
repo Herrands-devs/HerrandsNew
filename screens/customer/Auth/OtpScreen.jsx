@@ -23,6 +23,7 @@ const OtpScreen = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [otpValues, setOtpValues] = useState(["", "", "", ""]);
   const [loading, setLoading] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   const handleOtpChange = (newValues) => {
     setOtpValues(newValues);
@@ -57,14 +58,17 @@ const OtpScreen = ({ navigation }) => {
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
-      () => {
+      (e) => {
         setMoveup(true);
+        setKeyboardHeight(e.endCoordinates.height);
+        _keyboardDidShow(e);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
       () => {
         setMoveup(false);
+        setKeyboardHeight(0);
       }
     );
     return () => {
@@ -72,6 +76,10 @@ const OtpScreen = ({ navigation }) => {
       keyboardDidHideListener.remove();
     };
   }, []);
+
+  const _keyboardDidShow = (event) => {
+    console.log("Keyboard height is: ", event.endCoordinates.height);
+  };
 
   useEffect(() => {
     const countdownInterval = setInterval(() => {
