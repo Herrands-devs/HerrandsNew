@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image,
   Modal,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { LayeredBtn, SquareButton } from "../common/Button";
 import { colors } from "../../../themes/colors";
@@ -49,7 +50,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
     {
       title: "Payments",
       icon: require("../../../assets/icons/payments-icon.png"),
-      href: "",
+      href: "CustomerPayments",
     },
     {
       title: "Report an issue",

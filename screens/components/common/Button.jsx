@@ -74,7 +74,7 @@ export const LayeredBtn = ({ text, styles, subText, subTextTop, onPress }) => {
   return (
     <TouchableOpacity
       className={`p-[12px] flex 
-      rounded-[4px] border border-[#99C2FB] flex-1 mx-[10px]`}
+      rounded-[4px] border border-[#99C2FB] w-[45%]`}
       style={styles}
       onPress={onPress}
     >
