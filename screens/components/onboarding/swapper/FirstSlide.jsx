@@ -8,7 +8,7 @@ const FirstSlide = () => {
       <View
         className={`flex-col justify-end h-[100%] items-center space-y-3 bg-[#000000a9]`}
       >
-        <View className={`flex-col items-center bottom-[180px]`}>
+        <View className={`flex-col items-center bottom-[145px]`}>
           <Text className={`text-white text-[16px] font-montserratBold`}>
             Embrace the era of limitless hours
           </Text>

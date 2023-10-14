@@ -15,6 +15,7 @@ export const PrimaryInput = ({
   iconColor,
   disabled,
   classes,
+  labelStyle,
   ...rest
 }) => {
   const [isFocused, setFocused] = useState(false);
@@ -27,7 +28,10 @@ export const PrimaryInput = ({
             <Ionicons name={iconName} size={iconSize} color={iconColor} />
           </TouchableOpacity>
         )}
-        <Text className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular">
+        <Text
+          className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+          style={labelStyle}
+        >
           {label}
         </Text>
       </View>
@@ -58,8 +62,6 @@ export const PrimaryInput = ({
     </View>
   );
 };
-
-
 
 export const DoubleInput = ({
   type,
@@ -157,7 +159,10 @@ export const PhoneNumberInput = ({
         ]}
       >
         <TouchableOpacity className="w-[6%] h-[20px] mx-2">
-          <Image source={require("../../../assets/flag.png")} className="w-full h-full"/>
+          <Image
+            source={require("../../../assets/flag.png")}
+            className="w-full h-full"
+          />
         </TouchableOpacity>
 
         <View className="w-[10%] h-full flex justify-center items-center">
@@ -234,19 +239,14 @@ export const OtpInputs = ({ otpValues, onOtpChange, onOtpComplete }) => {
   );
 };
 
-
-
-export const CheckBox = ({
-  label,
-  onPress
-}) => {
+export const CheckBox = ({ label, onPress }) => {
   return (
     <View className="flex flex-row gap-2 mb-3 items-center">
-      <TouchableOpacity className="w-[20px] h-[20px] border-2 border-[#D5D7DA]" onPress={onPress}>
-      </TouchableOpacity>
-      <Text className="text-[#6B7C97] text-[16px]">
-        {label}
-      </Text>
+      <TouchableOpacity
+        className="w-[20px] h-[20px] border-2 border-[#D5D7DA]"
+        onPress={onPress}
+      ></TouchableOpacity>
+      <Text className="text-[#6B7C97] text-[16px]">{label}</Text>
     </View>
-  )
-}
+  );
+};

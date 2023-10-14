@@ -45,7 +45,13 @@ const CustomerEditProfile = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      <View className={`px-[48px]`} style={{ marginBottom: height * 0.05 }}>
+      <View
+        className={``}
+        style={{
+          marginBottom: height * 0.05,
+          paddingHorizontal: width * 0.0569,
+        }}
+      >
         <PrimaryInput
           label={"First name"}
           placeHolder={"John"}
@@ -68,7 +74,13 @@ const CustomerEditProfile = ({ navigation }) => {
         />
       </View>
 
-      <View className={`px-[48px]`} style={{ marginBottom: height * 0.0723 }}>
+      <View
+        className={``}
+        style={{
+          marginBottom: height * 0.0723,
+          paddingHorizontal: width * 0.0569,
+        }}
+      >
         <View className={`flex-row items-center justify-between mb-[16px]`}>
           <View className={`flex-row items-center space-x-5`}>
             <Image source={WorldIcon} className={`w-[16px] h-[16px]`} />

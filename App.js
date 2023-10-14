@@ -43,6 +43,7 @@ import CustomerPayments from "./screens/customer/Main/CustomerPaymnets";
 import CustomerAddCard from "./screens/customer/Main/CustomerAddCard";
 import { GlobalProvider } from "./context/context.store";
 import CustomerManageCard from "./screens/customer/Main/CustomerManageCard";
+import CustomerCreateErrand from "./screens/customer/Main/CustomerCreateErrand";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -94,7 +95,14 @@ export default function App() {
           />
           <Stack.Screen name="CustomerPayments" component={CustomerPayments} />
           <Stack.Screen name="CustomerAddCard" component={CustomerAddCard} />
-          <Stack.Screen name="CustomerManageCard" component={CustomerManageCard} />
+          <Stack.Screen
+            name="CustomerManageCard"
+            component={CustomerManageCard}
+          />
+          <Stack.Screen
+            name="CustomerCreateErrand"
+            component={CustomerCreateErrand}
+          />
 
           {/* Agent Navigation */}
           <Stack.Screen name="AuthScreen" component={AuthScreen} />
