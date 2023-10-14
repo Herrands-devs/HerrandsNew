@@ -11,11 +11,18 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from "react-native";
+import { colors } from "../../../themes/colors";
 
 const { width, height } = Dimensions.get("window");
 
-const NoCardModal = ({ isVisible, closeModal }) => {
-  const translateX = useRef(new Animated.Value(-500)).current;
+const CategoryModal = ({
+  isVisible,
+  closeModal,
+  initalValue,
+  title,
+  options,
+}) => {
+  const translateX = useRef(new Animated.Value(initalValue)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
   const slideIn = () => {
@@ -36,7 +43,7 @@ const NoCardModal = ({ isVisible, closeModal }) => {
   const slideOut = () => {
     Animated.parallel([
       Animated.timing(translateX, {
-        toValue: -500,
+        toValue: initalValue,
         duration: 500,
         useNativeDriver: false,
       }),
@@ -75,18 +82,26 @@ const NoCardModal = ({ isVisible, closeModal }) => {
               },
             ]}
           >
-            <View className={`flex-row items-center w-full justify-center`}>
+            <View className={`flex-row`}>
               <View>
                 <Text
-                  className={`text-[20px] font-montserratSemiBold text-white text-center`}
+                  className={`text-[20px] font-montserratSemiBold text-black`}
                 >
-                  You are yet to add a card
+                  {title}
                 </Text>
-                <Text
-                  className={`text-[12px] font-montserratRegular text-white text-center mt-[15px]`}
-                >
-                  please tap the + button below to add a card
-                </Text>
+
+                <View className={`mt-[27px]`}>
+                  {options &&
+                    options.map((text, i) => (
+                      <TouchableOpacity key={i} className={`my-[16px]`}>
+                        <Text
+                          className={`text-[14px] font-montserratMedium text-subTitle`}
+                        >
+                          {text.title}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                </View>
               </View>
             </View>
           </Animated.View>
@@ -96,7 +111,7 @@ const NoCardModal = ({ isVisible, closeModal }) => {
   );
 };
 
-export default NoCardModal;
+export default CategoryModal;
 
 const styles = StyleSheet.create({
   overlay: {
@@ -106,12 +121,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modal: {
-    backgroundColor: "#082552",
-    borderRadius: 16,
+    backgroundColor: "white",
+    borderRadius: 4,
     width: "80%",
-    paddingHorizontal: 24,
-    paddingVertical: 32,
-    height: height * 0.16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderColor: colors.primaryColor,
+    borderWidth: 1,
   },
   modalContent: {
     alignItems: "center",

@@ -66,7 +66,7 @@ const CustomerHome = ({ navigation }) => {
           <SquareButton
             text={"Let's go"}
             styles={{ backgroundColor: colors.primaryColor, width: "100%" }}
-            onPress={() => setIsOpen(true)}
+            onPress={() => navigation.navigate("CustomerCreateErrand")}
           />
         </View>
       </View>

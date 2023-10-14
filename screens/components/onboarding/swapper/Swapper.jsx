@@ -89,7 +89,7 @@ const Swapper = ({ navigation }) => {
         {currentIndex > 0 && (
           <TouchableOpacity
             onPress={handlePrevious}
-            className={`absolute mt-[50px] ml-[30px] z-20`}
+            className={`absolute mt-[50px] ml-[16px] z-20`}
           >
             <Image source={BackIcon} className={`w-[24px] h-[24px]`} />
           </TouchableOpacity>
@@ -106,7 +106,7 @@ const Swapper = ({ navigation }) => {
           <ThirdSlide />
         </Swiper>
 
-        <View className={`absolute bottom-0 w-full h-[15%] items-center`}>
+        <View className={`absolute bottom-0 w-full h-[12%] items-center`}>
           <View className={`space-x-3 flex-row items-center`}>
             {[0, 1, 2].map((index) => (
               <View
