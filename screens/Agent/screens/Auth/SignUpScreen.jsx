@@ -15,6 +15,7 @@ import {
   CheckBox,
   PhoneNumberInput,
   PrimaryInput,
+  UploadInp,
 } from "../../../components/common/Inputs";
 import { SquareButton } from "../../../components/common/Button";
 import { DropDownPicker } from "../../../components/common/Dropdown";
@@ -224,6 +225,19 @@ const SignUpScreen = ({ navigation }) => {
             </View>
           </View>
           <View className="w-full">
+            <Text className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular">
+               Please Upload your selected ID
+            </Text>
+
+            <View className="w-full mt-3">
+               <UploadInp 
+                  style={"w-full bg-[#ffffff]"}
+                  placeHolder={"No files choosen"}
+                  disabled={'true'}
+               />
+            </View>
+          </View>
+          <View className="w-full">
             <SquareButton
               text="Sign Up"
               styles={{
@@ -231,7 +245,7 @@ const SignUpScreen = ({ navigation }) => {
                 width: "100%",
                 marginTop: 20,
               }}
-              onPress={() => navigation.navigate("AgentScreen")}
+              onPress={() => navigation.navigate("CompleteScreen")}
             />
           </View>
           <View

@@ -10,10 +10,10 @@ const SupportScreen = ({navigation}) => {
    const {angleLeft,webIcon,switchIcon,guideIcon,supportIcon ,angleRight} = iconsPack()
    return (
       <SafeAreaView className="bg-white h-full">
-         <View  className="p-6 font-montserratRegular flex flex-row items-center gap-5">
+         <TouchableOpacity  className="p-6 font-montserratRegular flex flex-row items-center gap-5" onPress={() => navigation.goBack()}>
             <TouchableOpacity onPress={() => navigation.goBack()}><Image source={angleLeft} /></TouchableOpacity>
             <Text className="text-[24px] text-[#000E23] font-semibold font-MontserratMedium">Support</Text>
-         </View>
+         </TouchableOpacity>
 
          <View style={styles.container}>
             

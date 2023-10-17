@@ -3,6 +3,7 @@ export function iconsPack() {
    const chatIcon = require("../../../assets/icons/chat.png")
    const chatHoverIcon = require("../../../assets/icons/chatHover.png")
    const homeHover = require("../../../assets/icons/homeHover.png")
+   const errandsHoverIcon = require("../../../assets/icons/errandsHover.png")
    const errandsIcon = require("../../../assets/icons/errands.png")
    const earningsIcon = require("../../../assets/icons/earnings.png")
    const profileIcon = require("../../../assets/icons/profile.png")
@@ -15,10 +16,13 @@ export function iconsPack() {
    const logoutIcon = require("../../../assets/icons/logout.png")
    const supportIcon = require("../../../assets/icons/support.png")
    const guideIcon = require("../../../assets/icons/guide.png")
+   const homeIcon = require("../../../assets/icons/home.png")
    return {
       chatIcon,
       chatHoverIcon, 
+      homeIcon,
       homeHover,
+      errandsHoverIcon,
       errandsIcon,
       earningsIcon,
       profileIcon,
