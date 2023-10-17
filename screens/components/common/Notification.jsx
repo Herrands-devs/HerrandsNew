@@ -19,6 +19,7 @@ const Notification = ({
   subTitle,
   btnBackground,
   image,
+  btnText
 }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
 
@@ -67,8 +68,8 @@ const Notification = ({
             {subTitle}
           </Text>
           <SquareButton
-            text={"Any text"}
-            styles={{ backgroundColor: btnBackground }}
+            text={btnText}
+            styles={{ backgroundColor: btnBackground , marginTop : 20 }}
           />
         </Animated.View>
       </View>

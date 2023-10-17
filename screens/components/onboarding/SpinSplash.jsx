@@ -35,7 +35,7 @@ const SpinSplash = ({ navigation }) => {
       />
 
       <View className={`flex-row items-center absolute bottom-[10%]`}>
-        <Text className={`text-white text-[14px] font-montserratBold`}>
+        <Text className={`text-[#ffffff] text-[14px] font-montserratBold`}>
           Your personal time optimiser{" "}
         </Text>
         <Image source={require("../../../assets/icons/rocket.png")} />

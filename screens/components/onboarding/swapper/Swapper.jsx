@@ -18,6 +18,7 @@ import BackIcon from "../../../../assets/icons/back-icon.png";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 
+
 const Swapper = ({ navigation }) => {
   const swiperRef = React.createRef();
   const [currentIndex, setCurrentIndex] = useState(0);

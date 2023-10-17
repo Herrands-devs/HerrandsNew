@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dimensions, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Dimensions, Image, Modal, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { iconsPack } from "../../components/icons";
@@ -18,20 +18,20 @@ const Profilescreen = ({ navigation }) => {
     angleRight,
   } = iconsPack();
   const [checked, setChecked] = useState(false);
-
+  const [logoutModal, setLogoutModal] = useState(false);
   const toggleSwitch = () => {
     setChecked(!checked);
   };
   return (
     <SafeAreaView className="bg-white h-full">
-      <View className="p-6 font-montserratRegular flex flex-row items-center gap-5">
+      <TouchableOpacity className="p-6 font-montserratRegular flex flex-row items-center gap-5" onPress={() => navigation.goBack()}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={angleLeft} />
         </TouchableOpacity>
         <Text className="text-[24px] text-[#000E23] font-semibold font-MontserratMedium">
           Profile
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <View style={styles.container}>
         <View className="relative w-[118px] h-[118px]">
@@ -69,7 +69,10 @@ const Profilescreen = ({ navigation }) => {
         </View>
 
         <View>
-          <TouchableOpacity className="flex flex-row gap-2 items-center">
+          <TouchableOpacity 
+            className="flex flex-row gap-2 items-center"
+            onPress={() => navigation.navigate('EditProfile')}
+          >
             <Text
               className={`text-primaryColor font-montserratRegular text-[16px] font-bold`}
             >
@@ -132,14 +135,20 @@ const Profilescreen = ({ navigation }) => {
             <Image source={angleRight} />
           </TouchableOpacity>
 
-          <View className="flex flex-row justify-between pb-12 items-center w-full">
-            <View className="flex flex-row gap-8 items-center">
+          <TouchableOpacity 
+            className="flex flex-row justify-between pb-12 items-center w-full"
+            onPress={() => setLogoutModal(true)}
+          >
+            <View 
+              className="flex flex-row gap-8 items-center"
+              onPress={() => setLogoutModal(true)}
+            >
               <Image source={logoutIcon} />
               <Text className="text-[18px] font-montserratRegular">
                 Log out
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
 
           <TouchableOpacity
             className="flex flex-row justify-between pb-12 items-center w-full"
@@ -153,6 +162,49 @@ const Profilescreen = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         </View>
+            <Modal
+              visible={logoutModal}
+              transparent={true}
+              animationType="none"
+            >
+              <View
+                className={`bg-[#00419b64] justify-center items-center flex-1`}
+              >
+                <View
+                  className={`bg-white p-[16px]  rounded-[16px] ml-[16px]`}
+                  style={{ width: width * 0.6389 }}
+                >
+                  <Text
+                    className={`text-center text-[16px] font-montserratMedium`}
+                  >
+                    Do you want to log out?
+                  </Text>
+                  <View
+                    className={`flex-row justify-end items-center space-x-5 mt-[16px]`}
+                  >
+                    <TouchableOpacity onPress={() => setLogoutModal(false)}>
+                      <Text
+                        className={`text-primaryColor text-[14px] font-montserratMedium`}
+                      >
+                        Cancel
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("LoginScreen");
+                        setLogoutModal(false);
+                      }}
+                    >
+                      <Text
+                        className={`text-red  text-[14px] font-montserratMedium`}
+                      >
+                        Log out
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+            </Modal>
       </View>
     </SafeAreaView>
   );

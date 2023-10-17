@@ -12,7 +12,7 @@ const KeyboardAvoidingContainer = ({children , style}) => {
             <ScrollView
                showsVerticalScrollIndicator="false"
                contentContainerStyle={[styles.contentContainer]}
-
+               className ="h-full"
             >
                {children}
             </ScrollView>
@@ -25,7 +25,7 @@ const KeyboardAvoidingContainer = ({children , style}) => {
 const styles = StyleSheet.create({
    contentContainer : {
       paddingTop : Platform.OS === 'android' ? 
-      StatusBar.currentHeight + 30 : 20,
+      StatusBar.currentHeight : 20,
    }
 })
 export default KeyboardAvoidingContainer

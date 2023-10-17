@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons ,  FontAwesome } from "@expo/vector-icons";
 import { Image } from "react-native";
+
 
 export const PrimaryInput = ({
   type,
@@ -35,7 +36,7 @@ export const PrimaryInput = ({
           {label}
         </Text>
       </View>
-      <View className={`${style} h-[45px] bg-[#F7F7F7] rounded-[4px]`}>
+      <View className={`${style} h-[45px] rounded-[4px]`}>
         <TextInput
           keyboardType={type}
           onFocus={() => setFocused(true)}
@@ -52,6 +53,53 @@ export const PrimaryInput = ({
             },
             !isFocused && {
               borderRadius: 4,
+              borderColor: "#E9E9E9",
+            },
+            disabled && { backgroundColor: "#C6C6C6", color: "white" },
+          ]}
+          editable={!disabled}
+        />
+      </View>
+    </View>
+  );
+};
+
+export const RoundedInput = ({
+  type,
+  placeHolder,
+  value,
+  onChangeText,
+  style,
+  label,
+  iconName,
+  iconSize,
+  iconColor,
+  disabled,
+  classes,
+  labelStyle,
+  ...rest
+}) => {
+  const [isFocused, setFocused] = useState(false);
+  return (
+    <View className={`w-[100%] ${classes}`}>
+      {/* if Icon */}
+      <View className={`${style} h-[40px] rounded-full`}>
+        <TextInput
+          keyboardType={type}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setFocused(false)}
+          value={value}
+          placeholder={placeHolder}
+          placeholderTextColor="#C6C6C6"
+          className="w-full h-full flex justify-center border text-[14px] px-2 font-montserratRegular"
+          style={[
+            isFocused && {
+              borderWidth: 2,
+              borderRadius: 100,
+              borderColor: "#0066F5",
+            },
+            !isFocused && {
+              borderRadius: 100,
               borderColor: "#E9E9E9",
             },
             disabled && { backgroundColor: "#C6C6C6", color: "white" },
@@ -144,7 +192,7 @@ export const PhoneNumberInput = ({
       <View
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style} h-[45px] bg-[#F7F7F7] border  rounded-[4px] flex flex-row items-center px-2 ${
+        className={`${style} h-[45px]  border  rounded-[4px] flex flex-row items-center px-2 ${
           isFocused && "shadow-sm"
         }`}
         style={[
@@ -176,7 +224,7 @@ export const PhoneNumberInput = ({
           placeholder={placeHolder}
           placeholderTextColor="#C6C6C6"
           className="w-[70%] h-full flex justify-center text-[14px] 
-          px-2 font-montserratRegular bg-[#F7F7F7]"
+          px-2 font-montserratRegular"
         />
       </View>
     </View>
@@ -239,13 +287,79 @@ export const OtpInputs = ({ otpValues, onOtpChange, onOtpComplete }) => {
   );
 };
 
-export const CheckBox = ({ label, onPress }) => {
+export const UploadInp = ({
+  type,
+  placeHolder,
+  value,
+  onChangeText,
+  style,
+  iconName,
+  iconSize,
+  iconColor,
+  disabled,
+  ...rest
+}) => {
+   const [isFocused, setFocused] = useState(false);
+  const selectFile = async () => {
+    try {
+      const res = await DocumentPicker.pick();
+      console.log(res)
+    } catch (err) {
+        console.log(err)
+    }
+  }
   return (
-    <View className="flex flex-row gap-2 mb-3 items-center">
+    <View className="w-[100%] mb-3">
+    {/* if Icon */}
       <TouchableOpacity
-        className="w-[20px] h-[20px] border-2 border-[#D5D7DA]"
-        onPress={onPress}
-      ></TouchableOpacity>
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        className={`${style} h-[45px] border rounded-[4px] flex flex-row items-center ${
+          isFocused && "shadow-sm"
+        }`}
+        style={[
+          isFocused && {
+            borderWidth: 2,
+            borderRadius: 4,
+            borderColor: "#0066F5",
+          },
+          !isFocused && {
+            borderColor: "#E9E9E9",
+          },
+        ]}
+        onPress={selectFile}
+      >
+        <View className="w-[30%] h-full flex justify-center items-center">
+          <View className="bg-[#F1F1F1] h-[35px] flex justify-center items-center p-2 font-medium text-[12px] font-montserratRegular">
+            <Text>
+              Choose files
+            </Text>
+          </View>
+        </View>
+        <TextInput
+          keyboardType={type}
+          value={value}
+          placeholder={placeHolder}
+          placeholderTextColor="#C6C6C6"
+          className="w-[70%] h-full flex justify-center text-[14px] 
+          px-2 font-montserratRegular"
+          editable={!disabled}
+        />
+      </TouchableOpacity>
+    </View>
+  )
+}
+
+export const CheckBox = ({ label, onPress }) => {
+  const [check , setCheck] = useState(false)
+  return (
+    <View className="flex flex-row gap-2 mb-6 items-center">
+      <TouchableOpacity
+        className={`w-[20px] h-[20px] flex justify-center ${check ? 'bg-[#0066F5] border-[#0066F5]' : 'border-[#D5D7DA]' } items-center border-2`}
+        onPress={() => setCheck(!check)}
+      >
+        <Ionicons name="checkmark-sharp" size={15} color="white" />
+      </TouchableOpacity>
       <Text className="text-[#6B7C97] text-[16px]">{label}</Text>
     </View>
   );

@@ -26,11 +26,13 @@ const LoginScreen = ({navigation}) => {
             <View className="flex w-full items-center  h-[150px] justify-between">
                <PhoneNumberInput 
                   style={"w-full"}
+                  placeHolder={"Enter Mobile Number"}
                   type={'phone-pad'}
                />
                <SquareButton 
                   text="Sign In" 
                   styles={{backgroundColor : colors.primaryColor , width : '100%'}} 
+                  onPress={() => navigation.navigate("HomeScreen")}
                />
             </View>
             <View className={`items-center`} style={{ height: height * 0.35 }}>

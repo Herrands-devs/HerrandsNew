@@ -11,16 +11,7 @@ import { colors } from "./themes/colors";
 //Navigation import
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {
-  OtpInputs,
-  PhoneNumberInput,
-  PrimaryInput,
-} from "./screens/components/common/Inputs";
-import { DropDownPicker } from "./screens/components/common/Dropdown";
 import HomeScreen from "./screens/Agent/screens/HomeScreen";
-import Sidebar from "./screens/components/customer-home-screen/Sidebar";
-import Notification from "./screens/components/common/Notification";
-import EmptyComponent from "./screens/components/common/EmptyComponent";
 import SpinSplash from "./screens/components/onboarding/SpinSplash";
 import Swapper from "./screens/components/onboarding/swapper/Swapper";
 import VideoChoice from "./screens/components/onboarding/VideoChoice";
@@ -44,6 +35,11 @@ import CustomerAddCard from "./screens/customer/Main/CustomerAddCard";
 import { GlobalProvider } from "./context/context.store";
 import CustomerManageCard from "./screens/customer/Main/CustomerManageCard";
 import CustomerCreateErrand from "./screens/customer/Main/CustomerCreateErrand";
+import CompleteScreen from "./screens/Agent/screens/Auth/CompleteScreen";
+import OtpScreenAgent from "./screens/Agent/screens/Auth/OtpScreenAgent";
+import EditProfile from "./screens/Agent/screens/Profile/EditProfile";
+import InProgress from "./screens/Agent/screens/Errands/InProgress";
+import IsCompleted from "./screens/Agent/screens/Errands/isCompleted";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -86,7 +82,6 @@ export default function App() {
           <Stack.Screen name="SignInEmail" component={SignInEmail} />
           <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
           <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
-          <Stack.Screen name="Support" component={SupportScreen} />
           <Stack.Screen name="OtpScreen" component={OtpScreen} />
           <Stack.Screen name="CustomerHome" component={CustomerHome} />
           <Stack.Screen
@@ -103,11 +98,6 @@ export default function App() {
             name="CustomerCreateErrand"
             component={CustomerCreateErrand}
           />
-
-          {/* Agent Navigation */}
-          <Stack.Screen name="AuthScreen" component={AuthScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
           <Stack.Screen
             name="CustomerEditProfile"
             component={CustomerEditProfile}
@@ -120,6 +110,19 @@ export default function App() {
             name="MyErrandsCustomer"
             component={MyErrandsCustomer}
           />
+
+          {/* Agent Navigation */}
+          <Stack.Screen name="HomeScreen" component={HomeScreen} />
+          <Stack.Screen name="AuthScreen" component={AuthScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+          <Stack.Screen name="Support" component={SupportScreen} />
+          <Stack.Screen name="InProgress" component={InProgress} />
+          <Stack.Screen name="IsCompleted" component={IsCompleted} />
+          <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
+          <Stack.Screen name="OtpScreenAgent" component={OtpScreenAgent} />
+          {/* Profile */}
+          <Stack.Screen name="EditProfile" component={EditProfile} />
         </Stack.Navigator>
       </NavigationContainer>
     </GlobalProvider>
