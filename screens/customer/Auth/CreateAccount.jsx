@@ -12,6 +12,7 @@ import BackIcon from "../../../assets/icons/back-icon-black.png";
 import { PhoneNumberInput, PrimaryInput } from "../../components/common/Inputs";
 import { RoundedButton } from "../../components/common/Button";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
+import { colors } from "../../../themes/colors";
 
 const { width, height } = Dimensions.get("window");
 
@@ -71,6 +72,10 @@ const CreateAccount = ({ navigation }) => {
         <RoundedButton
           text={"Continue"}
           onPress={() => navigation.navigate("OneMoreStep")}
+          styles={{
+            backgroundColor: colors.primaryColor,
+            // width: "80%",
+          }}
         />
         <View className={`flex-row items-center mt-[18px]`}>
           <Text className={`text-[14px] font-montserratSemiBold text-subTitle`}>

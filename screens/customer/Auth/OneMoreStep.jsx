@@ -48,6 +48,10 @@ const OneMoreStep = ({ navigation }) => {
           <RoundedButton
             text={"Let's Rock"}
             onPress={() => navigation.navigate("OtpScreen")}
+            styles={{
+              backgroundColor: colors.primaryColor,
+              // width: "80%",
+            }}
           />
         </View>
       </View>

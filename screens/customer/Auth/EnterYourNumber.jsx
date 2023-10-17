@@ -43,7 +43,13 @@ const EnterYourNumber = () => {
             paddingHorizontal: width * 0.0569,
           }}
         >
-          <RoundedButton text={"Continue"} />
+          <RoundedButton
+            text={"Continue"}
+            styles={{
+              backgroundColor: colors.primaryColor,
+              // width: "80%",
+            }}
+          />
         </View>
       </View>
 
