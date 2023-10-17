@@ -4,6 +4,7 @@ import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import { Dimensions } from "react-native";
 import { PhoneNumberInput } from "../../components/common/Inputs";
 import { RoundedButton } from "../../components/common/Button";
+import { colors } from "../../../themes/colors";
 
 const { width, height } = Dimensions.get("window");
 
@@ -41,6 +42,10 @@ const SignInPhone = ({ navigation }) => {
           <RoundedButton
             text={"Sign in"}
             onPress={() => navigation.navigate("OtpScreen")}
+            styles={{
+              backgroundColor: colors.primaryColor,
+              // width: "80%",
+            }}
           />
         </View>
       </View>

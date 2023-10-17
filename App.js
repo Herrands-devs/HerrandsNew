@@ -44,6 +44,8 @@ import CustomerAddCard from "./screens/customer/Main/CustomerAddCard";
 import { GlobalProvider } from "./context/context.store";
 import CustomerManageCard from "./screens/customer/Main/CustomerManageCard";
 import CustomerCreateErrand from "./screens/customer/Main/CustomerCreateErrand";
+import CustomerErrandMap from "./screens/customer/Main/CustomerErrandMap";
+import CustomerVirtualProcess from "./screens/customer/Main/CustomerVirtualProcess";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -95,6 +97,15 @@ export default function App() {
           />
           <Stack.Screen name="CustomerPayments" component={CustomerPayments} />
           <Stack.Screen name="CustomerAddCard" component={CustomerAddCard} />
+          <Stack.Screen
+            name="CustomerErrandMap"
+            component={CustomerErrandMap}
+          />
+          <Stack.Screen
+            name="CustomerVirtualProcess"
+            component={CustomerVirtualProcess}
+          />
+
           <Stack.Screen
             name="CustomerManageCard"
             component={CustomerManageCard}

@@ -10,7 +10,10 @@ import CartIcon from "../../../assets/icons/cart-icon.png";
 import SocialIcon from "../../../assets/icons/social-icon.png";
 import OfficeIcon from "../../../assets/icons/office-icon.png";
 import HouseIcon from "../../../assets/icons/house-icon.png";
-import { SquareButton } from "../../components/common/Button";
+import {
+  DisabledSquareBtn,
+  SquareButton,
+} from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
 import CategoryModal from "../../components/customer-home-screen/CategoryModal";
 import { useContext } from "react";
@@ -400,6 +403,22 @@ const CustomerCreateErrand = ({ navigation }) => {
     );
   };
 
+  const navigateToNext = () => {
+    if (
+      selectedState === "Pick up/drop off an item" ||
+      selectedState === "Carry a household item" ||
+      selectedState === "Shop for groceries"
+    ) {
+      navigation.navigate("CustomerErrandMap");
+    } else if (
+      selectedState === "Manage my email inbox" ||
+      selectedState === "Arrange my travels" ||
+      selectedState === "Clean up my house"
+    ) {
+      navigation.navigate("CustomerVirtualProcess");
+    }
+  };
+
   useEffect(() => {
     setSelectedState(selectedCategory);
   }, [selectedCategory]);
@@ -407,7 +426,12 @@ const CustomerCreateErrand = ({ navigation }) => {
   return (
     <SafeAreaComponent>
       <View className={`px-[16px]`}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+            setSelectedState("");
+          }}
+        >
           <Image source={BackIcon} className={`w-[24px] h-[24px]`} />
         </TouchableOpacity>
       </View>
@@ -530,10 +554,18 @@ const CustomerCreateErrand = ({ navigation }) => {
             marginBottom: selectedCategory === "" ? 0 : 100,
           }}
         >
-          <SquareButton
-            text={"Send"}
-            styles={{ backgroundColor: colors.primaryColor }}
-          />
+          {selectedState === "" ? (
+            <DisabledSquareBtn
+              text={"Send"}
+              styles={{ backgroundColor: colors.primaryColor }}
+            />
+          ) : (
+            <SquareButton
+              text={"Send"}
+              styles={{ backgroundColor: colors.primaryColor }}
+              onPress={navigateToNext}
+            />
+          )}
         </View>
       </View>
 

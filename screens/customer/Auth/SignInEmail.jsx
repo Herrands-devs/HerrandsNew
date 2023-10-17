@@ -44,6 +44,10 @@ const SignInEmail = ({ navigation }) => {
           <RoundedButton
             text={"Sign in"}
             onPress={() => navigation.navigate("OtpScreen")}
+            styles={{
+              backgroundColor: colors.primaryColor,
+              // width: "80%",
+            }}
           />
         </View>
       </View>

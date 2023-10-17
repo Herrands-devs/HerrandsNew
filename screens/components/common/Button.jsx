@@ -1,17 +1,29 @@
 import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
 
-export const RoundedButton = ({ text, onPress }) => {
+export const RoundedButton = ({
+  text,
+  onPress,
+  styles,
+  loading,
+  textStyle,
+}) => {
   return (
     <TouchableOpacity
-      className={`mt-[30px] bg-primaryColor w-[100%] 
-      p-[12px] flex flex-row justify-center rounded-[40px]`}
+      className={`w-[100%] 
+      p-[14px] flex flex-row justify-center rounded-[40px]`}
+      style={styles}
       onPress={onPress}
     >
-      <Text
-        className={`text-white text-[14px] font-semibold font-montserratBold`}
-      >
-        {text}
-      </Text>
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        <Text
+          className={`text-white text-[14px] font-semibold font-montserratBold`}
+          style={textStyle}
+        >
+          {text}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };

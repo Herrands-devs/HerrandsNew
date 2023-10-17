@@ -55,22 +55,6 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
     });
   };
 
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     Animated.timing(animation, {
-  //       toValue: 1,
-  //       duration: 300,
-  //       useNativeDriver: false,
-  //     }).start();
-  //   } else {
-  //     Animated.timing(animation, {
-  //       toValue: 0,
-  //       duration: 300,
-  //       useNativeDriver: false,
-  //     }).start();
-  //   }
-  // }, [isOpen, animation]);
-
   useEffect(() => {
     if (isOpen) {
       slideIn();
@@ -78,11 +62,6 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
       slideOut();
     }
   }, [isOpen]);
-
-  // const translateX = animation.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: [-width * 1, 0],
-  // });
 
   const sidebarItems = [
     {
