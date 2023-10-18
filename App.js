@@ -42,6 +42,9 @@ import InProgress from "./screens/Agent/screens/Errands/InProgress";
 import IsCompleted from "./screens/Agent/screens/Errands/isCompleted";
 import CustomerErrandMap from "./screens/customer/Main/CustomerErrandMap";
 import CustomerVirtualProcess from "./screens/customer/Main/CustomerVirtualProcess";
+import ErandCompleteRate from "./screens/customer/Main/ErandCompleteRate";
+import ThankYou from "./screens/customer/Main/ThankYou";
+import PaymentSuccess from "./screens/customer/Main/PaymentSuccess";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -109,6 +112,18 @@ export default function App() {
             name="CustomerCreateErrand"
             component={CustomerCreateErrand}
           />
+
+          <Stack.Screen
+            name="ErrandCompleteRate"
+            component={ErandCompleteRate}
+          />
+          <Stack.Screen name="ThankYouScreen" component={ThankYou} />
+          <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
+
+          {/* Agent Navigation */}
+          <Stack.Screen name="AuthScreen" component={AuthScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
           <Stack.Screen
             name="CustomerEditProfile"
             component={CustomerEditProfile}

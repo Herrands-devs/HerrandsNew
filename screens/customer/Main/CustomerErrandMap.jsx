@@ -16,6 +16,7 @@ import {
   RideDetails,
   RidesModal,
   SearchinAgentModal,
+  TrackErrandModal,
 } from "../../components/common/Modals";
 import Loading from "../../components/common/Loading";
 
@@ -29,6 +30,7 @@ const CustomerErrandMap = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [searchModal, setSearchModal] = useState(false);
   const [agentAcceptedModal, setAgentAcceptedModal] = useState(false);
+  const [trackErrandModal, setTrackErrandModal] = useState(false);
 
   const handleCloseSidebar = () => {
     setIsOpen(false);
@@ -125,6 +127,11 @@ const CustomerErrandMap = ({ navigation }) => {
     }, 3000);
   };
 
+  const trackErrand = () => {
+    setTrackErrandModal(true);
+    setAgentAcceptedModal(false);
+  };
+
   return (
     <View>
       <View className={``} style={{ height: height * 0.8 }}>
@@ -213,6 +220,12 @@ const CustomerErrandMap = ({ navigation }) => {
       <AgentAcceptedModal
         isVisible={agentAcceptedModal}
         closeModal={() => setAgentAcceptedModal(false)}
+        onPress={trackErrand}
+      />
+      <TrackErrandModal
+        isVisible={trackErrandModal}
+        closeModal={() => setTrackErrandModal(false)}
+        navigation={navigation}
       />
     </View>
   );
