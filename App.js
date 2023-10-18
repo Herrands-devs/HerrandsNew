@@ -46,6 +46,9 @@ import CustomerManageCard from "./screens/customer/Main/CustomerManageCard";
 import CustomerCreateErrand from "./screens/customer/Main/CustomerCreateErrand";
 import CustomerErrandMap from "./screens/customer/Main/CustomerErrandMap";
 import CustomerVirtualProcess from "./screens/customer/Main/CustomerVirtualProcess";
+import ErandCompleteRate from "./screens/customer/Main/ErandCompleteRate";
+import ThankYou from "./screens/customer/Main/ThankYou";
+import PaymentSuccess from "./screens/customer/Main/PaymentSuccess";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -114,6 +117,13 @@ export default function App() {
             name="CustomerCreateErrand"
             component={CustomerCreateErrand}
           />
+
+          <Stack.Screen
+            name="ErrandCompleteRate"
+            component={ErandCompleteRate}
+          />
+          <Stack.Screen name="ThankYouScreen" component={ThankYou} />
+          <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
 
           {/* Agent Navigation */}
           <Stack.Screen name="AuthScreen" component={AuthScreen} />

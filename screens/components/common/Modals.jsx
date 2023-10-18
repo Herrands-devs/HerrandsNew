@@ -21,10 +21,18 @@ import { colors } from "../../../themes/colors";
 import { useState } from "react";
 import LocationIcon from "../../../assets/icons/location-icon.png";
 import AddNoteIcon from "../../../assets/icons/add-note.png";
+import DetailsIcon from "../../../assets/icons/details.png";
 import LineLoader from "../../../assets/gifs/line-loader.json";
 import LottieView from "lottie-react-native";
 import HorizontalLoader from "./HorizontalLoader";
 import AgentImage from "../../../assets/agent-image.png";
+import InactiveTrack from "../../../assets/inactive-track.png";
+import OngoingTrack from "../../../assets/ongoing-track.png";
+import CompletedTrack from "../../../assets/completed-track.png";
+import ChatWithAgent from "../../../assets/icons/chat-with-agent.png";
+import { useContext } from "react";
+import { GlobalContext } from "../../../context/context.store";
+import ErrandProgressComp from "./ErrandProgressComp";
 
 export const ResendModal = ({
   isVisible,
@@ -749,14 +757,14 @@ export const AgentAcceptedModal = ({
                       className={`bg-[#ccc] w-[64px] h-[64px] rounded-full justify-center items-center`}
                     >
                       <Image
-                        source={AddNoteIcon}
+                        source={DetailsIcon}
                         className={`w-[24px] h-[24px]`}
                       />
                     </TouchableOpacity>
                     <Text
                       className={`text-center text-[12px] font-montserratSemiBold`}
                     >
-                      Chat
+                      Details
                     </Text>
                   </View>
                 </View>
@@ -765,10 +773,101 @@ export const AgentAcceptedModal = ({
                   <RoundedButton
                     text={"Track my erand"}
                     styles={{ backgroundColor: colors.primaryColor }}
+                    onPress={onPress}
                   />
                 </View>
               </View>
             </View>
+          </Animated.View>
+        </View>
+      </TouchableWithoutFeedback>
+    </Modal>
+  );
+};
+
+export const TrackErrandModal = ({
+  isVisible,
+  closeModal,
+  onPress,
+  openDetails,
+  navigation,
+}) => {
+  const translateY = useRef(new Animated.Value(500)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+  const { errandStates } = useContext(GlobalContext);
+
+  useEffect(() => {
+    if (errandStates.delivered === "completed")
+      navigation.navigate("ErrandCompleteRate");
+  }, [errandStates.delivered]);
+
+  const selectRide = (id) => {
+    setSelectedItem(id);
+  };
+
+  const slideUp = () => {
+    Animated.parallel([
+      Animated.timing(translateY, {
+        toValue: Platform.OS === "android" ? 250 : 300,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(opacity, {
+        toValue: 0.7,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
+
+  const slideDown = () => {
+    Animated.parallel([
+      Animated.timing(translateY, {
+        toValue: 600,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start(() => {
+      closeModal();
+    });
+  };
+
+  useEffect(() => {
+    if (isVisible) {
+      slideUp();
+    } else {
+      slideDown();
+    }
+  }, [isVisible]);
+  return (
+    <Modal
+      transparent={true}
+      visible={isVisible}
+      animationType="none"
+      onRequestClose={slideDown}
+    >
+      <TouchableWithoutFeedback>
+        <View style={styles.ridesOverlay}>
+          <Animated.View
+            style={[
+              styles.ridesModal,
+              {
+                transform: [{ translateY }],
+              },
+            ]}
+          >
+            <View className={`items-center pt-[8px] pb-[22px]`}>
+              <TouchableOpacity
+                className={`w-[78px] h-[10px] bg-[#C6C6C6] rounded-[4px]`}
+              />
+            </View>
+
+            <ErrandProgressComp />
           </Animated.View>
         </View>
       </TouchableWithoutFeedback>
@@ -800,7 +899,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
-    paddingBottom: 50,
+    paddingBottom: 150,
   },
   modalContent: {
     paddingVertical: 10,
