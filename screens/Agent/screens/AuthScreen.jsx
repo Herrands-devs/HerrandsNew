@@ -32,6 +32,7 @@ const AuthScreen = ({
             <SquareButton 
                text={'Sign Up'}
                styles={{ backgroundColor: colors.primaryColor , width : '90%'}}
+               onPress={() => navigation.navigate('SignUpScreen')}
             />
           </View>
       </View>

@@ -40,7 +40,7 @@ export const DropDownPicker = ({
       <View
         onPress={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style} border h-[45px]  -z-1 bg-[#F7F7F7] rounded-[4px] flex flex-row items-center px-2`}
+        className={`${style} border h-[45px]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
         style={[
           isFocused && {
             borderWidth: 2,

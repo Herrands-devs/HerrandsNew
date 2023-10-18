@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import DashboardScreen from './DashboardScreen';
-import ErrandsScreen from './ErrandsScreen';
+import {ErrandsScreen} from './ErrandsScreen';
 import { Image } from 'react-native';
 import { iconsPack } from '../../components/icons';
 import Profilescreen from './ProfileScreen';
@@ -9,7 +9,7 @@ import Profilescreen from './ProfileScreen';
 
 const HomeScreen = () => {
    const Tab = createBottomTabNavigator();
-   const {homeHover,chatIcon ,chatHoverIcon,errandsIcon,earningsIcon,profileIcon} = iconsPack()
+   const {homeIcon,homeHover,chatIcon ,chatHoverIcon,errandsIcon,errandsHoverIcon,earningsIcon,profileIcon} = iconsPack()
    return (
          <Tab.Navigator 
          screenOptions={({ route }) => ({
@@ -17,10 +17,10 @@ const HomeScreen = () => {
               let iconName;
   
                if (route.name === 'Home') {
-                  iconName = focused? homeHover: homeHover;
+                  iconName = focused? homeHover: homeIcon;
                } 
                else if (route.name === 'Errands') {
-                  iconName = focused ? errandsIcon : errandsIcon;
+                  iconName = focused ? errandsHoverIcon : errandsIcon;
                }
                else if (route.name === 'Chats') {
                   iconName = focused ? chatHoverIcon : chatIcon;
