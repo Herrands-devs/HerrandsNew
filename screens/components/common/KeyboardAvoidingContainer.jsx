@@ -12,7 +12,6 @@ const KeyboardAvoidingContainer = ({children , style}) => {
             <ScrollView
                showsVerticalScrollIndicator="false"
                contentContainerStyle={[styles.contentContainer]}
-               className ="h-full"
             >
                {children}
             </ScrollView>

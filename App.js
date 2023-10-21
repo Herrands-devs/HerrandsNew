@@ -119,11 +119,6 @@ export default function App() {
           />
           <Stack.Screen name="ThankYouScreen" component={ThankYou} />
           <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
-
-          {/* Agent Navigation */}
-          <Stack.Screen name="AuthScreen" component={AuthScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
           <Stack.Screen
             name="CustomerEditProfile"
             component={CustomerEditProfile}
