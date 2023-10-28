@@ -1,6 +1,13 @@
 import * as Font from "expo-font";
 import { useEffect, useRef, useState } from "react";
-import { Animated, Button, ScrollView, Text, View } from "react-native";
+import {
+  Animated,
+  Button,
+  ScrollView,
+  StatusBar,
+  Text,
+  View,
+} from "react-native";
 import {
   DisabledRoundedBtn,
   DisabledSquareBtn,
@@ -45,6 +52,7 @@ import CustomerVirtualProcess from "./screens/customer/Main/CustomerVirtualProce
 import ErandCompleteRate from "./screens/customer/Main/ErandCompleteRate";
 import ThankYou from "./screens/customer/Main/ThankYou";
 import PaymentSuccess from "./screens/customer/Main/PaymentSuccess";
+import Navigation from "./Navigation";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -69,75 +77,18 @@ export default function App() {
   }
   return (
     <GlobalProvider>
-      <NavigationContainer>
+      <StatusBar
+        hidden={false}
+        backgroundColor="#0066F5"
+        barStyle="light-content"
+      />
+      {/* <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
           }}
         >
-          <Stack.Screen name="SpinSplash" component={SpinSplash} />
-          <Stack.Screen name="Swapper" component={Swapper} />
           <Stack.Screen name="AgentScreen" component={HomeScreen} />
-          <Stack.Screen name="VideoChoice" component={VideoChoice} />
-          <Stack.Screen
-            name="CreateAccountCustomer"
-            component={CreateAccount}
-          />
-          <Stack.Screen name="SignInPhone" component={SignInPhone} />
-          <Stack.Screen name="SignInEmail" component={SignInEmail} />
-          <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
-          <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
-          <Stack.Screen name="OtpScreen" component={OtpScreen} />
-          <Stack.Screen name="CustomerHome" component={CustomerHome} />
-          <Stack.Screen
-            name="CustomerErrandDetails"
-            component={CustomerErrandDetails}
-          />
-          <Stack.Screen name="CustomerPayments" component={CustomerPayments} />
-          <Stack.Screen name="CustomerAddCard" component={CustomerAddCard} />
-          <Stack.Screen
-            name="CustomerErrandMap"
-            component={CustomerErrandMap}
-          />
-          <Stack.Screen
-            name="CustomerVirtualProcess"
-            component={CustomerVirtualProcess}
-          />
-
-          <Stack.Screen
-            name="CustomerManageCard"
-            component={CustomerManageCard}
-          />
-          <Stack.Screen
-            name="CustomerCreateErrand"
-            component={CustomerCreateErrand}
-          />
-
-          <Stack.Screen
-            name="ErrandCompleteRate"
-            component={ErandCompleteRate}
-          />
-          <Stack.Screen name="ThankYouScreen" component={ThankYou} />
-          <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
-
-          {/* Agent Navigation */}
-          <Stack.Screen name="AuthScreen" component={AuthScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-          <Stack.Screen
-            name="CustomerEditProfile"
-            component={CustomerEditProfile}
-          />
-          <Stack.Screen
-            name="CustomerDeleteAccount"
-            component={CustomerdeleteAccount}
-          />
-          <Stack.Screen
-            name="MyErrandsCustomer"
-            component={MyErrandsCustomer}
-          />
-
-          {/* Agent Navigation */}
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
           <Stack.Screen name="AuthScreen" component={AuthScreen} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
@@ -147,10 +98,10 @@ export default function App() {
           <Stack.Screen name="IsCompleted" component={IsCompleted} />
           <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
           <Stack.Screen name="OtpScreenAgent" component={OtpScreenAgent} />
-          {/* Profile */}
           <Stack.Screen name="EditProfile" component={EditProfile} />
         </Stack.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> */}
+      <Navigation />
     </GlobalProvider>
   );
 }

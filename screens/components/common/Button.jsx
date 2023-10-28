@@ -82,24 +82,18 @@ export const DisabledRoundedBtn = ({ text, styles }) => {
   );
 };
 
-export const LayeredBtn = ({ text, styles, subText, subTextTop, onPress }) => {
+export const LayeredBtn = ({ text, styles, subText, subTextTop, onPress, textClass }) => {
   return (
     <TouchableOpacity
-      className={`p-[12px] flex 
+      className={`py-[21px] flex 
       rounded-[4px] border border-[#99C2FB] w-[45%]`}
       style={styles}
       onPress={onPress}
     >
       <Text
-        className={`text-white text-[14px] font-semibold font-montserratBold`}
+        className={`${textClass} text-[14px] font-semibold font-montserratBold`}
       >
         {text}
-      </Text>
-      <Text
-        className={`text-white text-[8px] font-semibold font-montserratBold`}
-        style={{ marginTop: subTextTop }}
-      >
-        {subText}
       </Text>
     </TouchableOpacity>
   );

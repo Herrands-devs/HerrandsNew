@@ -18,7 +18,6 @@ import BackIcon from "../../../../assets/icons/back-icon.png";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
 
-
 const Swapper = ({ navigation }) => {
   const swiperRef = React.createRef();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -43,45 +42,46 @@ const Swapper = ({ navigation }) => {
   };
 
   const handleGetStarted = async () => {
-    setGetStartedLoading(true);
+    navigation.replace("VideoChoice");
+    // setGetStartedLoading(true);
 
-    const registerForPushNotificationsAsync = async () => {
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
+    // const registerForPushNotificationsAsync = async () => {
+    //   const { status: existingStatus } =
+    //     await Notifications.getPermissionsAsync();
+    //   let finalStatus = existingStatus;
 
-      if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
+    //   if (existingStatus !== "granted") {
+    //     const { status } = await Notifications.requestPermissionsAsync();
+    //     finalStatus = status;
+    //   }
 
-      if (finalStatus !== "granted") {
-        alert("Failed to get push token for push notification!");
-        return;
-      }
-    };
+    //   if (finalStatus !== "granted") {
+    //     alert("Failed to get push token for push notification!");
+    //     return;
+    //   }
+    // };
 
-    registerForPushNotificationsAsync().then(() => {
-      const requestLocationPermission = async () => {
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== "granted") {
-          alert("Permission to access location was denied");
-        }
-      };
+    // registerForPushNotificationsAsync().then(() => {
+    //   const requestLocationPermission = async () => {
+    //     const { status } = await Location.requestForegroundPermissionsAsync();
+    //     if (status !== "granted") {
+    //       alert("Permission to access location was denied");
+    //     }
+    //   };
 
-      requestLocationPermission();
+    //   requestLocationPermission();
 
-      // Access user's location data
-      const getLocation = async () => {
-        const { coords } = await Location.getCurrentPositionAsync({});
-        // console.log("User location:", coords);
-      };
+    //   // Access user's location data
+    //   const getLocation = async () => {
+    //     const { coords } = await Location.getCurrentPositionAsync({});
+    //     // console.log("User location:", coords);
+    //   };
 
-      getLocation().then(() => {
-        setGetStartedLoading(false);
-        navigation.replace("VideoChoice");
-      });
-    });
+    //   getLocation().then(() => {
+    //     setGetStartedLoading(false);
+    //     navigation.replace("VideoChoice");
+    //   });
+    // });
   };
 
   return (

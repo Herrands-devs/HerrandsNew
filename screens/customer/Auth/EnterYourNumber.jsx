@@ -15,6 +15,7 @@ import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 const { width, height } = Dimensions.get("window");
 
 const EnterYourNumber = () => {
+  
   return (
     <SafeAreaComponent>
       <View style={{ height: height * 0.85 }}>

@@ -73,7 +73,7 @@ const CustomerHome = ({ navigation }) => {
       <TouchableOpacity onPress={() => setIsOpen(true)}>
         <Image
           source={Hamburger}
-          className={`w-[24px] h-[24px] absolute top-[60px] left-[30px]`}
+          className={`w-[24px] h-[24px] fixed mt-[60px] ml-[30px]`}
         />
       </TouchableOpacity>
       <Sidebar
