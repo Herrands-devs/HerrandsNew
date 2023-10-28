@@ -6,6 +6,7 @@ import { Image } from 'react-native';
 import { iconsPack } from '../../components/icons';
 import Profilescreen from './ProfileScreen';
 import EarningsScreen from './EarningsScreen';
+import { Platform } from 'react-native';
 
 
 const HomeScreen = () => {
@@ -37,7 +38,7 @@ const HomeScreen = () => {
             },
             tabBarActiveTintColor: '#0066F5',
             tabBarInactiveTintColor: 'gray',
-            tabBarStyle : { height: 100},
+            tabBarStyle : {height : Platform.OS == 'ios' ? 90 : 60 },
             tabBarLabelStyle : {fontSize : 12 , fontWeight: '700'},
             headerShown: false
           })}>

@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   container: {
     width: width,
     display: "flex",
-    gap: "20px",
+    gap: 20,
   },
 });
 

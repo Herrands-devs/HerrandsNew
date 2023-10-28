@@ -83,6 +83,7 @@ export default function App() {
             name="CreateAccountCustomer"
             component={CreateAccount}
           />
+          <Stack.Screen name="AuthScreen" component={AuthScreen} />
           <Stack.Screen name="SignInPhone" component={SignInPhone} />
           <Stack.Screen name="SignInEmail" component={SignInEmail} />
           <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
@@ -134,7 +135,7 @@ export default function App() {
 
           {/* Agent Navigation */}
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="AuthScreen" component={AuthScreen} />
+         
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
           <Stack.Screen name="Support" component={SupportScreen} />

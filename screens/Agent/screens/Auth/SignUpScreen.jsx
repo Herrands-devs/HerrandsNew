@@ -38,8 +38,8 @@ const SignUpScreen = ({ navigation }) => {
         <Text style={{ color: colors.primaryColor }} className="">
           It’s easy, quick and safe!
         </Text>
-        <View className="relative flex flex-col w-full gap-2 items-center">
-          <View className="flex flex-row w-full justify-center m-0 p-0">
+        <View className="relative flex flex-col w-full gap-y-2 items-center">
+          <View className="flex flex-row w-full justify-center">
             <View className="w-[50%]">
               <PrimaryInput
                 style={"w-full"}
@@ -226,15 +226,15 @@ const SignUpScreen = ({ navigation }) => {
           </View>
           <View className="w-full">
             <Text className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular">
-               Please Upload your selected ID
+              Please Upload your selected ID
             </Text>
 
             <View className="w-full mt-3">
-               <UploadInp 
+                <UploadInp 
                   style={"w-full bg-[#ffffff]"}
                   placeHolder={"No files choosen"}
                   disabled={'true'}
-               />
+                />
             </View>
           </View>
           <View className="w-full">
@@ -250,7 +250,6 @@ const SignUpScreen = ({ navigation }) => {
           </View>
           <View
             className={`items-center w-[60%] mt-2`}
-            style={{ height: height * 0.35 }}
           >
             <View
               className={`flex-row flex-wrap justify-center gap-1 items-center  mt-[18px] space-x-1`}
@@ -298,7 +297,7 @@ const styles = StyleSheet.create({
   container: {
     width: width,
     display: "flex",
-    gap: "20px",
+    gap: 20,
   },
 });
 
