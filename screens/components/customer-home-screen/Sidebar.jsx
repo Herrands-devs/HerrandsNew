@@ -14,6 +14,8 @@ import { LayeredBtn, SquareButton } from "../common/Button";
 import { colors } from "../../../themes/colors";
 import { AntDesign } from "@expo/vector-icons";
 import { useRef } from "react";
+import { useContext } from "react";
+import { GlobalContext } from "../../../context/context.store";
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,6 +24,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
   const [logoutModal, setLogoutModal] = useState(false);
   const translateX = useRef(new Animated.Value(-500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
+  const { setIsAuthenticated } = useContext(GlobalContext);
 
   const slideIn = () => {
     Animated.parallel([
@@ -202,7 +205,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate("SignInPhone");
+                        setIsAuthenticated(false);
                         setLogoutModal(false);
                       }}
                     >

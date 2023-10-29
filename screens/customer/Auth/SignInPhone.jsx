@@ -5,10 +5,41 @@ import { Dimensions } from "react-native";
 import { PhoneNumberInput } from "../../components/common/Inputs";
 import { RoundedButton } from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
+import { useState } from "react";
+import axios from "axios";
+import { API_URl } from "../../../config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
 const SignInPhone = ({ navigation }) => {
+  const [phone_number, setPhone_number] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const signinIn = async () => {
+    setLoading(true);
+    const data = { contact: phone_number };
+
+    console.log("hitting endpoint:::", `${API_URl}/accounts/login-with-otp/`);
+
+    axios
+      .post(`${API_URl}/accounts/login-with-otp/`, data)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          setLoading(false);
+          navigation.navigate("OtpScreen", { phone_number: phone_number });
+          console.log(response.data);
+        } else {
+          setLoading(false);
+          console.log("response error:::", response.data);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log("catch error:::", err.message);
+      });
+  };
+
   return (
     <SafeAreaComponent>
       <View style={{ height: height * 0.75 }}>
@@ -31,6 +62,17 @@ const SignInPhone = ({ navigation }) => {
             placeHolder={"Phone number"}
             type={"phone-pad"}
             label={"Phone number"}
+            value={phone_number}
+            onChangeText={(text) => setPhone_number(text)}
+            onBlur={() => {
+              if (phone_number === "") {
+                return;
+              } else if (phone_number.includes("+234")) {
+                return;
+              } else {
+                setPhone_number((prevState) => "+234" + prevState);
+              }
+            }}
           />
         </View>
         <View
@@ -41,11 +83,11 @@ const SignInPhone = ({ navigation }) => {
         >
           <RoundedButton
             text={"Sign in"}
-            onPress={() => navigation.navigate("OtpScreen")}
+            onPress={signinIn}
             styles={{
               backgroundColor: colors.primaryColor,
-              // width: "80%",
             }}
+            loading={loading}
           />
         </View>
       </View>

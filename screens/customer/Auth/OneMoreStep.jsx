@@ -6,15 +6,60 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { PrimaryInput } from "../../components/common/Inputs";
 import { colors } from "../../../themes/colors";
 import { RoundedButton } from "../../components/common/Button";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
+import { RegisterUser } from "../../../api/customer/auth.service";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useContext } from "react";
+import { GlobalContext } from "../../../context/context.store";
+import { API_URl } from "../../../config";
 
 const { width, height } = Dimensions.get("window");
 
-const OneMoreStep = ({ navigation }) => {
+const OneMoreStep = ({ navigation, route }) => {
+  const { phone_number, first_name, last_name } = route.params;
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { setIsNewUser, setIsAuthenticated } = useContext(GlobalContext);
+
+  const registerUser = async () => {
+    setLoading(true);
+    console.log("email:::", email);
+
+    const data = {
+      phone_number: phone_number,
+      email: email,
+      first_name: first_name,
+      last_name: last_name,
+      user_type: "Customer",
+    };
+    console.log(`${API_URl}/accounts/register/`);
+
+    axios
+      .post(`${API_URl}/accounts/register/`, data)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          setLoading(false);
+          console.log(response.data);
+          const userId = response.data.user_id;
+          AsyncStorage.setItem("user_id", userId);
+          setIsNewUser(false);
+          setIsAuthenticated(true);
+        } else {
+          setLoading(false);
+          console.log("response error:::", response.data);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log("catch error:::", err.message);
+      });
+  };
+
   return (
     <SafeAreaComponent>
       <View style={{ height: height * 0.85 }}>
@@ -37,6 +82,8 @@ const OneMoreStep = ({ navigation }) => {
             iconColor={colors.subTitle}
             placeHolder={"Enter your email"}
             type={"email-address"}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
           />
         </View>
         <View
@@ -47,11 +94,12 @@ const OneMoreStep = ({ navigation }) => {
         >
           <RoundedButton
             text={"Let's Rock"}
-            onPress={() => navigation.navigate("OtpScreen")}
+            onPress={registerUser}
             styles={{
               backgroundColor: colors.primaryColor,
               // width: "80%",
             }}
+            loading={loading}
           />
         </View>
       </View>

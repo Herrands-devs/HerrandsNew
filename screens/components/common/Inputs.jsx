@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { Ionicons ,  FontAwesome } from "@expo/vector-icons";
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Image } from "react-native";
-
 
 export const PrimaryInput = ({
   type,
@@ -58,6 +57,7 @@ export const PrimaryInput = ({
             disabled && { backgroundColor: "#C6C6C6", color: "white" },
           ]}
           editable={!disabled}
+          onChangeText={onChangeText}
         />
       </View>
     </View>
@@ -105,6 +105,7 @@ export const RoundedInput = ({
             disabled && { backgroundColor: "#C6C6C6", color: "white" },
           ]}
           editable={!disabled}
+          onChangeText={onChangeText}
         />
       </View>
     </View>
@@ -161,6 +162,7 @@ export const DoubleInput = ({
             disabled && { backgroundColor: "#C6C6C6", color: "white" },
           ]}
           editable={!disabled}
+          onChangeText={onChangeText}
         />
       </View>
     </View>
@@ -225,6 +227,8 @@ export const PhoneNumberInput = ({
           placeholderTextColor="#C6C6C6"
           className="w-[70%] h-full flex justify-center text-[14px] 
           px-2 font-montserratRegular"
+          onChangeText={onChangeText}
+          {...rest}
         />
       </View>
     </View>
@@ -299,18 +303,18 @@ export const UploadInp = ({
   disabled,
   ...rest
 }) => {
-   const [isFocused, setFocused] = useState(false);
+  const [isFocused, setFocused] = useState(false);
   const selectFile = async () => {
     try {
       const res = await DocumentPicker.pick();
-      console.log(res)
+      console.log(res);
     } catch (err) {
-        console.log(err)
+      console.log(err);
     }
-  }
+  };
   return (
     <View className="w-[100%] mb-3">
-    {/* if Icon */}
+      {/* if Icon */}
       <TouchableOpacity
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
@@ -331,9 +335,7 @@ export const UploadInp = ({
       >
         <View className="w-[30%] h-full flex justify-center items-center">
           <View className="bg-[#F1F1F1] h-[35px] flex justify-center items-center p-2 font-medium text-[12px] font-montserratRegular">
-            <Text>
-              Choose files
-            </Text>
+            <Text>Choose files</Text>
           </View>
         </View>
         <TextInput
@@ -347,15 +349,17 @@ export const UploadInp = ({
         />
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 export const CheckBox = ({ label, onPress }) => {
-  const [check , setCheck] = useState(false)
+  const [check, setCheck] = useState(false);
   return (
     <View className="flex flex-row gap-2 mb-6 items-center">
       <TouchableOpacity
-        className={`w-[20px] h-[20px] flex justify-center ${check ? 'bg-[#0066F5] border-[#0066F5]' : 'border-[#D5D7DA]' } items-center border-2`}
+        className={`w-[20px] h-[20px] flex justify-center ${
+          check ? "bg-[#0066F5] border-[#0066F5]" : "border-[#D5D7DA]"
+        } items-center border-2`}
         onPress={() => setCheck(!check)}
       >
         <Ionicons name="checkmark-sharp" size={15} color="white" />

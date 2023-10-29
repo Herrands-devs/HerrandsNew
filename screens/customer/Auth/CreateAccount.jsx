@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import BackIcon from "../../../assets/icons/back-icon-black.png";
 import { PhoneNumberInput, PrimaryInput } from "../../components/common/Inputs";
 import { RoundedButton } from "../../components/common/Button";
@@ -17,6 +17,20 @@ import { colors } from "../../../themes/colors";
 const { width, height } = Dimensions.get("window");
 
 const CreateAccount = ({ navigation }) => {
+  const [values, setValues] = useState({
+    phone_number: "",
+    first_name: "",
+    last_name: "",
+  });
+
+  const continueToNext = () => {
+    navigation.navigate("OneMoreStep", {
+      phone_number: values.phone_number,
+      first_name: values.first_name,
+      last_name: values.last_name,
+    });
+  };
+
   return (
     <SafeAreaComponent>
       <View className={``} style={{ marginBottom: height * 0.0877 }}>
@@ -48,15 +62,35 @@ const CreateAccount = ({ navigation }) => {
               placeHolder={"Phone number"}
               type={"phone-pad"}
               label={"Phone number"}
+              value={values.phone_number}
+              onChangeText={(text) =>
+                setValues({ ...values, phone_number: text })
+              }
+              onBlur={() => {
+                const phoneNumber = values.phone_number;
+                if (values.phone_number === "") {
+                  return;
+                } else if (values.phone_number.includes("+234")) {
+                  return;
+                } else {
+                  setValues({ ...values, phone_number: "+234" + phoneNumber });
+                }
+              }}
             />
             <PrimaryInput
               label={"First name"}
               classes={`my-[22px]`}
               placeHolder={"Enter your first name"}
+              value={values.first_name}
+              onChangeText={(text) =>
+                setValues({ ...values, first_name: text })
+              }
             />
             <PrimaryInput
               label={"Last name"}
               placeHolder={"Enter your last name"}
+              value={values.last_name}
+              onChangeText={(text) => setValues({ ...values, last_name: text })}
             />
           </View>
         </View>
@@ -71,7 +105,7 @@ const CreateAccount = ({ navigation }) => {
       >
         <RoundedButton
           text={"Continue"}
-          onPress={() => navigation.navigate("OneMoreStep")}
+          onPress={continueToNext}
           styles={{
             backgroundColor: colors.primaryColor,
             // width: "80%",

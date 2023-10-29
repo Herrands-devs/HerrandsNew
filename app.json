@@ -1,15 +1,14 @@
 {
   "expo": {
     "name": "Herrand",
-    "slug": "herrand-project-js",
+    "slug": "herrand-time-share",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0066F5"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -26,6 +25,17 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b721965d-b4f1-4af0-9fe9-e065ffe120a1"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b721965d-b4f1-4af0-9fe9-e065ffe120a1"
     }
   }
 }

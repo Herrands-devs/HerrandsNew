@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { Video } from "expo-av";
 import { LayeredBtn } from "../common/Button";
 import { colors } from "../../../themes/colors";
@@ -31,24 +31,30 @@ function VideoChoice({ navigation }) {
         className={`absolute top-0 left-0 w-full h-full bg-[#000000a9] flex-col justify-end`}
       >
         <View
-          className={`flex-row bottom-[100px] justify-evenly`}
+          className={`flex-col items-center bottom-[100px] justify-evenly px-[16px]`}
         >
           <LayeredBtn
-            text={"Become an agent"}
-            subText={"run errands"}
-            styles={{ backgroundColor: "#313943", alignItems: "center" }}
-            subTextTop={8}
-            onPress={() => navigation.navigate('AuthScreen')}
-          />
-          <LayeredBtn
-            text={"Become a customer"}
-            subText={"send errands"}
+            text={"Start as a customer"}
             styles={{
               backgroundColor: colors.primaryColor,
               alignItems: "center",
+              width: "100%",
             }}
             subTextTop={8}
             onPress={() => navigation.navigate("CreateAccountCustomer")}
+            textClass={`text-white`}
+          />
+          <LayeredBtn
+            text={"Join as an agent"}
+            styles={{
+              backgroundColor: "#99C2FB",
+              alignItems: "center",
+              width: "100%",
+              marginTop: 27,
+            }}
+            subTextTop={8}
+            onPress={() => navigation.navigate("AuthScreen")}
+            textClass={`text-black`}
           />
         </View>
       </View>

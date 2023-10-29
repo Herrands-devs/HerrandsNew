@@ -1,9 +1,12 @@
 import React from "react";
 import { View, Image, StyleSheet, Animated, Easing, Text } from "react-native";
 import { colors } from "../../../themes/colors";
+import { useContext } from "react";
+import { GlobalContext } from "../../../context/context.store";
 
 const SpinSplash = ({ navigation }) => {
   const spinValue = new Animated.Value(0);
+  const { isOnBoarded, isAuthenticated } = useContext(GlobalContext);
 
   React.useEffect(() => {
     Animated.loop(
@@ -16,7 +19,15 @@ const SpinSplash = ({ navigation }) => {
     ).start();
 
     const navigateTimeout = setTimeout(() => {
-      navigation.replace("Swapper");
+      if (isOnBoarded) {
+        if (isAuthenticated) {
+          navigation.replace("CustomerHome");
+        } else {
+          navigation.replace("SignInPhone");
+        }
+      } else {
+        navigation.replace("Swapper");
+      }
     }, 5000);
 
     return () => clearTimeout(navigateTimeout);
