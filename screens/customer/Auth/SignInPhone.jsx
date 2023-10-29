@@ -27,7 +27,7 @@ const SignInPhone = ({ navigation }) => {
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           setLoading(false);
-          navigation.navigate("OtpScreen");
+          navigation.navigate("OtpScreen", { phone_number: phone_number });
           console.log(response.data);
         } else {
           setLoading(false);

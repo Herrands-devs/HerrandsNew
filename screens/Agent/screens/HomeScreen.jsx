@@ -5,6 +5,7 @@ import {ErrandsScreen} from './ErrandsScreen';
 import { Image } from 'react-native';
 import { iconsPack } from '../../components/icons';
 import Profilescreen from './ProfileScreen';
+import EarningsScreen from './EarningsScreen';
 
 
 const HomeScreen = () => {
@@ -43,7 +44,7 @@ const HomeScreen = () => {
             <Tab.Screen name="Home"  component={DashboardScreen} />
             <Tab.Screen name="Errands"  component={ErrandsScreen} />
             <Tab.Screen name="Chats"  component={DashboardScreen} />
-            <Tab.Screen name="Earnings"  component={DashboardScreen} />
+            <Tab.Screen name="Earnings"  component={EarningsScreen} options={{ headerShown: false , tabBarStyle : {display : 'none'}}} />
             <Tab.Screen name="Profile"  component={Profilescreen} options={{ headerShown: false , tabBarStyle : {display : 'none'}}}/>
          </Tab.Navigator>
     );

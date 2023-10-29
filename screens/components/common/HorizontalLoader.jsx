@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Animated } from "react-native";
 import { colors } from "../../../themes/colors";
 
-const HorizontalLoader = () => {
+const HorizontalLoader = ({
+  duration
+}) => {
   const progress = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -14,7 +16,7 @@ const HorizontalLoader = () => {
 
     Animated.timing(progress, {
       toValue: 1,
-      duration: 1000,
+      duration: duration,
       useNativeDriver: false,
     }).start(({ finished }) => {
       if (finished) {
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   loaderContainer: {
-    width: "80%",
+    width: "100%",
     height: 5,
     borderRadius: 4,
     backgroundColor: "#99C2FB",

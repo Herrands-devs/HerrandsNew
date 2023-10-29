@@ -16,7 +16,7 @@ import Loading from "../../components/common/Loading";
 
 const { width, height } = Dimensions.get("window");
 
-const OtpScreen = ({ navigation }) => {
+const OtpScreen = ({ navigation, route }) => {
   const [moveup, setMoveup] = useState(false);
   const [countdown, setCountdown] = useState(20);
   const [resend, setResend] = useState(false);
@@ -24,6 +24,7 @@ const OtpScreen = ({ navigation }) => {
   const [otpValues, setOtpValues] = useState(["", "", "", ""]);
   const [loading, setLoading] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const { phone_number } = route.params;
 
   const handleOtpChange = (newValues) => {
     setOtpValues(newValues);
@@ -108,7 +109,7 @@ const OtpScreen = ({ navigation }) => {
             A code was sent to
           </Text>
           <Text className={`text-[16px] font-montserratBold mt-[4px]`}>
-            +234 7020304050
+            {phone_number}
           </Text>
           <TouchableOpacity className={`mt-[4px]`}>
             <Text
