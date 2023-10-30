@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, TouchableOpacity } from 'react-native'
+import { Image, Platform, TouchableOpacity } from 'react-native'
 import { Text, View,ScrollView,useWindowDimensions } from 'react-native'
 import { TabView, TabBar } from 'react-native-tab-view';
 
@@ -90,13 +90,13 @@ export const ErrandsScreen = ({navigation}) => {
   const renderTabBar = props => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: 'white'  , height : 5 , borderTopLeftRadius : '20px' , borderTopRightRadius : '20px'}}
+      indicatorStyle={{ backgroundColor: 'white'  , height : 5}}
       style={{ backgroundColor: '#0066F5'}}
     />
   );  
   return (
      <View className="h-full">
-        <View className="h-[150px] flex justify-end px-3 bg-[#0066F5]">
+        <View className={`${Platform.OS == 'ios' ? 'h-[150px]' : 'h-[130px]'} flex justify-end px-3 bg-[#0066F5]`}>
           <Text className="text-white h-[50px] text-[24px] font-montserratBold">Errands</Text>
         </View>  
         <View className="flex flex-row w-full h-full justify-between">

@@ -90,7 +90,7 @@ export default function App() {
         >
           <Stack.Screen name="AgentScreen" component={HomeScreen} />
           <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="AuthScreen" component={AuthScreen} />
+         
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
           <Stack.Screen name="Support" component={SupportScreen} />

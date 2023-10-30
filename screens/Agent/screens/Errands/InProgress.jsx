@@ -108,7 +108,7 @@ const InProgress = ({navigation}) => {
                </View>
             </View>
          </View>
-         <View className="w-full p-6">
+         <View className="w-full p-6 mb-6">
             <SquareButton
               text="Contact"
               styles={{

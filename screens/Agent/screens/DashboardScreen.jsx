@@ -48,10 +48,9 @@ const DashboardScreen = () => {
                   />
                </MapView>
             </View>
-            <NoOrder />
-
+            {/* <NoOrder /> */}
             {/* <IncomeOrder /> */}
-            {/* <InProgress /> */}
+            <InProgress />
          </View>
       </View>
    )

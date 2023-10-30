@@ -6,6 +6,7 @@ import { iconsPack } from "../../components/icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Switch } from "@rneui/themed";
+import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 const { width } = Dimensions.get("window");
 
 const Profilescreen = ({ navigation }) => {
@@ -23,7 +24,7 @@ const Profilescreen = ({ navigation }) => {
     setChecked(!checked);
   };
   return (
-    <SafeAreaView className="bg-white h-full">
+    <SafeAreaComponent className="bg-white h-full">
       <TouchableOpacity className="p-6 font-montserratRegular flex flex-row items-center gap-5" onPress={() => navigation.goBack()}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={angleLeft} />
@@ -82,8 +83,8 @@ const Profilescreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <View className="border-t w-[90%] flex flex-col  py-4 border-[#F9F9F9]">
-          <View className="flex flex-row justify-between pb-12 items-center w-full">
+        <View className="border-t w-[90%] flex flex-col gap-y-12  py-4 border-[#F9F9F9]">
+          <View className="flex flex-row justify-between items-center w-full">
             <View className="flex flex-row gap-8 items-center">
               <Image source={webIcon} />
               <Text className="text-[18px] font-montserratRegular">
@@ -92,39 +93,27 @@ const Profilescreen = ({ navigation }) => {
             </View>
             <Text className="text-[16px] text-[#C6C6C6]">ENG</Text>
           </View>
-          <View className="flex flex-row justify-between pb-12 items-center w-full">
+          <View className="flex flex-row justify-between items-center w-full">
             <View className="flex flex-row gap-8 items-center">
               <Image source={switchIcon} />
               <Text className="text-[18px] font-montserratRegular">
                 Out of office
               </Text>
             </View>
-            <View style={styles.view}>
-              <Switch
-                value={checked}
-                onValueChange={(value) => setChecked(value)}
-              />
-            </View>
           </View>
 
-          <View className="flex flex-row justify-between pb-12 items-center w-full">
+          <View className="flex flex-row justify-between items-center w-full">
             <View className="flex flex-row gap-8 items-center">
               <Image source={webIcon} />
               <Text className="text-[18px] font-montserratRegular">
                 Notifications
               </Text>
             </View>
-            <View style={styles.view}>
-              <Switch
-                value={checked}
-                onValueChange={(value) => setChecked(value)}
-              />
-            </View>
           </View>
 
           <TouchableOpacity
             onPress={() => navigation.navigate("Support")}
-            className="flex flex-row justify-between pb-12 items-center w-full"
+            className="flex flex-row justify-between items-center w-full"
           >
             <View className="flex flex-row gap-8 items-center">
               <Image source={supportIcon} />
@@ -136,7 +125,7 @@ const Profilescreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity 
-            className="flex flex-row justify-between pb-12 items-center w-full"
+            className="flex flex-row justify-between items-center w-full"
             onPress={() => setLogoutModal(true)}
           >
             <View 
@@ -151,7 +140,7 @@ const Profilescreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            className="flex flex-row justify-between pb-12 items-center w-full"
+            className="flex flex-row justify-between items-center w-full pb-6"
             onPress={() => navigation.navigate("CustomerDeleteAccount")}
           >
             <View className="flex flex-row gap-8 items-center">
@@ -206,7 +195,7 @@ const Profilescreen = ({ navigation }) => {
               </View>
             </Modal>
       </View>
-    </SafeAreaView>
+    </SafeAreaComponent>
   );
 };
 const styles = StyleSheet.create({
@@ -215,7 +204,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "20px",
+    gap: 20,
   },
   badge: {
     position: "absolute",

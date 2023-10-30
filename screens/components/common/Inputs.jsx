@@ -102,7 +102,6 @@ export const RoundedInput = ({
               borderRadius: 100,
               borderColor: "#E9E9E9",
             },
-            disabled && { backgroundColor: "#C6C6C6", color: "white" },
           ]}
           editable={!disabled}
           onChangeText={onChangeText}

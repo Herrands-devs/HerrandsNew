@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
      display : 'flex',
      alignItems : 'center',
      justifyContent : 'center',
-     gap: '20px'
+     gap: 20
    }
 });
 export default SupportScreen

@@ -9,6 +9,7 @@ import Notification from '../../../components/common/Notification'
 import RBSheet from 'react-native-raw-bottom-sheet'
 import { Button } from '@rneui/base'
 import { TouchableOpacity } from 'react-native'
+import { ScrollView } from 'react-native'
 
 
 export const NoOrder = () => {
@@ -40,12 +41,14 @@ export const NoOrder = () => {
                   <RoundedInput
                     style={"w-full"}
                     placeHolder={"Stark Tower"}
+                    disabled={true}
                   />
                </View>
                <View className="w-full">
                   <RoundedInput
                     style={"w-full"}
                     placeHolder={"Stark Tower"}
+                    disabled={true}
                   />
                </View>
             </View>
@@ -58,7 +61,7 @@ export const IncomeOrder = () => {
    const [moveup, setMoveup] = useState(false);
    const [update, setUpdate] = useState(false)
    return (
-      <View className={`absolute z-40 min-h-[280px]  rounded-t-[20px] p-6 bg-[#FFFFFF] w-full bottom-0`}>
+      <View className={`absolute z-40 min-h-[300px] pb-6 rounded-t-[20px] p-6 bg-[#FFFFFF] w-full bottom-0`}>
          <View className="w-full flex p-2 flex-row justify-between items-center">
             <View className="flex flex-row gap-x-5">
                <View className="w-[40px] h-[40px]">
@@ -78,7 +81,7 @@ export const IncomeOrder = () => {
                <Text className="text-[#000E23] text-[20px] font-montserratBold">{formatCurrency("9000")}</Text>
             </View>
          </View>
-         <View className="p-1 flex gap-8 mt-3 border-t border-[#F9F9F9]">
+         <View className="p-1 flex gap-8 mt-1 border-t border-[#F9F9F9]">
             <View className="flex gap-2">
                <Text className="text-[18px] text-[#000E23]">Item’s description</Text>
                <View className="flex flex-row items-center">
@@ -143,7 +146,7 @@ export const IncomeOrder = () => {
 export const InProgress = () => {
    const [update, setUpdate] = useState(false)
    return (
-      <View className={`absolute z-50 min-h-[180px]  rounded-t-[20px] px-6  bg-[#FFFFFF] w-full bottom-0`}  >
+      <View className={`absolute z-50 min-h-[180px] pb-3 rounded-t-[20px] px-6  bg-[#FFFFFF] w-full bottom-0`}  >
          <TouchableOpacity className="w-full flex justify-center items-center py-3 pb-4"  onPress={() => this.RBSheet.open()} >
             <View className="w-[53px] h-[5px] bg-[#C6C6C6]" />
          </TouchableOpacity>
@@ -172,7 +175,7 @@ export const InProgress = () => {
                   <Text className="text-[#000E23] text-[20px] font-montserratBold">{formatCurrency("9000")}</Text>
                </View>
             </View>
-            <View className="p-1 flex gap-8 mt-3 border-t border-[#F9F9F9]">
+            <View className="p-1 flex gap-8 mt-1 border-t border-[#F9F9F9]">
                <View className="flex gap-2">
                   <Text className="text-[18px] text-[#000E23]">Item’s description</Text>
                   <View className="flex flex-row items-center">
@@ -199,7 +202,7 @@ export const InProgress = () => {
             }
           }}
          >
-            <View className="rounded-t-[20px] bg-[#FFFFFF]">
+            <ScrollView className="rounded-t-[20px] pb-2 bg-[#FFFFFF]">
                <View className="w-full flex p-6 flex-row justify-between items-center">
                   <View className="flex flex-row gap-5">
                      <View className="w-[40px] h-[40px]">
@@ -219,74 +222,74 @@ export const InProgress = () => {
                      <Text className="text-[#000E23] text-[20px] font-montserratBold">{formatCurrency("9000")}</Text>
                   </View>
                </View>
-               <View className="p-6 flex gap-8">
-            <View className="flex gap-2">
-               <Text className="text-[18px] text-[#000E23]">Item’s description</Text>
-               <View className="flex flex-row items-center">
-                  <Image source={require('../../../../assets/icons/box.png')} />
-                  <Text className="text-[#000E23] font-montserratRegular ml-2">58 inches smart TV</Text>
-               </View>
-            </View>
-
-            <View className="flex gap-2">
-               <View className="flex justify-between flex-row">
-                  <Text className="text-[18px] text-[#000E23]">Item’s Address</Text>
-                  <Text className="text-[18px] font-montserratRegular text-[#000E23]">25min</Text>
-               </View>
-               <View className="flex flex-row items-center">
-                  <Image source={require('../../../../assets/icons/email.png')} />
-                  <Text className="text-[#000E23] font-montserratRegular ml-2">Lawani st, surulere 101241, Ikeja, Lagos.</Text>
-               </View>
-            </View>
-
-            <View className="flex gap-2">
-               <View className="flex justify-between flex-row">
-                  <Text className="text-[18px] text-[#000E23]">Custodian’s phone</Text>
-               </View>
-               <View className="flex flex-row items-center">
-                  <Image source={require('../../../../assets/icons/phone.png')} />
-                  <Text className="text-[#000E23] font-montserratRegular ml-2">07020304050</Text>
-               </View>
-            </View>
-
-            <View className="flex gap-2">
-               <View className="flex justify-between flex-row">
-                  <Text className="text-[18px] text-[#000E23]">Recipients Address</Text>
-                  <Text className="text-[18px] font-montserratRegular text-[#000E23]">1hr 45min</Text>
-               </View>
-               <View className="flex flex-row items-center">
-                  <Image source={require('../../../../assets/icons/email.png')} />
-                  <Text className="text-[#000E23] font-montserratRegular ml-2">Ibukun St, Yaba 101241, Ikeja, Lagos.</Text>
-               </View>
-            </View>
-
-            <View className="flex gap-2">
-               <View className="flex justify-between flex-row">
-                  <Text className="text-[18px] text-[#000E23]">Recipients Phone</Text>
-               </View>
-               <View className="flex flex-row items-center">
-                  <Image source={require('../../../../assets/icons/phone.png')} />
-                  <Text className="text-[#000E23] font-montserratRegular ml-2">07020304050</Text>
-               </View>
-            </View>
-
-            <View className="flex gap-2">
-               <View className="flex justify-between flex-row">
-                  <Text className="text-[18px] text-[#000E23]">Manage Order</Text>
-               </View>
-               <View className="flex flex-row items-center justify-between">
-                  <View className="flex flex-row items-center">
-                     <Image source={require('../../../../assets/icons/user.png')} />
-                     <Text className="text-[#000E23] font-montserratRegular ml-2">Order Placed</Text>
+               <View className="px-6 flex gap-8">
+                  <View className="flex gap-2">
+                     <Text className="text-[18px] text-[#000E23]">Item’s description</Text>
+                     <View className="flex flex-row items-center">
+                        <Image source={require('../../../../assets/icons/box.png')} />
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">58 inches smart TV</Text>
+                     </View>
                   </View>
-                  <TouchableOpacity 
-                     className="bg-[#0066F5] h-[26px] w-[111px] rounded-full flex justify-center items-center"
-                     onPress={() => setUpdate(true)}
-                  >
-                     <Text className="text-white">Tap to Update</Text>
-                  </TouchableOpacity>
-               </View>
-            </View>
+
+                  <View className="flex gap-2">
+                     <View className="flex justify-between flex-row">
+                        <Text className="text-[18px] text-[#000E23]">Item’s Address</Text>
+                        <Text className="text-[18px] font-montserratRegular text-[#000E23]">25min</Text>
+                     </View>
+                     <View className="flex flex-row items-center">
+                        <Image source={require('../../../../assets/icons/email.png')} />
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">Lawani st, surulere 101241, Ikeja, Lagos.</Text>
+                     </View>
+                  </View>
+
+                  <View className="flex gap-2">
+                     <View className="flex justify-between flex-row">
+                        <Text className="text-[18px] text-[#000E23]">Custodian’s phone</Text>
+                     </View>
+                     <View className="flex flex-row items-center">
+                        <Image source={require('../../../../assets/icons/phone.png')} />
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">07020304050</Text>
+                     </View>
+                  </View>
+
+                  <View className="flex gap-2">
+                     <View className="flex justify-between flex-row">
+                        <Text className="text-[18px] text-[#000E23]">Recipients Address</Text>
+                        <Text className="text-[18px] font-montserratRegular text-[#000E23]">1hr 45min</Text>
+                     </View>
+                     <View className="flex flex-row items-center">
+                        <Image source={require('../../../../assets/icons/email.png')} />
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">Ibukun St, Yaba 101241, Ikeja, Lagos.</Text>
+                     </View>
+                  </View>
+
+                  <View className="flex gap-2">
+                     <View className="flex justify-between flex-row">
+                        <Text className="text-[18px] text-[#000E23]">Recipients Phone</Text>
+                     </View>
+                     <View className="flex flex-row items-center">
+                        <Image source={require('../../../../assets/icons/phone.png')} />
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">07020304050</Text>
+                     </View>
+                  </View>
+
+                  <View className="flex gap-2">
+                     <View className="flex justify-between flex-row">
+                        <Text className="text-[18px] text-[#000E23]">Manage Order</Text>
+                     </View>
+                     <View className="flex flex-row items-center justify-between">
+                        <View className="flex flex-row items-center">
+                           <Image source={require('../../../../assets/icons/user.png')} />
+                           <Text className="text-[#000E23] font-montserratRegular ml-2">Order Placed</Text>
+                        </View>
+                        <TouchableOpacity 
+                           className="bg-[#0066F5] h-[26px] w-[111px] rounded-full flex justify-center items-center"
+                           onPress={() => setUpdate(true)}
+                        >
+                           <Text className="text-white">Tap to Update</Text>
+                        </TouchableOpacity>
+                     </View>
+                  </View>
                </View>
                <Notification 
                   isVisible={update} 
@@ -297,7 +300,7 @@ export const InProgress = () => {
                   image={require('../../../../assets/gifs/question.gif')}
                   onClose={() => setUpdate(false)}
                />
-            </View>
+            </ScrollView>
          </RBSheet>
       </View>
    )
