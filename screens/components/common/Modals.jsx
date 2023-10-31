@@ -33,6 +33,7 @@ export const ResendModal = ({
   closeModal,
   navigation,
   resendAction,
+  contact,
 }) => {
   const translateY = useRef(new Animated.Value(500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
@@ -110,7 +111,7 @@ export const ResendModal = ({
               className={`flex-row items-center w-full justify-between px-[10px] mt-[20px]`}
             >
               <Text className={`tet-[16px] font-montserratBold text-subTitle`}>
-                +234 7020304050
+                {contact}
               </Text>
             </View>
             <TouchableOpacity
@@ -135,8 +136,8 @@ export const ResendModal = ({
             <TouchableOpacity
               className={`flex-row items-center w-full px-[10px] mt-[20px] space-x-2 mb-[11px]`}
               onPress={() => {
-                navigation.navigate("EnterYourNumber");
                 slideDown();
+                navigation.navigate("EnterYourNumber");
               }}
             >
               <Image source={EditNumber} className={`w-[16px] h-[16px]`} />
@@ -862,6 +863,122 @@ export const TrackErrandModal = ({
             </View>
 
             <ErrandProgressComp />
+          </Animated.View>
+        </View>
+      </TouchableWithoutFeedback>
+    </Modal>
+  );
+};
+
+export const SuccessErrorModal = ({
+  isVisible,
+  closeModal,
+  onPress,
+  openDetails,
+  navigation,
+  message,
+  image,
+  title,
+  btnTxet,
+}) => {
+  const translateY = useRef(new Animated.Value(500)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+  const { errandStates } = useContext(GlobalContext);
+
+  const slideUp = () => {
+    Animated.parallel([
+      Animated.timing(translateY, {
+        toValue: Platform.OS === "android" ? 250 : 0,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(opacity, {
+        toValue: 0.7,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
+
+  const slideDown = () => {
+    Animated.parallel([
+      Animated.timing(translateY, {
+        toValue: 600,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start(() => {
+      closeModal();
+    });
+  };
+
+  useEffect(() => {
+    if (isVisible) {
+      slideUp();
+    } else {
+      slideDown();
+    }
+  }, [isVisible]);
+
+  return (
+    <Modal
+      transparent={true}
+      visible={isVisible}
+      animationType="none"
+      onRequestClose={slideDown}
+    >
+      <TouchableWithoutFeedback onPress={slideDown}>
+        <View style={[styles.ridesOverlay, { alignItems: "center" }]}>
+          <Animated.View
+            style={[
+              {
+                transform: [{ translateY }],
+                width: "80%",
+                paddingHorizontal: 16,
+                borderRadius: 12,
+                backgroundColor: "white",
+                paddingVertical: 32,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+              },
+            ]}
+          >
+            <View>
+              <View className={`flex-row justify-center`}>
+                <Image source={image} className={`w-[44px] h-[44px]`} />
+              </View>
+              <Text
+                className={`text-[24px] font-montserratSemiBold text-center mt-[16px]`}
+              >
+                {title}
+              </Text>
+              <View className={`flex-row justify-center mt-[10px]`}>
+                <Text
+                  className={`text-[14px] font-montserratRegular text-center max-w-[90%]`}
+                >
+                  {message}
+                </Text>
+              </View>
+
+              <View className={`mt-[32px]`}>
+                <TouchableOpacity
+                  className={`border border-green flex-row 
+                  justify-center py-[11px] rounded-full`}
+                >
+                  <Text
+                    className={`uppercase text-[16px] font-montserratSemiBold`}
+                  >
+                    {btnTxet}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </Animated.View>
         </View>
       </TouchableWithoutFeedback>

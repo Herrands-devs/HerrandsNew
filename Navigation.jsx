@@ -57,7 +57,7 @@ const Authentication = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="SpinSplash" component={SpinSplash} />
+      {/* <Stack.Screen name="SpinSplash" component={SpinSplash} /> */}
       <Stack.Screen name="SignInPhone" component={SignInPhone} />
       <Stack.Screen name="SignInEmail" component={SignInEmail} />
       <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
@@ -75,7 +75,7 @@ const MainCustomer = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="SpinSplash" component={SpinSplash} />
+      {/* <Stack.Screen name="SpinSplash" component={SpinSplash} /> */}
       <Stack.Screen name="CustomerHome" component={CustomerHome} />
       <Stack.Screen
         name="CustomerErrandDetails"
