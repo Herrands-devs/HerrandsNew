@@ -9,12 +9,18 @@ import { useState } from "react";
 import axios from "axios";
 import { API_URl } from "../../../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SuccessErrorModal } from "../../components/common/Modals";
+import ErrorIcon from "../../../assets/error-message.png";
+import SuccessIcon from "../../../assets/icons/thank-you.png";
 
 const { width, height } = Dimensions.get("window");
 
 const SignInPhone = ({ navigation }) => {
   const [phone_number, setPhone_number] = useState();
   const [loading, setLoading] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(null);
 
   const signinIn = async () => {
     setLoading(true);
@@ -36,7 +42,16 @@ const SignInPhone = ({ navigation }) => {
       })
       .catch((err) => {
         setLoading(false);
-        console.log("catch error:::", err.message);
+        if (err.response) {
+          console.log("Error response data:", err.response.data);
+          setIsModal(true);
+          setMessage(err.response.data.error);
+          setMessageType("error");
+        } else if (err.request) {
+          console.log("No response received:", err.request);
+        } else {
+          console.log("Request error:", err.message);
+        }
       });
   };
 
@@ -107,6 +122,27 @@ const SignInPhone = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <SuccessErrorModal
+        isVisible={isModal}
+        closeModal={() => setIsModal(false)}
+        message={message}
+        image={
+          (messageType !== null && messageType) === "error"
+            ? ErrorIcon
+            : SuccessIcon
+        }
+        title={
+          (messageType !== null && messageType) === "error"
+            ? "Oops!"
+            : "Success!"
+        }
+        btnTxet={
+          (messageType !== null && messageType) === "error"
+            ? "Try again"
+            : "Okay"
+        }
+      />
     </SafeAreaComponent>
   );
 };

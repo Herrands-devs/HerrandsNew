@@ -56,7 +56,13 @@ const OneMoreStep = ({ navigation, route }) => {
       })
       .catch((err) => {
         setLoading(false);
-        console.log("catch error:::", err.message);
+        if (err.response) {
+          console.log("Error response data:", err.response.data);
+        } else if (err.request) {
+          console.log("No response received:", err.request);
+        } else {
+          console.log("Request error:", err.message);
+        }
       });
   };
 

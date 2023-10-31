@@ -13,6 +13,8 @@ import { TouchableOpacity } from "react-native";
 import { OtpInputs } from "../../components/common/Inputs";
 import { ResendModal } from "../../components/common/Modals";
 import Loading from "../../components/common/Loading";
+import { API_URl } from "../../../config";
+import axios from "axios";
 
 const { width, height } = Dimensions.get("window");
 
@@ -42,10 +44,33 @@ const OtpScreen = ({ navigation, route }) => {
   const resendCodeBySms = () => {
     closeModal();
     setLoading(true);
+    const data = { contact: phone_number };
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+    console.log("hitting endpoint:::", `${API_URl}/accounts/login-with-otp/`);
+
+    axios
+      .post(`${API_URl}/accounts/login-with-otp/`, data)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          setLoading(false);
+          console.log(response.data);
+          setCountdown(20);
+          setResend(false);
+        } else {
+          setLoading(false);
+          console.log("response error:::", response.data);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err.response) {
+          console.log("Error response data:", err.response.data);
+        } else if (err.request) {
+          console.log("No response received:", err.request);
+        } else {
+          console.log("Request error:", err.message);
+        }
+      });
   };
 
   const toggleModal = () => {
@@ -111,7 +136,10 @@ const OtpScreen = ({ navigation, route }) => {
           <Text className={`text-[16px] font-montserratBold mt-[4px]`}>
             {phone_number}
           </Text>
-          <TouchableOpacity className={`mt-[4px]`}>
+          <TouchableOpacity
+            className={`mt-[4px]`}
+            onPress={() => navigation.navigate("EnterYourNumber")}
+          >
             <Text
               className={`text-primaryColor text-[14px] font-montserratMedium`}
             >
@@ -165,6 +193,7 @@ const OtpScreen = ({ navigation, route }) => {
           closeModal={closeModal}
           resendAction={resendCodeBySms}
           navigation={navigation}
+          contact={phone_number}
         />
       </SafeAreaComponent>
       {loading && <Loading />}
