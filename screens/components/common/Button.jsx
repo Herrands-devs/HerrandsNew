@@ -69,7 +69,7 @@ export const DisabledSquareBtn = ({ text, styles }) => {
 export const DisabledRoundedBtn = ({ text, styles }) => {
   return (
     <TouchableOpacity
-      className={`mt-[30px] w-[100%] 
+      className={` w-[100%] 
       p-[12px] flex flex-row justify-center rounded-[40px] bg-disabledBtn`}
       style={styles}
     >
@@ -82,7 +82,14 @@ export const DisabledRoundedBtn = ({ text, styles }) => {
   );
 };
 
-export const LayeredBtn = ({ text, styles, subText, subTextTop, onPress, textClass }) => {
+export const LayeredBtn = ({
+  text,
+  styles,
+  subText,
+  subTextTop,
+  onPress,
+  textClass,
+}) => {
   return (
     <TouchableOpacity
       className={`py-[21px] flex 

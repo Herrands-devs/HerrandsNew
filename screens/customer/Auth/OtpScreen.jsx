@@ -7,14 +7,17 @@ import {
   View,
   Keyboard,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import { TouchableOpacity } from "react-native";
 import { OtpInputs } from "../../components/common/Inputs";
-import { ResendModal } from "../../components/common/Modals";
+import { ResendModal, SuccessErrorModal } from "../../components/common/Modals";
 import Loading from "../../components/common/Loading";
 import { API_URl } from "../../../config";
 import axios from "axios";
+import ErrorIcon from "../../../assets/error-message.png";
+import SuccessIcon from "../../../assets/icons/thank-you.png";
+import { GlobalContext } from "../../../context/context.store";
 
 const { width, height } = Dimensions.get("window");
 
@@ -27,6 +30,10 @@ const OtpScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const { phone_number } = route.params;
+  const [isModal, setIsModal] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(null);
+  const { setIsAuthenticated } = useContext(GlobalContext);
 
   const handleOtpChange = (newValues) => {
     setOtpValues(newValues);
@@ -34,11 +41,44 @@ const OtpScreen = ({ navigation, route }) => {
 
   const handleOtpComplete = () => {
     setLoading(true);
+    console.log("Otp:::", otpValues.toString().replace(/,/g, ""));
+    const strippedOtp = otpValues.toString().replace(/,/g, "");
 
-    setTimeout(() => {
-      setLoading(false);
-      navigation.replace("CustomerHome");
-    }, 3000);
+    const data = {
+      contact: phone_number,
+      otp: strippedOtp,
+    };
+
+    console.log("otp data:::", data);
+
+    axios
+      .post(`${API_URl}/accounts/validate-otp/`, data)
+      .then((response) => {
+        if (response.status === 200 || response.status === 201) {
+          setLoading(false);
+          console.log(response.data);
+          setIsAuthenticated(true);
+        } else {
+          setLoading(false);
+          console.log("response error:::", response.data);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err.response) {
+          console.log("Error response data:", err.response.data);
+          setIsModal(true);
+          setMessage(err.response.data.error);
+          setMessageType("error");
+        } else if (err.request) {
+          console.log("No response received:", err.request);
+        } else {
+          console.log("Request error:", err.message);
+        }
+      });
+
+    // setLoading(false);
+    // navigation.replace("CustomerHome");
   };
 
   const resendCodeBySms = () => {
@@ -197,6 +237,26 @@ const OtpScreen = ({ navigation, route }) => {
         />
       </SafeAreaComponent>
       {loading && <Loading />}
+      <SuccessErrorModal
+        isVisible={isModal}
+        closeModal={() => setIsModal(false)}
+        message={message}
+        image={
+          (messageType !== null && messageType) === "error"
+            ? ErrorIcon
+            : SuccessIcon
+        }
+        title={
+          (messageType !== null && messageType) === "error"
+            ? "Oops!"
+            : "Success!"
+        }
+        btnTxet={
+          (messageType !== null && messageType) === "error"
+            ? "Try again"
+            : "Okay"
+        }
+      />
     </>
   );
 };

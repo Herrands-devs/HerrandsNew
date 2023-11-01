@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import CloseIcon from "../../../assets/icons/resend-close.png";
 import { SquareButton } from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
+import { GlobalContext } from "../../../context/context.store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
@@ -42,6 +44,7 @@ const CustomerdeleteAccount = ({ navigation }) => {
         <SquareButton
           text={"Delete account"}
           styles={{ backgroundColor: colors.red }}
+          // onPress={deleteAccount}
         />
       </View>
     </SafeAreaComponent>
