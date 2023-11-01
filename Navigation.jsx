@@ -113,6 +113,7 @@ const MainCustomer = () => {
 
 const Navigation = () => {
   const { isNewUser, isOnBoarded, isAuthenticated } = useContext(GlobalContext);
+ 
   return (
     <NavigationContainer>
       {!isOnBoarded ? (

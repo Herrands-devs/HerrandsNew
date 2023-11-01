@@ -15,6 +15,7 @@ export const GlobalProvider = ({ children }) => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [isOnBoarded, setIsOnboarded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userType, setUserType] = useState("")
 
 
   useEffect(() => {
@@ -55,6 +56,7 @@ export const GlobalProvider = ({ children }) => {
         setIsOnboarded,
         isAuthenticated,
         setIsAuthenticated,
+        setUserType
       }}
     >
       {children}

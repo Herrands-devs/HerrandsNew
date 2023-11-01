@@ -3,7 +3,10 @@ import React from "react";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import { Dimensions } from "react-native";
 import { PhoneNumberInput } from "../../components/common/Inputs";
-import { RoundedButton } from "../../components/common/Button";
+import {
+  DisabledRoundedBtn,
+  RoundedButton,
+} from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
 import { useState } from "react";
 import axios from "axios";
@@ -21,38 +24,45 @@ const SignInPhone = ({ navigation }) => {
   const [isModal, setIsModal] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(null);
+  const [contact, setContact] = useState();
 
   const signinIn = async () => {
     setLoading(true);
-    const data = { contact: phone_number };
+    const data = { contact: contact };
 
     console.log("hitting endpoint:::", `${API_URl}/accounts/login-with-otp/`);
+    console.log("number to send to:::", data);
 
-    axios
-      .post(`${API_URl}/accounts/login-with-otp/`, data)
-      .then((response) => {
-        if (response.status === 200 || response.status === 201) {
+    if (phone_number === undefined || phone_number === "") {
+      setLoading(false);
+      return;
+    } else {
+      axios
+        .post(`${API_URl}/accounts/login-with-otp/`, data)
+        .then((response) => {
+          if (response.status === 200 || response.status === 201) {
+            setLoading(false);
+            navigation.navigate("OtpScreen", { phone_number: contact });
+            console.log(response.data);
+          } else {
+            setLoading(false);
+            console.log("response error:::", response.data);
+          }
+        })
+        .catch((err) => {
           setLoading(false);
-          navigation.navigate("OtpScreen", { phone_number: phone_number });
-          console.log(response.data);
-        } else {
-          setLoading(false);
-          console.log("response error:::", response.data);
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        if (err.response) {
-          console.log("Error response data:", err.response.data);
-          setIsModal(true);
-          setMessage(err.response.data.error);
-          setMessageType("error");
-        } else if (err.request) {
-          console.log("No response received:", err.request);
-        } else {
-          console.log("Request error:", err.message);
-        }
-      });
+          if (err.response) {
+            console.log("Error response data:", err.response.data);
+            setIsModal(true);
+            setMessage(err.response.data.error);
+            setMessageType("error");
+          } else if (err.request) {
+            console.log("No response received:", err.request);
+          } else {
+            console.log("Request error:", err.message);
+          }
+        });
+    }
   };
 
   return (
@@ -85,7 +95,7 @@ const SignInPhone = ({ navigation }) => {
               } else if (phone_number.includes("+234")) {
                 return;
               } else {
-                setPhone_number((prevState) => "+234" + prevState);
+                setContact("+234" + phone_number);
               }
             }}
           />
@@ -96,14 +106,18 @@ const SignInPhone = ({ navigation }) => {
             paddingHorizontal: width * 0.0569,
           }}
         >
-          <RoundedButton
-            text={"Sign in"}
-            onPress={signinIn}
-            styles={{
-              backgroundColor: colors.primaryColor,
-            }}
-            loading={loading}
-          />
+          {phone_number === undefined || phone_number === "" ? (
+            <DisabledRoundedBtn text={"Sign in"} />
+          ) : (
+            <RoundedButton
+              text={"Sign in"}
+              onPress={signinIn}
+              styles={{
+                backgroundColor: colors.primaryColor,
+              }}
+              loading={loading}
+            />
+          )}
         </View>
       </View>
 

@@ -969,7 +969,8 @@ export const SuccessErrorModal = ({
               <View className={`mt-[32px]`}>
                 <TouchableOpacity
                   className={`border border-green flex-row 
-                  justify-center py-[11px] rounded-full`}
+                  justify-center py-[11px] rounded-full w-full`}
+                  onPress={slideDown}
                 >
                   <Text
                     className={`uppercase text-[16px] font-montserratSemiBold`}
