@@ -6,6 +6,11 @@ export const GlobalContext = createContext();
 export const GlobalProvider = ({ children }) => {
   const [cards, setCards] = useState([]);
   const [selectedCategory, setSelectedcategory] = useState("");
+  const [selectedPreference, setSelectedPreference] = useState("");
+  const [seletedState, setSelectedState] = useState("");
+  const [selectFile, setSelectedFile] = useState("");
+  const [hourRate , setHour] = useState("")
+  const [selectedService, setSelectedService] = useState([]);
   const [errandStates, setErrandStates] = useState({
     orderPlaced: "completed",
     wayToPick: "completed",
@@ -15,6 +20,8 @@ export const GlobalProvider = ({ children }) => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [isOnBoarded, setIsOnboarded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isToken , setToken] = useState("")
+  const [isComplete , setIsComplete] = useState()
   const [userType, setUserType] = useState("")
 
 
@@ -28,18 +35,25 @@ export const GlobalProvider = ({ children }) => {
 
   const getUserId = async () => {
     // AsyncStorage.removeItem("user_id");
+    // AsyncStorage.removeItem("token");
     const user_id = await AsyncStorage.getItem("user_id");
+    const userType = await AsyncStorage.getItem("userType");
+    const Token = await AsyncStorage.getItem("token");
+    setToken(Token)
+    setUserType(userType);
     if (user_id !== null) {
       setIsNewUser(false);
-      console.log("asyncStorage:::", user_id);
     } else {
       setIsNewUser(true);
     }
+    console.log("asyncStorage:::", user_id);
+    console.log("asyncStorage:::", userType);
+    console.log("asyncStorage:::", Token);
   };
 
   useEffect(() => {
     getUserId();
-  }, [isNewUser, isAuthenticated]);
+  }, [isNewUser, isAuthenticated, isToken]);
 
   return (
     <GlobalContext.Provider
@@ -56,7 +70,22 @@ export const GlobalProvider = ({ children }) => {
         setIsOnboarded,
         isAuthenticated,
         setIsAuthenticated,
-        setUserType
+        userType,
+        setUserType,
+        selectedPreference,
+        setSelectedPreference,
+        seletedState,
+        setSelectedState,
+        selectedService,
+        setSelectedService,
+        selectFile, 
+        setSelectedFile,
+        isToken,
+        setToken,
+        isComplete, 
+        setIsComplete,
+        hourRate, 
+        setHour
       }}
     >
       {children}

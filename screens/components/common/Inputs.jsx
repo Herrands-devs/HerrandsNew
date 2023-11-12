@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { Platform, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Image } from "react-native";
-
+import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system'
 export const PrimaryInput = ({
   type,
   placeHolder,
@@ -16,6 +17,8 @@ export const PrimaryInput = ({
   disabled,
   classes,
   labelStyle,
+  isError,
+  maxLength,
   ...rest
 }) => {
   const [isFocused, setFocused] = useState(false);
@@ -41,6 +44,7 @@ export const PrimaryInput = ({
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           value={value}
+          maxLength={maxLength}
           placeholder={placeHolder}
           placeholderTextColor="#C6C6C6"
           className="w-full h-full flex justify-center border text-[14px] px-2 font-montserratRegular"
@@ -55,10 +59,16 @@ export const PrimaryInput = ({
               borderColor: "#E9E9E9",
             },
             disabled && { backgroundColor: "#C6C6C6", color: "white" },
+            isError && {
+              borderWidth: 2,
+              borderRadius: 4,
+              borderColor: "red",
+            }
           ]}
           editable={!disabled}
           onChangeText={onChangeText}
         />
+        
       </View>
     </View>
   );
@@ -222,6 +232,7 @@ export const PhoneNumberInput = ({
         <TextInput
           keyboardType={type}
           value={value}
+          maxLength={10}
           placeholder={placeHolder}
           placeholderTextColor="#C6C6C6"
           className="w-[70%] h-full flex justify-center text-[14px] 
@@ -300,17 +311,31 @@ export const UploadInp = ({
   iconSize,
   iconColor,
   disabled,
+  onPress,
+  selectFile, 
+  setSelectedFile,
   ...rest
 }) => {
   const [isFocused, setFocused] = useState(false);
-  const selectFile = async () => {
+  const [fileName , setFileName] = useState("")
+  const handleDocumentSelection = useCallback( async () => {
     try {
-      const res = await DocumentPicker.pick();
-      console.log(res);
+      const response = await DocumentPicker.getDocumentAsync({
+        base64 : true,
+        copyToCacheDirectory : false,
+        type : "image/*"
+      });
+      // console.log(response)
+      const url= response.assets[0]["uri"];
+      const type= response.assets[0]["mimeType"];
+      setFileName(response.assets[0]["name"])
+      const filePath = Platform.OS === 'android' ? url : url.replace("file://" , "");
+      const base64 = await FileSystem.readAsStringAsync(filePath, {encoding : FileSystem?.EncodingType?.Base64})
+      setSelectedFile("data:"+type+";base64,"+base64);
     } catch (err) {
-      console.log(err);
+      console.warn(err);
     }
-  };
+  }, []);
   return (
     <View className="w-[100%] mb-3">
       {/* if Icon */}
@@ -330,7 +355,7 @@ export const UploadInp = ({
             borderColor: "#E9E9E9",
           },
         ]}
-        onPress={selectFile}
+        onPress={handleDocumentSelection}
       >
         <View className="w-[30%] h-full flex justify-center items-center">
           <View className="bg-[#F1F1F1] h-[35px] flex justify-center items-center p-2 font-medium text-[12px] font-montserratRegular">
@@ -340,7 +365,7 @@ export const UploadInp = ({
         <TextInput
           keyboardType={type}
           value={value}
-          placeholder={placeHolder}
+          placeholder={fileName || placeHolder}
           placeholderTextColor="#C6C6C6"
           className="w-[70%] h-full flex justify-center text-[14px] 
           px-2 font-montserratRegular"

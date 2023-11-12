@@ -1,4 +1,4 @@
-import React, {useState } from 'react'
+import React, {useContext, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import { StyleSheet } from 'react-native'
 import MapView, { Circle, Marker } from 'react-native-maps';
@@ -6,16 +6,17 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { Button } from 'react-native'
 import { InProgress, IncomeOrder, NoOrder } from './components/DashboardComponent';
 
-const DashboardScreen = () => {
+
+
+const DashboardScreen = ({navigation}) => {
    const [location, setLocation] = useState(null);
    const [errorMsg, setErrorMsg] = useState(null);
    let text = 'Waiting..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
-   
+   if (errorMsg) {
+      text = errorMsg;
+   } else if (location) {
+      text = JSON.stringify(location);
+   }
    return (
       <View>
          <View className="relative h-full bg-red">

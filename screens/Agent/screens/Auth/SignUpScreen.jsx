@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { iconsPack } from "../../../components/icons";
 import { colors } from "../../../../themes/colors";
 import {
@@ -17,14 +16,111 @@ import {
   PrimaryInput,
   UploadInp,
 } from "../../../components/common/Inputs";
-import { SquareButton } from "../../../components/common/Button";
-import { DropDownPicker } from "../../../components/common/Dropdown";
+import { DisabledSquareBtn, SquareButton } from "../../../components/common/Button";
+import { DropDownPicker, DropDownPickerMultiple } from "../../../components/common/Dropdown";
 import KeyboardAvoidingContainer from "../../../components/common/KeyboardAvoidingContainer";
+import axios from "axios";
+import { API_URl } from "../../../../config";
+import { GlobalContext } from "../../../../context/context.store";
+import isEmpty from "../../../components/isEmpty";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SuccessErrorModal } from "../../../components/common/Modals";
+import Loading from "../../../components/common/Loading";
+import ErrorIcon from "../../../../assets/error-message.png";
+import SuccessIcon from "../../../../assets/icons/thank-you.png";
 const { width, height } = Dimensions.get("window");
 
 const SignUpScreen = ({ navigation }) => {
   const { angleLeft } = iconsPack();
+  const [preferences, setPreferences] = useState([])
+  const [services, setServices] = useState([])
+  const [loading, setLoading] = useState(false);
+  const [isError, setError] = useState(false);
+  const { selectedService, setSelectedService  } = useContext(GlobalContext);
+  const { selectedPreference, setSelectedPreference  } = useContext(GlobalContext);
+  const { seletedState, setSelectedState  } = useContext(GlobalContext);
+  const { selectFile, setSelectedFile  } = useContext(GlobalContext);
+  const [isModal, setIsModal] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(null);
+
+  const [tempPhone , setPhone] = useState("")
+  const [user, setUser] = useState({ 
+    email: "",
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    user_type: "Agent"
+  });
+
+  console.log(user.phone_number)
+  useEffect(() => {
+    axios
+      .get(`${API_URl}/accounts/preferences`)
+      .then((response) => {
+        setPreferences(response.data)
+      })
+  },[API_URl])
+  useEffect(() => {
+    axios
+      .get(`${API_URl}/accounts/services`)
+      .then((response) => {
+        setServices(response.data)
+      })
+  },[API_URl])
+  // Process the SignUp 
+  const data = {
+    user : user,
+    services : selectedService,
+    preference : selectedPreference,
+    id_type: 2,
+    state : seletedState,
+    id_file: selectFile
+  }
+  useEffect(() => {
+    if(!isEmpty(user.email) && !isEmpty(user.first_name) &&!isEmpty(user.last_name) && !isEmpty(user.phone_number) && !isEmpty(data.services) && !isEmpty(data.preference) && !isEmpty(data.id_type) && !isEmpty(data.id_file) && !isEmpty(data.state)) {
+      setError(true)
+      return;
+    } else {
+      setError(false)
+    }
+  })
+  const handleSubmit = () => {
+    setLoading(true);
+    axios
+    .post(`${API_URl}/accounts/register/agent/` , data)
+    .then((response) => {
+      setError(true)
+      setLoading(false)
+      if (response.status === 200 || response.status === 201) {
+        const userId = response.data.user.id;
+        AsyncStorage.setItem("user_id", userId);
+        navigation.navigate("OtpScreenAgent" , {phone_number : user.phone_number});
+      } else {
+        setLoading(false);
+        console.log("response error:::", response.data);
+      }
+    })
+    .catch((err) => {
+      setLoading(false);
+      setError(false)
+      if (err.response) {
+        console.log("Error response data:", err.response.data);
+        console.log("Error response data:", err.response.data);
+        if(!isEmpty(err.response.data.user.phone_number) || !isEmpty(err.response.data.user.email) || !isEmpty(err.response.data.user.id_file)) {
+          setIsModal(true);
+          setMessage(err.response.data.user.phone_number || err.response.data.user.email || err.response.data.user.id_file || err.response.data.id_type || err.response.data.user.first_name);
+          setMessageType("error");
+        }
+      } else if (err.request) {
+        console.log("No response received:", err.request);
+      } else {
+        console.log("Request error:", err.message);
+      }
+    });
+  }
   return (
+  <>
     <KeyboardAvoidingContainer>
       <View className="p-4 font-montserratRegular flex flex-row items-center gap-2">
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -45,6 +141,11 @@ const SignUpScreen = ({ navigation }) => {
                 style={"w-full"}
                 label={"First Name"}
                 placeHolder={"John"}
+                value={user.first_name}
+                onChangeText={(text) =>
+                  setUser({ ...user, first_name:  text })
+                }
+
               />
             </View>
             <View className="w-[50%]">
@@ -52,6 +153,10 @@ const SignUpScreen = ({ navigation }) => {
                 style={"w-full"}
                 label={"Last Name"}
                 placeHolder={"Doe"}
+                value={user.last_name}
+                onChangeText={(text) =>
+                  setUser({ ...user, last_name:  text })
+                }
               />
             </View>
           </View>
@@ -60,6 +165,10 @@ const SignUpScreen = ({ navigation }) => {
               style={"w-full mb-4"}
               label={"Email Address"}
               placeHolder={"JohnDoe@gmail.com"}
+              value={user.email}
+              onChangeText={(text) =>
+                setUser({ ...user, email:  text })
+              }
             />
           </View>
           <View className="flex w-full">
@@ -68,6 +177,20 @@ const SignUpScreen = ({ navigation }) => {
               type={"phone-pad"}
               label={"Mobile Number"}
               placeHolder={"8045324621"}
+              value={tempPhone}
+              onChangeText={(text) =>
+                setPhone(text) || setUser({ ...user, phone_number: "+234" + text })
+              }
+              onBlur={() => {
+                const phoneNumber = user.phone_number;
+                if (user.phone_number === "") {
+                  return;
+                } else if (user.phone_number.includes("+234")) {
+                  return;
+                } else {
+                  setUser({ ...user, phone_number: "+234" + tempPhone });
+                }
+              }}
             />
           </View>
           <View className="w-full z-30">
@@ -75,140 +198,70 @@ const SignUpScreen = ({ navigation }) => {
               style={"w-full"}
               placeHolder={"Select"}
               defaultOption={"Please Select"}
-              label={"Where are you located ?*"}
+              label={"Where are you located ?"}
+              selectState={seletedState}
+              setSelectedState={setSelectedState}
               options={[
-                { label: "Abia" },
-                { label: "Adamawa" },
-                { label: "Akwa Ibom" },
-                { label: "Anambra" },
-                { label: "Bauchi" },
-                { label: "Bayelsa" },
-                { label: "Benue" },
-                { label: "Borno" },
-                { label: "Cross River" },
-                { label: "Delta" },
-                { label: "Ebonyi" },
-                { label: "Edo" },
-                { label: "Ekiti" },
-                { label: "Enugu" },
-                { label: "FCT - Abuja" },
-                { label: "Gombe" },
-                { label: "Imo" },
-                { label: "Jigawa" },
-                { label: "Kaduna" },
-                { label: "Kano" },
-                { label: "Katsina" },
-                { label: "Kebbi" },
-                { label: "Kogi" },
-                { label: "Kwara" },
-                { label: "Lagos" },
-                { label: "Nasarawa" },
-                { label: "Niger" },
-                { label: "Ogun" },
-                { label: "Ondo" },
-                { label: "Osun" },
-                { label: "Oyo" },
-                { label: "Plateau" },
-                { label: "Rivers" },
-                { label: "Sokoto" },
-                { label: "Taraba" },
-                { label: "Yobe" },
-                { label: "Zamfara" },
+                { title: "Abia" },
+                { title: "Adamawa" },
+                { title: "Akwa Ibom" },
+                { title: "Anambra" },
+                { title: "Bauchi" },
+                { title: "Bayelsa" },
+                { title: "Benue" },
+                { title: "Borno" },
+                { title: "Cross River" },
+                { title: "Delta" },
+                { title: "Ebonyi" },
+                { title: "Edo" },
+                { title: "Ekiti" },
+                { title: "Enugu" },
+                { title: "FCT - Abuja" },
+                { title: "Gombe" },
+                { title: "Imo" },
+                { title: "Jigawa" },
+                { title: "Kaduna" },
+                { title: "Kano" },
+                { title: "Katsina" },
+                { title: "Kebbi" },
+                { title: "Kogi" },
+                { title: "Kwara" },
+                { title: "Lagos" },
+                { title: "Nasarawa" },
+                { title: "Niger" },
+                { title: "Ogun" },
+                { title: "Ondo" },
+                { title: "Osun" },
+                { title: "Oyo" },
+                { title: "Plateau" },
+                { title: "Rivers" },
+                { title: "Sokoto" },
+                { title: "Taraba" },
+                { title: "Yobe" },
+                { title: "Zamfara" },
               ]}
             />
           </View>
           <View className="w-full z-20">
             <DropDownPicker
-              style={"w-full"}
+              style={"w-full text-black"}
               placeHolder={"Select"}
               defaultOption={"Please Select"}
-              label={"Where are you located ?*"}
-              options={[
-                { label: "Abia" },
-                { label: "Adamawa" },
-                { label: "Akwa Ibom" },
-                { label: "Anambra" },
-                { label: "Bauchi" },
-                { label: "Bayelsa" },
-                { label: "Benue" },
-                { label: "Borno" },
-                { label: "Cross River" },
-                { label: "Delta" },
-                { label: "Ebonyi" },
-                { label: "Edo" },
-                { label: "Ekiti" },
-                { label: "Enugu" },
-                { label: "FCT - Abuja" },
-                { label: "Gombe" },
-                { label: "Imo" },
-                { label: "Jigawa" },
-                { label: "Kaduna" },
-                { label: "Kano" },
-                { label: "Katsina" },
-                { label: "Kebbi" },
-                { label: "Kogi" },
-                { label: "Kwara" },
-                { label: "Lagos" },
-                { label: "Nasarawa" },
-                { label: "Niger" },
-                { label: "Ogun" },
-                { label: "Ondo" },
-                { label: "Osun" },
-                { label: "Oyo" },
-                { label: "Plateau" },
-                { label: "Rivers" },
-                { label: "Sokoto" },
-                { label: "Taraba" },
-                { label: "Yobe" },
-                { label: "Zamfara" },
-              ]}
+              label={"Which of this applies to you ?  "}
+              options={preferences}
+              selectState={selectedPreference}
+              setSelectedState={setSelectedPreference}
             />
           </View>
           <View className="w-full z-10">
-            <DropDownPicker
+            <DropDownPickerMultiple
               style={"w-full"}
               placeHolder={"Select"}
-              defaultOption={"Please Select"}
-              label={"Where are you located ?*"}
-              options={[
-                { label: "Abia" },
-                { label: "Adamawa" },
-                { label: "Akwa Ibom" },
-                { label: "Anambra" },
-                { label: "Bauchi" },
-                { label: "Bayelsa" },
-                { label: "Benue" },
-                { label: "Borno" },
-                { label: "Cross River" },
-                { label: "Delta" },
-                { label: "Ebonyi" },
-                { label: "Edo" },
-                { label: "Ekiti" },
-                { label: "Enugu" },
-                { label: "FCT - Abuja" },
-                { label: "Gombe" },
-                { label: "Imo" },
-                { label: "Jigawa" },
-                { label: "Kaduna" },
-                { label: "Kano" },
-                { label: "Katsina" },
-                { label: "Kebbi" },
-                { label: "Kogi" },
-                { label: "Kwara" },
-                { label: "Lagos" },
-                { label: "Nasarawa" },
-                { label: "Niger" },
-                { label: "Ogun" },
-                { label: "Ondo" },
-                { label: "Osun" },
-                { label: "Oyo" },
-                { label: "Plateau" },
-                { label: "Rivers" },
-                { label: "Sokoto" },
-                { label: "Taraba" },
-                { label: "Yobe" },
-                { label: "Zamfara" },
-              ]}
+              defaultOption={"Please select as many as you can"}
+              label={"Which of these can you do ?  "}
+              options={services}
+              selectState={selectedService}
+              setSelectedState={setSelectedService}
             />
           </View>
           <View className="w-full">
@@ -234,10 +287,13 @@ const SignUpScreen = ({ navigation }) => {
                   style={"w-full bg-[#ffffff]"}
                   placeHolder={"No files choosen"}
                   disabled={'true'}
+                  selectFile={selectFile}
+                  setSelectedFile={setSelectedFile}
                 />
             </View>
           </View>
           <View className="w-full">
+            {isError ?
             <SquareButton
               text="Sign Up"
               styles={{
@@ -245,8 +301,14 @@ const SignUpScreen = ({ navigation }) => {
                 width: "100%",
                 marginTop: 20,
               }}
-              onPress={() => navigation.navigate("CompleteScreen")}
+              loading={loading}
+              onPress={handleSubmit}
             />
+            :
+            <DisabledSquareBtn
+              text="Sign Up"
+            />
+            }
           </View>
           <View
             className={`items-center w-[60%] mt-2`}
@@ -275,7 +337,7 @@ const SignUpScreen = ({ navigation }) => {
               <TouchableOpacity>
                 <Text
                   className={`text-[14px] font-montserratSemiBold text-primaryColor`}
-                  onPress={() => navigation.navigate("SignInEmail")}
+                  
                 >
                   privacy policy
                 </Text>
@@ -290,6 +352,28 @@ const SignUpScreen = ({ navigation }) => {
         </View>
       </View>
     </KeyboardAvoidingContainer>
+    {loading && <Loading />}
+    <SuccessErrorModal
+      isVisible={isModal}
+      closeModal={() => setIsModal(false)}
+      message={message}
+      image={
+        (messageType !== null && messageType) === "error"
+          ? ErrorIcon
+          : SuccessIcon
+      }
+      title={
+        (messageType !== null && messageType) === "error"
+          ? "Oops!"
+          : "Success!"
+      }
+      btnTxet={
+        (messageType !== null && messageType) === "error"
+          ? "Try again"
+          : "Okay"
+      }
+    />
+  </>
   );
 };
 

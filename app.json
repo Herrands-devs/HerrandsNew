@@ -10,6 +10,14 @@
       "image": "./assets/splash.png",
       "backgroundColor": "#0066F5"
     },
+    "plugins": [
+      [
+        "expo-document-picker",
+        {
+          "iCloudContainerEnvironment": "Development"
+        }
+      ]
+    ],
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -27,10 +35,9 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "eas": {
-        "projectId": "b721965d-b4f1-4af0-9fe9-e065ffe120a1"
-      }
+      
     },
+    
     "runtimeVersion": {
       "policy": "appVersion"
     },
