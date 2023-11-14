@@ -16,6 +16,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useRef } from "react";
 import { useContext } from "react";
 import { GlobalContext } from "../../../context/context.store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
@@ -24,7 +25,20 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
   const [logoutModal, setLogoutModal] = useState(false);
   const translateX = useRef(new Animated.Value(-500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
-  const { setIsAuthenticated } = useContext(GlobalContext);
+  const { setIsAuthenticated, setToken } = useContext(GlobalContext);
+  const [userData, setUserData] = useState();
+
+  useEffect(() => {
+    (async () => {
+      const userData = await AsyncStorage.getItem("user_data");
+
+      if (userData !== null) {
+        setUserData(JSON.parse(userData));
+      } else {
+        console.log("There's no user data yet!!");
+      }
+    })();
+  }, []);
 
   const slideIn = () => {
     Animated.parallel([
@@ -123,7 +137,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
               />
               <View className={`space-y-1`}>
                 <Text className={`text-sidebarText font-montserratBold`}>
-                  John doe
+                  {userData?.first_name} {userData?.last_name}
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
@@ -163,17 +177,27 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
             </View>
 
             <View
-              className={`flex-row w-full justify-center bottom-[30px] absolute px-[5px]`}
+              className={`flex-row w-full justify-center bottom-[30px] absolute px-[16px]`}
             >
-              <LayeredBtn
-                text={"Become an agent"}
-                subText={"Get paid for your time"}
-                styles={{
+              <TouchableOpacity
+                style={{
                   backgroundColor: colors.primaryColor,
-                  justifyContent: "flex-start",
                   width: "100%",
+                  padding: 10,
+                  borderRadius: 4,
                 }}
-              />
+              >
+                <Text
+                  className={`text-white font-montserratSemiBold text-[14px]`}
+                >
+                  Become an agent
+                </Text>
+                <Text
+                  className={`text-white font-montserratRegular text-[8px] mt-[2px]`}
+                >
+                  Get paid for your time
+                </Text>
+              </TouchableOpacity>
             </View>
 
             <Modal
@@ -207,6 +231,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
                       onPress={() => {
                         setIsAuthenticated(false);
                         setLogoutModal(false);
+                        AsyncStorage.removeItem("token");
                       }}
                     >
                       <Text

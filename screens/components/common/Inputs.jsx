@@ -229,6 +229,7 @@ export const PhoneNumberInput = ({
           px-2 font-montserratRegular"
           onChangeText={onChangeText}
           {...rest}
+          editable={disabled}
         />
       </View>
     </View>

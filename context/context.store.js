@@ -15,16 +15,20 @@ export const GlobalProvider = ({ children }) => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [isOnBoarded, setIsOnboarded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userType, setUserType] = useState("")
+  const [token, setToken] = useState("");
+  const [userType, setUserType] = useState("");
+  const [itemAddress, setItemAddress] = useState();
+  const [recipientAddress, setRecipientAddress] = useState();
+  const [categoryId, setCategoryId] = useState();
+  const [createErrandSent, setCreatErrandSent] = useState(false);
 
-
-  useEffect(() => {
-    if (isNewUser) {
-      setIsOnboarded(false);
-    } else {
-      setIsOnboarded(true);
-    }
-  }, [isNewUser]);
+  // useEffect(() => {
+  //   if (isNewUser) {
+  //     setIsOnboarded(false);
+  //   } else {
+  //     setIsOnboarded(true);
+  //   }
+  // }, [isNewUser]);
 
   const getUserId = async () => {
     // AsyncStorage.removeItem("user_id");
@@ -34,12 +38,30 @@ export const GlobalProvider = ({ children }) => {
       console.log("asyncStorage:::", user_id);
     } else {
       setIsNewUser(true);
+      console.log("There's no user id:::");
+    }
+  };
+
+  const getToken = async () => {
+    const token = await AsyncStorage.getItem("token");
+
+    if (token !== null) {
+      setToken(false);
+      setIsAuthenticated(true);
+      // console.log("asyncStorage token:::", token);
+    } else {
+      setToken(true);
+      // setIsAuthenticated(false);
     }
   };
 
   useEffect(() => {
+    getToken();
+  }, [token]);
+
+  useEffect(() => {
     getUserId();
-  }, [isNewUser, isAuthenticated]);
+  }, []);
 
   return (
     <GlobalContext.Provider
@@ -56,7 +78,17 @@ export const GlobalProvider = ({ children }) => {
         setIsOnboarded,
         isAuthenticated,
         setIsAuthenticated,
-        setUserType
+        setUserType,
+        token,
+        setToken,
+        itemAddress,
+        setItemAddress,
+        recipientAddress,
+        setRecipientAddress,
+        categoryId,
+        setCategoryId,
+        createErrandSent,
+        setCreatErrandSent,
       }}
     >
       {children}

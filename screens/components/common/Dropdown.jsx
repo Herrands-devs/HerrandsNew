@@ -25,7 +25,7 @@ export const DropDownPicker = ({
   const [isFocused, setFocused] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [value, setValue] = useState("");
-  const { setSelectedcategory } = useContext(GlobalContext);
+  const { setSelectedcategory, setCategoryId } = useContext(GlobalContext);
 
   return (
     <View className="relative w-[100%] mb-6" ref={viewRef}>
@@ -85,17 +85,18 @@ export const DropDownPicker = ({
       {isActive && (
         <View className="absolute top-[100%] w-full">
           <ScrollView className="w-full h-[150px] z-[100]  border border-[#c4c4c463] rounded-b-sm px-1 py-3 bg-white">
-            {options.map((option, index) => (
+            {options?.map((option, index) => (
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  setValue(option.label);
+                  setValue(option.name);
                   setIsActive(false);
-                  setSelectedcategory(option.value);
+                  setSelectedcategory(option.name);
+                  setCategoryId(option.id);
                 }}
                 className={`mb-[10px]`}
               >
-                <Text className="p-2 text-[#6B7C97]">{option.value}</Text>
+                <Text className="p-2 text-[#6B7C97]">{option.name}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>

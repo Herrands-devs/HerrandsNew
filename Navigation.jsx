@@ -27,6 +27,7 @@ import MyErrandsCustomer from "./screens/customer/Main/MyErrandsCustomer";
 import { NavigationContainer } from "@react-navigation/native";
 import { useContext } from "react";
 import { GlobalContext } from "./context/context.store";
+import SelectAddress from "./screens/customer/Main/SelectAddress";
 
 const Stack = createNativeStackNavigator();
 
@@ -107,16 +108,17 @@ const MainCustomer = () => {
         component={CustomerdeleteAccount}
       />
       <Stack.Screen name="MyErrandsCustomer" component={MyErrandsCustomer} />
+      <Stack.Screen name="SelectAddress" component={SelectAddress} />
     </Stack.Navigator>
   );
 };
 
 const Navigation = () => {
   const { isNewUser, isOnBoarded, isAuthenticated } = useContext(GlobalContext);
- 
+
   return (
     <NavigationContainer>
-      {!isOnBoarded ? (
+      {isNewUser ? (
         <Onboarding />
       ) : isAuthenticated ? (
         <MainCustomer />

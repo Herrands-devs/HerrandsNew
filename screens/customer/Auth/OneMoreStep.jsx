@@ -17,6 +17,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext } from "react";
 import { GlobalContext } from "../../../context/context.store";
 import { API_URl } from "../../../config";
+import { SuccessErrorModal } from "../../components/common/Modals";
+import ErrorIcon from "../../../assets/error-message.png";
+import SuccessIcon from "../../../assets/icons/thank-you.png";
 
 const { width, height } = Dimensions.get("window");
 
@@ -25,6 +28,9 @@ const OneMoreStep = ({ navigation, route }) => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const { setIsNewUser, setIsAuthenticated } = useContext(GlobalContext);
+  const [isModal, setIsModal] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(null);
 
   const registerUser = async () => {
     setLoading(true);
@@ -45,8 +51,9 @@ const OneMoreStep = ({ navigation, route }) => {
         if (response.status === 200 || response.status === 201) {
           setLoading(false);
           console.log(response.data);
-          const userId = response.data.user_id;
+          const userId = response.data.user.id;
           AsyncStorage.setItem("user_id", userId);
+          AsyncStorage.setItem("user_data", JSON.stringify(response.data.user));
           setIsNewUser(false);
           setIsAuthenticated(true);
         } else {
@@ -58,8 +65,21 @@ const OneMoreStep = ({ navigation, route }) => {
         setLoading(false);
         if (err.response) {
           console.log("Error response data:", err.response.data);
+          if (err.response.data.phone_number) {
+            setIsModal(true);
+            setMessage(err.response.data.phone_number);
+            setMessageType("error");
+          }
+          if (err.response.data.email) {
+            setIsModal(true);
+            setMessage(err.response.data.email);
+            setMessageType("error");
+          }
         } else if (err.request) {
           console.log("No response received:", err.request);
+          setIsModal(true);
+          setMessage("Server downtime");
+          setMessageType("error");
         } else {
           console.log("Request error:", err.message);
         }
@@ -139,6 +159,27 @@ const OneMoreStep = ({ navigation, route }) => {
           </Text>
         </View>
       </View>
+
+      <SuccessErrorModal
+        isVisible={isModal}
+        closeModal={() => setIsModal(false)}
+        message={message}
+        image={
+          (messageType !== null && messageType) === "error"
+            ? ErrorIcon
+            : SuccessIcon
+        }
+        title={
+          (messageType !== null && messageType) === "error"
+            ? "Oops!"
+            : "Success!"
+        }
+        btnTxet={
+          (messageType !== null && messageType) === "error"
+            ? "Try again"
+            : "Okay"
+        }
+      />
     </SafeAreaComponent>
   );
 };

@@ -27,6 +27,10 @@ import AgentImage from "../../../assets/agent-image.png";
 import { useContext } from "react";
 import { GlobalContext } from "../../../context/context.store";
 import ErrandProgressComp from "./ErrandProgressComp";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+
+import { GOOGLE_MAP_APIKEY } from "@env";
+import { Keyboard } from "react-native";
 
 export const ResendModal = ({
   isVisible,
@@ -998,6 +1002,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
     justifyContent: "center",
+    zIndex: 10,
     // alignItems: "center",
   },
   modal: {
