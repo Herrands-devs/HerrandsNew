@@ -56,13 +56,16 @@ const OtpScreenAgent = ({ navigation, route }) => {
     axios
       .post(`${API_URl}/accounts/validate-otp/`, data)
       .then((response) => {
+        console.log(response.status)
         if (response.status === 200 || response.status === 201) {
-          setLoading(false);
-          console.log(response.data.token)
+          console.log(response.data)
+          const userId = response.data.user.id;
+          AsyncStorage.setItem("user_id", userId);
           AsyncStorage.setItem("token", response.data.token);
-          setToken(token)
+          setToken(response.data.token)
           const isComplete = response.data.user.account_completed
           if(isComplete) {
+            setLoading(false);
             navigation.navigate('HomeScreen')
           } else {
             navigation.navigate('CompleteScreen')

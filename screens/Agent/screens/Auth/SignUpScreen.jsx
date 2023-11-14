@@ -53,7 +53,7 @@ const SignUpScreen = ({ navigation }) => {
     user_type: "Agent"
   });
 
-  console.log(user.phone_number)
+  
   useEffect(() => {
     axios
       .get(`${API_URl}/accounts/preferences`)
@@ -68,6 +68,8 @@ const SignUpScreen = ({ navigation }) => {
         setServices(response.data)
       })
   },[API_URl])
+
+
   // Process the SignUp 
   const data = {
     user : user,
@@ -77,6 +79,8 @@ const SignUpScreen = ({ navigation }) => {
     state : seletedState,
     id_file: selectFile
   }
+
+
   useEffect(() => {
     if(!isEmpty(user.email) && !isEmpty(user.first_name) &&!isEmpty(user.last_name) && !isEmpty(user.phone_number) && !isEmpty(data.services) && !isEmpty(data.preference) && !isEmpty(data.id_type) && !isEmpty(data.id_file) && !isEmpty(data.state)) {
       setError(true)
@@ -85,6 +89,8 @@ const SignUpScreen = ({ navigation }) => {
       setError(false)
     }
   })
+
+
   const handleSubmit = () => {
     setLoading(true);
     axios
@@ -95,7 +101,7 @@ const SignUpScreen = ({ navigation }) => {
       if (response.status === 200 || response.status === 201) {
         const userId = response.data.user.id;
         AsyncStorage.setItem("user_id", userId);
-        navigation.navigate("OtpScreenAgent" , {phone_number : user.phone_number});
+        navigation.navigate("OtpScreenAgent" , { phone_number : user.phone_number });
       } else {
         setLoading(false);
         console.log("response error:::", response.data);

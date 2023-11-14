@@ -82,25 +82,6 @@ export default function App() {
         backgroundColor="#0066F5"
         barStyle="light-content"
       />
-      {/* <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-        >
-          <Stack.Screen name="AgentScreen" component={HomeScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-         
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-          <Stack.Screen name="Support" component={SupportScreen} />
-          <Stack.Screen name="InProgress" component={InProgress} />
-          <Stack.Screen name="IsCompleted" component={IsCompleted} />
-          <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
-          <Stack.Screen name="OtpScreenAgent" component={OtpScreenAgent} />
-          <Stack.Screen name="EditProfile" component={EditProfile} />
-        </Stack.Navigator>
-      </NavigationContainer> */}
       <Navigation />
     </GlobalProvider>
   );

@@ -109,13 +109,13 @@ const Agent = () => {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="Support" component={SupportScreen} />
       <Stack.Screen name="InProgress" component={InProgress} />
       <Stack.Screen name="IsCompleted" component={IsCompleted} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="OtpScreenAgent" component={OtpScreenAgent} />
+      <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
     </Stack.Navigator>
   );
 };

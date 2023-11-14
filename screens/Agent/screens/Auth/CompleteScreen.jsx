@@ -79,10 +79,6 @@ const CompleteScreen = ({ navigation }) => {
     )
     .then((response) => {
       setLoading(false)
-      const userId = response.data.user.id;
-      const token = response.data.user.access_token
-      AsyncStorage.setItem("user_id", userId);
-      AsyncStorage.setItem("token", token);
       navigation.navigate("HomeScreen");
     })
     .catch((err) => {

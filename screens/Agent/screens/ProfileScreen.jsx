@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, Image, Modal, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -7,9 +7,14 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Switch } from "@rneui/themed";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
+import { API_URl } from "../../../config";
+import axios from "axios";
+import LoadingData from "../../components/common/LoadingData";
+import isEmpty from "../../components/isEmpty";
 const { width } = Dimensions.get("window");
 
 const Profilescreen = ({ navigation }) => {
+  const [user, setUser] = useState([])
   const {
     angleLeft,
     webIcon,
@@ -23,6 +28,22 @@ const Profilescreen = ({ navigation }) => {
   const toggleSwitch = () => {
     setChecked(!checked);
   };
+
+
+  useEffect(() => {
+    axios
+      .get(`${API_URl}/accounts/me/`, {
+        headers: {
+          "Content-type": "application/json",
+          "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNTc2MTE1LCJpYXQiOjE2OTk5NzEzMTUsImp0aSI6IjQ5YjkwN2JlMjQ1OTRkN2Q4Nzg2YTVlMDA5YThkOWQ2IiwiaWQiOiJjZmU5NDUyYy0xNmYxLTQyOWItODU1ZS1kZTAwNTcwZDBhODIifQ.7WHrTm55_zyNfyGGnrMO--p3uR4zX2BMxd32NSRY6UQ`,
+        },
+      })
+      .then((response) => {
+        setUser(response.data)
+      })
+  },[API_URl])
+
+  console.log(user)
   return (
     <SafeAreaComponent className="bg-white h-full">
       <TouchableOpacity className="p-6 font-montserratRegular flex flex-row items-center gap-5" onPress={() => navigation.goBack()}>
@@ -33,8 +54,8 @@ const Profilescreen = ({ navigation }) => {
           Profile
         </Text>
       </TouchableOpacity>
-
-      <View style={styles.container}>
+      {isEmpty(user) ? <LoadingData /> :
+        <View style={styles.container}>
         <View className="relative w-[118px] h-[118px]">
           <Image
             source={require("../../../assets/herrand-profile.png")}
@@ -49,7 +70,7 @@ const Profilescreen = ({ navigation }) => {
         </View>
         <View>
           <Text className="text-center text-[#000E23] font-semibold text-[16px]">
-            Kunle Afolayan
+            {user.first_name} {user.last_name}
           </Text>
         </View>
         <View className="flex flex-row justify-center w-full text-center">
@@ -68,7 +89,6 @@ const Profilescreen = ({ navigation }) => {
             />
           </View>
         </View>
-
         <View>
           <TouchableOpacity 
             className="flex flex-row gap-2 items-center"
@@ -194,7 +214,8 @@ const Profilescreen = ({ navigation }) => {
                 </View>
               </View>
             </Modal>
-      </View>
+        </View>
+      }
     </SafeAreaComponent>
   );
 };
