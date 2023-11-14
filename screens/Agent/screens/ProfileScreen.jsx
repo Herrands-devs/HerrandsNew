@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Dimensions, Image, Modal, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -11,6 +11,7 @@ import { API_URl } from "../../../config";
 import axios from "axios";
 import LoadingData from "../../components/common/LoadingData";
 import isEmpty from "../../components/isEmpty";
+import { GlobalContext } from "../../../context/context.store";
 const { width } = Dimensions.get("window");
 
 const Profilescreen = ({ navigation }) => {
@@ -28,21 +29,21 @@ const Profilescreen = ({ navigation }) => {
   const toggleSwitch = () => {
     setChecked(!checked);
   };
-
+  const {isToken} = useContext(GlobalContext)
 
   useEffect(() => {
     axios
       .get(`${API_URl}/accounts/me/`, {
         headers: {
           "Content-type": "application/json",
-          "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzAwNTc2MTE1LCJpYXQiOjE2OTk5NzEzMTUsImp0aSI6IjQ5YjkwN2JlMjQ1OTRkN2Q4Nzg2YTVlMDA5YThkOWQ2IiwiaWQiOiJjZmU5NDUyYy0xNmYxLTQyOWItODU1ZS1kZTAwNTcwZDBhODIifQ.7WHrTm55_zyNfyGGnrMO--p3uR4zX2BMxd32NSRY6UQ`,
+          "Authorization": `Bearer ${isToken}`,
         },
       })
       .then((response) => {
         setUser(response.data)
       })
+      console.log(user)
   },[API_URl])
-
   console.log(user)
   return (
     <SafeAreaComponent className="bg-white h-full">
@@ -91,7 +92,7 @@ const Profilescreen = ({ navigation }) => {
         </View>
         <View>
           <TouchableOpacity 
-            className="flex flex-row gap-2 items-center"
+            className="bg-red flex flex-row gap-2 items-center"
             onPress={() => navigation.navigate('EditProfile')}
           >
             <Text
