@@ -21,6 +21,10 @@ export const GlobalProvider = ({ children }) => {
   const [recipientAddress, setRecipientAddress] = useState();
   const [categoryId, setCategoryId] = useState();
   const [createErrandSent, setCreatErrandSent] = useState(false);
+  const [errandRoute, setErrandRoute] = useState("");
+  const [vehicleType, setVehicleType] = useState("");
+  const [vehicleId, setVehicleId] = useState(null);
+  const [rides, setRides] = useState([]);
 
   // useEffect(() => {
   //   if (isNewUser) {
@@ -89,6 +93,14 @@ export const GlobalProvider = ({ children }) => {
         setCategoryId,
         createErrandSent,
         setCreatErrandSent,
+        errandRoute,
+        setErrandRoute,
+        vehicleType,
+        setVehicleType,
+        vehicleId,
+        setVehicleId,
+        rides,
+        setRides,
       }}
     >
       {children}

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { GlobalContext } from "../../../context/context.store";
 
-export const DropDownPicker = ({
+export const NormalDropdown = ({
   style,
   type,
   placeHolder,
@@ -17,6 +17,9 @@ export const DropDownPicker = ({
   defaultOption,
   options,
   labelStyles,
+  onChangeText,
+  value,
+  onSelect,
 }) => {
   const viewRef = useRef();
   useEffect(() => {
@@ -24,8 +27,7 @@ export const DropDownPicker = ({
   }, [viewRef]);
   const [isFocused, setFocused] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [value, setValue] = useState("");
-  const { setSelectedcategory, setCategoryId, selectedCategory } =
+  const { vehicleType, setVehicleType, setVehicleId } =
     useContext(GlobalContext);
 
   return (
@@ -60,11 +62,7 @@ export const DropDownPicker = ({
             className="w-full h-full flex justify-center cursor-pointer"
           >
             <Text className="text-[#6B7C97] font-montserratRegular">
-              {value
-                ? value
-                : selectedCategory
-                ? selectedCategory
-                : defaultOption}
+              {value ? value : vehicleType ? vehicleType : defaultOption}
             </Text>
           </TouchableOpacity>
         ) : (
@@ -77,13 +75,7 @@ export const DropDownPicker = ({
             className="w-full h-full flex justify-center text-[14px] px-2"
             style={[disabled && { backgroundColor: "#C6C6C6", color: "white" }]}
             editable={!disabled}
-            onChangeText={(text) => {
-              if (text === "") {
-                setSelectedcategory("");
-              } else {
-                setValue(text);
-              }
-            }}
+            onChangeText={onChangeText}
           />
         )}
       </View>
@@ -93,15 +85,17 @@ export const DropDownPicker = ({
             {options?.map((option, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => {
-                  setValue(option.name);
-                  setIsActive(false);
-                  setSelectedcategory(option.name);
-                  setCategoryId(option.id);
-                }}
                 className={`mb-[10px]`}
+                onPress={() => {
+                  // setValue(option.name);
+                  setIsActive(false);
+                  setVehicleType(option.vehicle_type);
+                  setVehicleId(option.id);
+                }}
               >
-                <Text className="p-2 text-[#6B7C97]">{option.name}</Text>
+                <Text className="p-2 text-[#6B7C97]">
+                  {option.vehicle_type}
+                </Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
