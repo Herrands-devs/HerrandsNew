@@ -54,8 +54,8 @@ export const TransactionHashSuccess = () => {
    const [amount] = useState(25000)
    return (
       <View className="mt-5 flex flex-row gap-x-4">
-         <View className="w-[40px] h-[40px] bg-[#1ff30c30] rounded-[3px]">
-
+         <View className="w-[40px] h-[40px] bg-[#1ff30c30] rounded-[3px] flex justify-center items-center">
+            <Image source={require('../../../../assets/icons/credit.png')} />
          </View>
          <View className="h-[40px] flex justify-between">
             <View className="">

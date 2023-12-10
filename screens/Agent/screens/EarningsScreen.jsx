@@ -10,8 +10,8 @@ import { Earned, TransactionHashFailed, TransactionHashSuccess } from './compone
 const EarningsScreen = ({navigation}) => {
    const [amount , setAmount] = useState(true)
    return (
-      <View>
-         <View className="h-[350px] flex flex-col gap-6 justify-end px-3 bg-[#0066F5]">
+      <View className="h-screen">
+         <View className="h-[40%] flex flex-col gap-6 justify-end px-3 bg-[#0066F5]">
             <TouchableOpacity  className="font-montserratRegular flex flex-row items-center" onPress={() => navigation.goBack()}>
                <TouchableOpacity className="mr-5" onPress={() => navigation.goBack()}><Image source={require('../../../assets/icons/iconwhite.png')} /></TouchableOpacity>
                <Text className="text-[24px] text-[#FFFFFF] font-semibold font-MontserratMedium">Earnings</Text>
@@ -46,7 +46,7 @@ const EarningsScreen = ({navigation}) => {
             </TouchableOpacity>
            
          </View>  
-         <ScrollView className="h-[550px]">
+         <ScrollView className="h-[90%]">
             <View className="p-3">
                <View className="bg-white h-[413px] flex justify-between shadow-lg p-6 rounded-sm">
                   <View>

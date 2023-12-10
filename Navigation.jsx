@@ -28,6 +28,19 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useContext } from "react";
 import { GlobalContext } from "./context/context.store";
 import SelectAddress from "./screens/customer/Main/SelectAddress";
+import AuthScreen from "./screens/Agent/screens/AuthScreen";
+import LoginScreen from "./screens/Agent/screens/Auth/LoginScreen";
+import SignUpScreen from "./screens/Agent/screens/Auth/SignUpScreen";
+import CompleteScreen from "./screens/Agent/screens/Auth/CompleteScreen";
+import OtpScreenAgent from "./screens/Agent/screens/Auth/OtpScreenAgent";
+import SupportScreen from "./screens/Agent/screens/SupportScreen";
+import { InProgress } from "./screens/Agent/screens/components/DashboardComponent";
+import IsCompleted from "./screens/Agent/screens/Errands/isCompleted";
+import EditProfile from "./screens/Agent/screens/Profile/EditProfile";
+import HomeScreen from "./screens/Agent/screens/HomeScreen";
+import isEmpty from "./screens/components/isEmpty";
+import ChatBoard from "./screens/Agent/screens/components/ChatBoard";
+import InProgressBoard from "./screens/Agent/screens/Errands/InProgress";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +60,12 @@ const Onboarding = () => {
       <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
       <Stack.Screen name="OtpScreen" component={OtpScreen} />
       <Stack.Screen name="CreateAccountCustomer" component={CreateAccount} />
+      <Stack.Screen name="AuthScreen" component={AuthScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
+      <Stack.Screen name="OtpScreenAgent" component={OtpScreenAgent} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
 };
@@ -65,6 +84,47 @@ const Authentication = () => {
       <Stack.Screen name="EnterYourNumber" component={EnterYourNumber} />
       <Stack.Screen name="OtpScreen" component={OtpScreen} />
       <Stack.Screen name="CreateAccountCustomer" component={CreateAccount} />
+      <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const AgentAuth = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+      <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
+      <Stack.Screen name="OtpScreenAgent" component={OtpScreenAgent} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+    </Stack.Navigator>
+  );
+};
+
+const Agent = () => {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      <Stack.Screen name="Support" component={SupportScreen} />
+      <Stack.Screen name="InProgress" component={InProgress} />
+      <Stack.Screen name="InProgressBoard" component={InProgressBoard} />
+      <Stack.Screen name="IsCompleted" component={IsCompleted} />
+      <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="OtpScreenAgent" component={OtpScreenAgent} />
+      <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
+      <Stack.Screen name="Chat" component={ChatBoard} />
+      <Stack.Screen
+        name="CustomerDeleteAccount"
+        component={CustomerdeleteAccount}
+      />
     </Stack.Navigator>
   );
 };
@@ -114,17 +174,26 @@ const MainCustomer = () => {
 };
 
 const Navigation = () => {
-  const { isNewUser, isOnBoarded, isAuthenticated } = useContext(GlobalContext);
+  const { userType, isToken, isNewUser, isOnBoarded, isAuthenticated } =
+    useContext(GlobalContext);
 
   return (
     <NavigationContainer>
       {isNewUser ? (
         <Onboarding />
       ) : isAuthenticated ? (
-        <MainCustomer />
-      ) : (
+        <>
+          {userType === "Agent" ? (
+            <Agent />
+          ) : userType === "Customer" ? (
+            <MainCustomer />
+          ) : null}
+        </>
+      ) : userType === "Agent" ? (
+        <AgentAuth />
+      ) : userType === "Customer" ? (
         <Authentication />
-      )}
+      ) : null}
     </NavigationContainer>
   );
 };

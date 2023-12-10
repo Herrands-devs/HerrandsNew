@@ -10,7 +10,7 @@ import {
 import React, { useState } from "react";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import BackIcon from "../../../assets/icons/back-icon-black.png";
-import { DropDownPicker } from "../../components/common/Dropdown";
+import { DropDownPicker } from "../../components/common/DropdownPicker";
 import { Dimensions } from "react-native";
 import CategoryButton from "../../components/customer-home-screen/CategoryButton";
 import RoutinIcon from "../../../assets/icons/routine-ride.png";

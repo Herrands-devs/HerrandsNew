@@ -1,25 +1,39 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Animated } from "react-native";
 import { colors } from "../../../themes/colors";
+import { GlobalContext } from "../../../context/context.store";
 
 const HorizontalLoader = ({
   duration
 }) => {
   const progress = useRef(new Animated.Value(0)).current;
-
+  const { setReceiveErrand } = useContext(GlobalContext)
+  const [isDone , setDone] = useState(false)
   useEffect(() => {
     animateLoader();
   }, []);
 
+  useEffect(() => {
+    done();
+  }, [isDone]);
+
+  const done = () => {
+    if(isDone) {
+      console.log('YES')
+      setReceiveErrand([])
+    }
+  }
+
   const animateLoader = () => {
     progress.setValue(0);
-
     Animated.timing(progress, {
       toValue: 1,
       duration: duration,
       useNativeDriver: false,
     }).start(({ finished }) => {
       if (finished) {
+        setDone(true)
+      } else {
         animateLoader();
       }
     });

@@ -59,6 +59,7 @@ const OtpScreen = ({ navigation, route }) => {
           setLoading(false);
           console.log(response.data);
           setIsAuthenticated(true);
+          AsyncStorage.setItem("user_id", response.data.user.id);
           AsyncStorage.setItem("token", response.data.token);
           AsyncStorage.setItem("user_data", JSON.stringify(response.data.user));
         } else {

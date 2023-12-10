@@ -102,7 +102,7 @@ const IsCompleted = ({navigation}) => {
                </View>
             </View>
          </View>
-         <View className="w-full p-6">
+         <View className="w-full p-6 mb-4">
             <SquareButton
               text="Report An Issue"
               styles={{
