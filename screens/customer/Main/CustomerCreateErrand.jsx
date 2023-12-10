@@ -17,7 +17,7 @@ import {
 import { colors } from "../../../themes/colors";
 import CategoryModal from "../../components/customer-home-screen/CategoryModal";
 import { useContext } from "react";
-import { GlobalContext } from "../../../context/context.store";
+import { GlobalContext } from "../../../context/context-agent.store";
 import { useEffect } from "react";
 import { PrimaryInput } from "../../components/common/Inputs";
 

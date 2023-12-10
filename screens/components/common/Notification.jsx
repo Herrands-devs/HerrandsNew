@@ -19,7 +19,8 @@ const Notification = ({
   subTitle,
   btnBackground,
   image,
-  btnText
+  btnText,
+  onPress
 }) => {
   const [fadeAnim] = useState(new Animated.Value(0));
 
@@ -68,6 +69,7 @@ const Notification = ({
             {subTitle}
           </Text>
           <SquareButton
+            onPress={onPress}
             text={btnText}
             styles={{ backgroundColor: btnBackground , marginTop : 20 }}
           />

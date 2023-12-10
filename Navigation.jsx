@@ -26,7 +26,7 @@ import CustomerdeleteAccount from "./screens/customer/Main/CustomerdeleteAccount
 import MyErrandsCustomer from "./screens/customer/Main/MyErrandsCustomer";
 import { NavigationContainer } from "@react-navigation/native";
 import { useContext } from "react";
-import { GlobalContext } from "./context/context.store";
+import { GlobalContext } from "./context/context-agent.store";
 import AuthScreen from "./screens/Agent/screens/AuthScreen";
 import LoginScreen from "./screens/Agent/screens/Auth/LoginScreen";
 import SignUpScreen from "./screens/Agent/screens/Auth/SignUpScreen";
@@ -38,6 +38,8 @@ import IsCompleted from "./screens/Agent/screens/Errands/isCompleted";
 import EditProfile from "./screens/Agent/screens/Profile/EditProfile";
 import HomeScreen from "./screens/Agent/screens/HomeScreen";
 import isEmpty from "./screens/components/isEmpty";
+import ChatBoard from "./screens/Agent/screens/components/ChatBoard";
+import InProgressBoard from "./screens/Agent/screens/Errands/InProgress";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,6 +64,7 @@ const Onboarding = () => {
       <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
       <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
       <Stack.Screen name="OtpScreenAgent" component={OtpScreenAgent} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
 };
@@ -112,10 +115,16 @@ const Agent = () => {
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="Support" component={SupportScreen} />
       <Stack.Screen name="InProgress" component={InProgress} />
+      <Stack.Screen name="InProgressBoard" component={InProgressBoard} />
       <Stack.Screen name="IsCompleted" component={IsCompleted} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
       <Stack.Screen name="OtpScreenAgent" component={OtpScreenAgent} />
       <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
+      <Stack.Screen name="Chat" component={ChatBoard} />
+      <Stack.Screen
+        name="CustomerDeleteAccount"
+        component={CustomerdeleteAccount}
+      />
     </Stack.Navigator>
   );
 };

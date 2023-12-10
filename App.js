@@ -39,7 +39,7 @@ import MyErrandsCustomer from "./screens/customer/Main/MyErrandsCustomer";
 import CustomerErrandDetails from "./screens/customer/Main/CustomerErrandDetails";
 import CustomerPayments from "./screens/customer/Main/CustomerPaymnets";
 import CustomerAddCard from "./screens/customer/Main/CustomerAddCard";
-import { GlobalProvider } from "./context/context.store";
+import { GlobalProvider } from "./context/context-agent.store";
 import CustomerManageCard from "./screens/customer/Main/CustomerManageCard";
 import CustomerCreateErrand from "./screens/customer/Main/CustomerCreateErrand";
 import CompleteScreen from "./screens/Agent/screens/Auth/CompleteScreen";

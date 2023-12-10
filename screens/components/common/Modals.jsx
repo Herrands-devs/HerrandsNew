@@ -25,7 +25,7 @@ import DetailsIcon from "../../../assets/icons/details.png";
 import HorizontalLoader from "./HorizontalLoader";
 import AgentImage from "../../../assets/agent-image.png";
 import { useContext } from "react";
-import { GlobalContext } from "../../../context/context.store";
+import { GlobalContext } from "../../../context/context-agent.store";
 import ErrandProgressComp from "./ErrandProgressComp";
 
 export const ResendModal = ({

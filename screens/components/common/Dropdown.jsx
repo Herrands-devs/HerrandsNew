@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { GlobalContext } from "../../../context/context.store";
+import { GlobalContext } from "../../../context/context-agent.store";
 import { Feather } from '@expo/vector-icons';
 
 export const DropDownPicker = ({
@@ -27,7 +27,8 @@ export const DropDownPicker = ({
   }, [viewRef]);
   const [isFocused, setFocused] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(selectState);
+  const [filter , setFilter] = useState("")
   return (
     <View className="relative w-[100%] mb-6" ref={viewRef}>
       <View className="flex z-0 flex-row items-center gap-2">
@@ -77,8 +78,10 @@ export const DropDownPicker = ({
               if (text === "") {
                 setSelectedState("");
                 setValue("");
+                setFilter("")
               } else {
                 setValue(text);
+                setFilter(text)
               }
             }}
           />
@@ -87,9 +90,8 @@ export const DropDownPicker = ({
       {isActive && (
         <View className="absolute top-[100%] w-full">
           <ScrollView className="w-full h-[150px] z-[100]  border border-[#c4c4c463] rounded-b-sm px-1 py-3 bg-white">
-            {options.map((option, index) => (
+            {options.filter(opt => opt.title.includes(filter)).map(option => (
               <TouchableOpacity
-                key={index}
                 onPress={() => {
                   setValue(option.title);
                   setIsActive(false);

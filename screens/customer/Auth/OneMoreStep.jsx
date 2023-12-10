@@ -15,7 +15,7 @@ import { RegisterUser } from "../../../api/customer/auth.service";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext } from "react";
-import { GlobalContext } from "../../../context/context.store";
+import { GlobalContext } from "../../../context/context-agent.store";
 import { API_URl } from "../../../config";
 
 const { width, height } = Dimensions.get("window");

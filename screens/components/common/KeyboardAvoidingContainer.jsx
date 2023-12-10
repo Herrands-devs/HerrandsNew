@@ -23,8 +23,8 @@ const KeyboardAvoidingContainer = ({children , style}) => {
 
 const styles = StyleSheet.create({
    contentContainer : {
-      paddingTop : Platform.OS === 'android' ? 
-      StatusBar.currentHeight : 20,
+      height: 100,
+      
    }
 })
 export default KeyboardAvoidingContainer

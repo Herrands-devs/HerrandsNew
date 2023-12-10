@@ -15,7 +15,7 @@ import { colors } from "../../../themes/colors";
 import { AntDesign } from "@expo/vector-icons";
 import { useRef } from "react";
 import { useContext } from "react";
-import { GlobalContext } from "../../../context/context.store";
+import { GlobalContext } from "../../../context/context-agent.store";
 
 const { width, height } = Dimensions.get("window");
 

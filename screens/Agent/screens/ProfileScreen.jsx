@@ -11,11 +11,12 @@ import { API_URl } from "../../../config";
 import axios from "axios";
 import LoadingData from "../../components/common/LoadingData";
 import isEmpty from "../../components/isEmpty";
-import { GlobalContext } from "../../../context/context.store";
+import { GlobalContext } from "../../../context/context-agent.store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width } = Dimensions.get("window");
 
 const Profilescreen = ({ navigation }) => {
-  const [user, setUser] = useState([])
+  const { Agent } = useContext(GlobalContext)
   const {
     angleLeft,
     webIcon,
@@ -26,25 +27,19 @@ const Profilescreen = ({ navigation }) => {
   } = iconsPack();
   const [checked, setChecked] = useState(false);
   const [logoutModal, setLogoutModal] = useState(false);
+  const { setIsAuthenticated, setToken } = useContext(GlobalContext);
   const toggleSwitch = () => {
     setChecked(!checked);
   };
-  const {isToken} = useContext(GlobalContext)
 
   useEffect(() => {
-    axios
-      .get(`${API_URl}/accounts/me/`, {
-        headers: {
-          "Content-type": "application/json",
-          "Authorization": `Bearer ${isToken}`,
-        },
-      })
-      .then((response) => {
-        setUser(response.data)
-      })
-      console.log(user)
-  },[API_URl])
-  console.log(user)
+    (async () => {
+      if(isEmpty(Agent)) {
+        navigation.navigate('LoginScreen')
+      }
+    })();
+  }, []);
+
   return (
     <SafeAreaComponent className="bg-white h-full">
       <TouchableOpacity className="p-6 font-montserratRegular flex flex-row items-center gap-5" onPress={() => navigation.goBack()}>
@@ -55,11 +50,11 @@ const Profilescreen = ({ navigation }) => {
           Profile
         </Text>
       </TouchableOpacity>
-      {isEmpty(user) ? <LoadingData /> :
+      {isEmpty(Agent) ? <LoadingData /> :
         <View style={styles.container}>
         <View className="relative w-[118px] h-[118px]">
           <Image
-            source={require("../../../assets/herrand-profile.png")}
+            source={{ uri : Agent.agent.id_file} || require("../../../assets/herrand-profile.png")}
             className="rounded-full object-cover w-full h-full"
           />
           <View
@@ -71,7 +66,7 @@ const Profilescreen = ({ navigation }) => {
         </View>
         <View>
           <Text className="text-center text-[#000E23] font-semibold text-[16px]">
-            {user.first_name} {user.last_name}
+            {Agent.first_name} {Agent.last_name}
           </Text>
         </View>
         <View className="flex flex-row justify-center w-full text-center">
@@ -90,9 +85,9 @@ const Profilescreen = ({ navigation }) => {
             />
           </View>
         </View>
-        <View>
+        <View className="border-b flex flex-row w-full justify-center items-center h-[50px] first-line:border-[#F9F9F9]">
           <TouchableOpacity 
-            className="bg-red flex flex-row gap-2 items-center"
+            className="flex flex-row gap-2 h-full justify-center  w-full items-center"
             onPress={() => navigation.navigate('EditProfile')}
           >
             <Text
@@ -103,11 +98,11 @@ const Profilescreen = ({ navigation }) => {
             <FontAwesome5 name="pencil-alt" size={13} color="#0066F5" />
           </TouchableOpacity>
         </View>
-
-        <View className="border-t w-[90%] flex flex-col gap-y-12  py-4 border-[#F9F9F9]">
+        <View className="w-full flex justify-center items-center">
+          <View className="w-[90%] flex flex-col gap-y-8">
           <View className="flex flex-row justify-between items-center w-full">
             <View className="flex flex-row gap-8 items-center">
-              <Image source={webIcon} />
+              <Image source={webIcon} resizeMode="cover"/>
               <Text className="text-[18px] font-montserratRegular">
                 Language
               </Text>
@@ -116,7 +111,7 @@ const Profilescreen = ({ navigation }) => {
           </View>
           <View className="flex flex-row justify-between items-center w-full">
             <View className="flex flex-row gap-8 items-center">
-              <Image source={switchIcon} />
+              <Image source={switchIcon} resizeMode="contain"/>
               <Text className="text-[18px] font-montserratRegular">
                 Out of office
               </Text>
@@ -171,6 +166,7 @@ const Profilescreen = ({ navigation }) => {
               </Text>
             </View>
           </TouchableOpacity>
+          </View>
         </View>
             <Modal
               visible={logoutModal}
@@ -201,8 +197,9 @@ const Profilescreen = ({ navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
-                        navigation.navigate("LoginScreen");
+                        setIsAuthenticated(false);
                         setLogoutModal(false);
+                        AsyncStorage.removeItem("token");
                       }}
                     >
                       <Text

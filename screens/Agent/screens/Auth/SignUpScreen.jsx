@@ -21,7 +21,7 @@ import { DropDownPicker, DropDownPickerMultiple } from "../../../components/comm
 import KeyboardAvoidingContainer from "../../../components/common/KeyboardAvoidingContainer";
 import axios from "axios";
 import { API_URl } from "../../../../config";
-import { GlobalContext } from "../../../../context/context.store";
+import { GlobalContext } from "../../../../context/context-agent.store";
 import isEmpty from "../../../components/isEmpty";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SuccessErrorModal } from "../../../components/common/Modals";
@@ -40,9 +40,12 @@ const SignUpScreen = ({ navigation }) => {
   const { selectedPreference, setSelectedPreference  } = useContext(GlobalContext);
   const { seletedState, setSelectedState  } = useContext(GlobalContext);
   const { selectFile, setSelectedFile  } = useContext(GlobalContext);
+  const { idType, setIdType  } = useContext(GlobalContext);
   const [isModal, setIsModal] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(null);
+  const [check, setCheck] = useState(false);
+
 
   const [tempPhone , setPhone] = useState("")
   const [user, setUser] = useState({ 
@@ -75,7 +78,7 @@ const SignUpScreen = ({ navigation }) => {
     user : user,
     services : selectedService,
     preference : selectedPreference,
-    id_type: 2,
+    id_type: idType,
     state : seletedState,
     id_file: selectFile
   }
@@ -276,11 +279,11 @@ const SignUpScreen = ({ navigation }) => {
             </Text>
 
             <View className="w-full mt-3">
-              <CheckBox label="Driver's License" />
-              <CheckBox label="Internation Passport" />
-              <CheckBox label="National Id Card" />
-              <CheckBox label="Voter's Card" />
-              <CheckBox label="NIN Slip" />
+              <CheckBox label="Driver's License" setIdType={setIdType} idType={idType} value={1} />
+              <CheckBox label="Internation Passport" setIdType={setIdType} idType={idType} value={2} />
+              <CheckBox label="National Id Card" setIdType={setIdType} idType={idType} value={3} />
+              <CheckBox label="Voter's Card" setIdType={setIdType} idType={idType} value={4} />
+              <CheckBox label="NIN Slip" setIdType={setIdType} idType={idType} value={5} />
             </View>
           </View>
           <View className="w-full">

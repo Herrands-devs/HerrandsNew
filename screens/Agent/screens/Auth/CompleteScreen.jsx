@@ -20,7 +20,7 @@ import {
 import { SquareButton } from "../../../components/common/Button";
 import { DropDownPicker } from "../../../components/common/Dropdown";
 import KeyboardAvoidingContainer from "../../../components/common/KeyboardAvoidingContainer";
-import { GlobalContext } from "../../../../context/context.store";
+import { GlobalContext } from "../../../../context/context-agent.store";
 const { width, height } = Dimensions.get("window");
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system'

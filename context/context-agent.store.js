@@ -10,6 +10,8 @@ export const GlobalProvider = ({ children }) => {
   const [seletedState, setSelectedState] = useState("");
   const [selectFile, setSelectedFile] = useState("");
   const [hourRate , setHour] = useState("")
+  const [chat , setChat] = useState([])
+  const [ idType, setIdType  ] = useState(null);
   const [selectedService, setSelectedService] = useState([]);
   const [errandStates, setErrandStates] = useState({
     orderPlaced: "completed",
@@ -22,9 +24,12 @@ export const GlobalProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isToken , setToken] = useState("")
   const [isComplete , setIsComplete] = useState()
+  const [userId , setUserId] = useState()
   const [userType, setUserType] = useState("")
-
-
+  const [Agent, setAgent] = useState([])
+  const [createErrandSent,setCreatErrandSent] = useState([])
+  const [receiveErrand,setReceiveErrand] = useState([])
+  const [acceptedErrand,setAcceptedErrand] = useState([])
   useEffect(() => {
     if (isNewUser) {
       setIsOnboarded(false);
@@ -43,6 +48,7 @@ export const GlobalProvider = ({ children }) => {
     setUserType(userType);
     if (user_id !== null) {
       setIsNewUser(false);
+      setUserId(user_id)
     } else {
       setIsNewUser(true);
     }
@@ -58,6 +64,8 @@ export const GlobalProvider = ({ children }) => {
   return (
     <GlobalContext.Provider
       value={{
+        userId , 
+        setUserId,
         cards,
         setCards,
         selectedCategory,
@@ -85,7 +93,19 @@ export const GlobalProvider = ({ children }) => {
         isComplete, 
         setIsComplete,
         hourRate, 
-        setHour
+        setHour,
+        Agent,
+        setAgent,
+        idType, 
+        setIdType,
+        createErrandSent,
+        setCreatErrandSent,
+        receiveErrand,
+        setReceiveErrand,
+        acceptedErrand,
+        setAcceptedErrand,
+        chat , 
+        setChat
       }}
     >
       {children}

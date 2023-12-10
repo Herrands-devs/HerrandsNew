@@ -7,6 +7,7 @@ import { iconsPack } from '../../components/icons';
 import Profilescreen from './ProfileScreen';
 import EarningsScreen from './EarningsScreen';
 import { Platform } from 'react-native';
+import ChatsScreen from './ChatsScreen';
 
 
 const HomeScreen = () => {
@@ -38,13 +39,13 @@ const HomeScreen = () => {
             },
             tabBarActiveTintColor: '#0066F5',
             tabBarInactiveTintColor: 'gray',
-            tabBarStyle : {height : Platform.OS == 'ios' ? 90 : 60 },
+            tabBarStyle : {height : Platform.OS == 'ios' ? 90 : 100 , paddingBottom : Platform.OS == 'android' ? 40 : 35 },
             tabBarLabelStyle : {fontSize : 12 , fontWeight: '700'},
             headerShown: false
           })}>
             <Tab.Screen name="Home"  component={DashboardScreen} />
             <Tab.Screen name="Errands"  component={ErrandsScreen} />
-            <Tab.Screen name="Chats"  component={DashboardScreen} />
+            <Tab.Screen name="Chats"  component={ChatsScreen} />
             <Tab.Screen name="Earnings"  component={EarningsScreen} options={{ headerShown: false , tabBarStyle : {display : 'none'}}} />
             <Tab.Screen name="Profile"  component={Profilescreen} options={{ headerShown: false , tabBarStyle : {display : 'none'}}}/>
          </Tab.Navigator>

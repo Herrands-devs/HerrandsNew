@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Image, Keyboard } from 'react-native'
 import { Text, View } from 'react-native'
 import { RoundedInput } from '../../../components/common/Inputs'
@@ -7,14 +7,15 @@ import HorizontalLoader from '../../../components/common/HorizontalLoader'
 import { RoundedButton, SquareButton } from '../../../components/common/Button'
 import Notification from '../../../components/common/Notification'
 import RBSheet from 'react-native-raw-bottom-sheet'
-import { Button } from '@rneui/base'
 import { TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native'
+import useSocket from '../../../../helpers/socker.service'
+import { GlobalContext } from '../../../../context/context-agent.store'
+import BottomSheetLoading from '../../../components/common/BottomSheetLoading'
 
 
 export const NoOrder = () => {
    const [moveup, setMoveup] = useState(false);
-   const [update, setUpdate] = useState(false)
    return (
       <View className={`absolute z-30 ${moveup ? 'min-h-[480px]' : 'min-h-[280px] '}   rounded-t-[20px] p-6 bg-[#FFFFFF] w-full bottom-0`}>
          <View className="flex gap-2 border-b pb-6 border-[#99c2fb1f]">
@@ -40,14 +41,14 @@ export const NoOrder = () => {
                <View className="w-full">
                   <RoundedInput
                     style={"w-full"}
-                    placeHolder={"Stark Tower"}
+                    placeHolder={"Pick up here..."}
                     disabled={true}
                   />
                </View>
                <View className="w-full">
                   <RoundedInput
                     style={"w-full"}
-                    placeHolder={"Stark Tower"}
+                    placeHolder={"Deliver here..."}
                     disabled={true}
                   />
                </View>
@@ -57,10 +58,42 @@ export const NoOrder = () => {
    )
 }
 
-export const IncomeOrder = () => {
-   const [moveup, setMoveup] = useState(false);
+export const IncomeOrder = ({
+   data
+}) => {
    const [update, setUpdate] = useState(false)
+   const {sendMessage , handleButtonClick ,isConnected , set} = useSocket()
+   const { userId } = useContext(GlobalContext)
+   useEffect(() => {
+      handleButtonClick()
+      if(isConnected) {
+         console.log('yes')
+      } else {
+         console.log('no')
+      }
+   })
+   console.log("ID :::" ,userId)
+   const handleAcceptErrand = () => {
+      setUpdate(true)
+      setTimeout(() => {
+         if(isConnected) {
+            setUpdate(false)
+            sendMessage({
+               type: "update.errand",
+               data: {
+                  id: data.id,
+                  agent: userId,
+                  status: "ACCEPTED"
+               }
+            })
+            console.log('yes')
+         } else {
+            console.log('no')
+         }
+      }, 8000)
+   }
    return (
+      <>
       <View className={`absolute z-40 min-h-[300px] pb-6 rounded-t-[20px] p-6 bg-[#FFFFFF] w-full bottom-0`}>
          <View className="w-full flex p-2 flex-row justify-between items-center">
             <View className="flex flex-row gap-x-5">
@@ -72,13 +105,13 @@ export const IncomeOrder = () => {
                </View>
                <View className="h-[40px] flex justify-between">
                   <Text>
-                    Ronke Titilayo
+                    {data.customer.first_name} {data.customer.last_name}
                   </Text>
-                  <Text className="text-[#0066F5] font-montserratRegular">Send A Package</Text>
+                  <Text className="text-[#0066F5] font-montserratRegular">{data.subtype.name}</Text>
                </View>
             </View>
             <View>
-               <Text className="text-[#000E23] text-[20px] font-montserratBold">{formatCurrency("9000")}</Text>
+               <Text className="text-[#000E23] text-[20px] font-montserratBold">{formatCurrency(data.total_cost)}</Text>
             </View>
          </View>
          <View className="p-1 flex gap-8 mt-1 border-t border-[#F9F9F9]">
@@ -86,18 +119,18 @@ export const IncomeOrder = () => {
                <Text className="text-[18px] text-[#000E23]">Item’s description</Text>
                <View className="flex flex-row items-center">
                   <Image source={require('../../../../assets/icons/box.png')} />
-                  <Text className="text-[#000E23] font-montserratRegular ml-2">58 inches smart TV</Text>
+                  <Text className="text-[#000E23] font-montserratRegular ml-2">{data.item_description}</Text>
                </View>
             </View>
 
             <View className="flex gap-2">
                <View className="flex justify-between flex-row">
                   <Text className="text-[18px] text-[#000E23]">Item’s Address</Text>
-                  <Text className="text-[18px] font-montserratRegular text-[#000E23]">25min</Text>
+                  <Text className="text-[16px] font-montserratRegular text-[#000E23]">25min</Text>
                </View>
                <View className="flex flex-row items-center">
                   <Image source={require('../../../../assets/icons/email.png')} />
-                  <Text className="text-[#000E23] font-montserratRegular ml-2">Lawani st, surulere 101241, Ikeja, Lagos.</Text>
+                  <Text className="text-[#000E23] font-montserratRegular ml-2">{data.pick_up_address}.</Text>
                </View>
             </View>
 
@@ -105,11 +138,11 @@ export const IncomeOrder = () => {
             <View className="flex gap-2">
                <View className="flex justify-between flex-row">
                   <Text className="text-[18px] text-[#000E23]">Recipients Address</Text>
-                  <Text className="text-[18px] font-montserratRegular text-[#000E23]">1hr 45min</Text>
+                  <Text className="text-[16px] font-montserratRegular text-[#000E23]">1hr 45min</Text>
                </View>
                <View className="flex flex-row items-center">
                   <Image source={require('../../../../assets/icons/email.png')} />
-                  <Text className="text-[#000E23] font-montserratRegular ml-2">Ibukun St, Yaba 101241, Ikeja, Lagos.</Text>
+                  <Text className="text-[#000E23] font-montserratRegular ml-2">{data.drop_off_address}</Text>
                </View>
             </View>
 
@@ -126,10 +159,10 @@ export const IncomeOrder = () => {
                   text="Accept" 
                   styles={{width : "40%" , backgroundColor : '#0066F5'}}
                   loading={false}
-                  onPress={() => setUpdate(true)}
+                  onPress={handleAcceptErrand}
                />
             </View>
-            <Notification 
+            {/* <Notification 
                isVisible={update} 
                title={"Are you sure ,You want to accept this order?"} 
                subTitle={"By tapping proceed it means you are to deliver the order"} 
@@ -137,13 +170,22 @@ export const IncomeOrder = () => {
                btnText={"Progress"}
                image={require('../../../../assets/gifs/question.gif')}
                onClose={() => setUpdate(false)}
-            />
+               onPress={handleAcceptErrand}
+            /> */}
+            
+            
          </View>
       </View>
+      {update &&
+         <BottomSheetLoading />
+      }
+      </>
    )
 }
 
-export const InProgress = () => {
+export const InProgress = ({
+   data
+}) => {
    const [update, setUpdate] = useState(false)
    return (
       <View className={`absolute z-50 min-h-[180px] pb-3 rounded-t-[20px] px-6  bg-[#FFFFFF] w-full bottom-0`}  >
@@ -166,13 +208,13 @@ export const InProgress = () => {
                   </View>
                   <View className="h-[40px] flex justify-between">
                      <Text>
-                       Ronke Titilayo
+                        {data.customer.first_name} {data.customer.last_name}
                      </Text>
-                     <Text className="text-[#0066F5] font-montserratRegular">Send A Package</Text>
+                     <Text className="text-[#0066F5] font-montserratRegular">{data.subtype.name}</Text>
                   </View>
                </View>
                <View>
-                  <Text className="text-[#000E23] text-[20px] font-montserratBold">{formatCurrency("9000")}</Text>
+                  <Text className="text-[#000E23] text-[20px] font-montserratBold">{formatCurrency(data.total_cost)}</Text>
                </View>
             </View>
             <View className="p-1 flex gap-8 mt-1 border-t border-[#F9F9F9]">
@@ -180,7 +222,7 @@ export const InProgress = () => {
                   <Text className="text-[18px] text-[#000E23]">Item’s description</Text>
                   <View className="flex flex-row items-center">
                      <Image source={require('../../../../assets/icons/box.png')} />
-                     <Text className="text-[#000E23] font-montserratRegular ml-2">58 inches smart TV</Text>
+                     <Text className="text-[#000E23] font-montserratRegular ml-2">{data.item_description}</Text>
                   </View>
                </View>
             </View>
@@ -213,13 +255,13 @@ export const InProgress = () => {
                      </View>
                      <View className="h-[40px] flex justify-between">
                         <Text>
-                          Ronke Titilayo
+                           {data.customer.first_name} {data.customer.last_name}
                         </Text>
-                        <Text className="text-[#0066F5] font-montserratRegular">Send A Package</Text>
+                        <Text className="text-[#0066F5] font-montserratRegular">{data.subtype.name}</Text>
                      </View>
                   </View>
                   <View>
-                     <Text className="text-[#000E23] text-[20px] font-montserratBold">{formatCurrency("9000")}</Text>
+                     <Text className="text-[#000E23] text-[20px] font-montserratBold">{formatCurrency(data.total_cost)}</Text>
                   </View>
                </View>
                <View className="px-6 flex gap-8">
@@ -227,7 +269,7 @@ export const InProgress = () => {
                      <Text className="text-[18px] text-[#000E23]">Item’s description</Text>
                      <View className="flex flex-row items-center">
                         <Image source={require('../../../../assets/icons/box.png')} />
-                        <Text className="text-[#000E23] font-montserratRegular ml-2">58 inches smart TV</Text>
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">{data.item_description}</Text>
                      </View>
                   </View>
 
@@ -238,7 +280,7 @@ export const InProgress = () => {
                      </View>
                      <View className="flex flex-row items-center">
                         <Image source={require('../../../../assets/icons/email.png')} />
-                        <Text className="text-[#000E23] font-montserratRegular ml-2">Lawani st, surulere 101241, Ikeja, Lagos.</Text>
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">{data.pick_up_address}.</Text>
                      </View>
                   </View>
 
@@ -248,7 +290,7 @@ export const InProgress = () => {
                      </View>
                      <View className="flex flex-row items-center">
                         <Image source={require('../../../../assets/icons/phone.png')} />
-                        <Text className="text-[#000E23] font-montserratRegular ml-2">07020304050</Text>
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">{data.customer.phone_number}</Text>
                      </View>
                   </View>
 
@@ -259,7 +301,7 @@ export const InProgress = () => {
                      </View>
                      <View className="flex flex-row items-center">
                         <Image source={require('../../../../assets/icons/email.png')} />
-                        <Text className="text-[#000E23] font-montserratRegular ml-2">Ibukun St, Yaba 101241, Ikeja, Lagos.</Text>
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">{data.drop_off_address}</Text>
                      </View>
                   </View>
 
@@ -269,7 +311,7 @@ export const InProgress = () => {
                      </View>
                      <View className="flex flex-row items-center">
                         <Image source={require('../../../../assets/icons/phone.png')} />
-                        <Text className="text-[#000E23] font-montserratRegular ml-2">07020304050</Text>
+                        <Text className="text-[#000E23] font-montserratRegular ml-2">{data.recipient_contact}</Text>
                      </View>
                   </View>
 

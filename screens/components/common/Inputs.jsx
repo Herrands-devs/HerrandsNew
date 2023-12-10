@@ -4,6 +4,7 @@ import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Image } from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system'
+import isEmpty from "../isEmpty";
 export const PrimaryInput = ({
   type,
   placeHolder,
@@ -376,15 +377,25 @@ export const UploadInp = ({
   );
 };
 
-export const CheckBox = ({ label, onPress }) => {
+export const CheckBox = ({ label , idType , setIdType ,value  }) => {
   const [check, setCheck] = useState(false);
+  const handleClick = () => {
+    if(value == idType) {
+      setCheck(false)
+      setCheck(null)
+    } 
+    else {
+      setIdType(value)
+      setCheck(true)
+    } 
+  }
   return (
     <View className="flex flex-row gap-2 mb-6 items-center">
       <TouchableOpacity
         className={`w-[20px] h-[20px] flex justify-center ${
-          check ? "bg-[#0066F5] border-[#0066F5]" : "border-[#D5D7DA]"
+          check && idType == value ? "bg-[#0066F5] border-[#0066F5]" : "border-[#D5D7DA]"
         } items-center border-2`}
-        onPress={() => setCheck(!check)}
+        onPress={handleClick}
       >
         <Ionicons name="checkmark-sharp" size={15} color="white" />
       </TouchableOpacity>

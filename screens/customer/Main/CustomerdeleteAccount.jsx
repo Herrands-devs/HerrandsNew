@@ -6,17 +6,68 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import CloseIcon from "../../../assets/icons/resend-close.png";
 import { SquareButton } from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
-import { GlobalContext } from "../../../context/context.store";
+import { GlobalContext } from "../../../context/context-agent.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { API_URl } from "../../../config";
 
 const { width, height } = Dimensions.get("window");
 
 const CustomerdeleteAccount = ({ navigation }) => {
+  const [token, setToken] = useState();
+  const [loading, setLoading] = useState(false);
+  const { setIsAuthenticated, setIsOnboarded } = useContext(GlobalContext);
+
+  useEffect(() => {
+    (async () => {
+      const userToken = await AsyncStorage.getItem("token");
+
+      if (userToken !== null) {
+        setToken(userToken);
+      } else {
+        console.log("There's no user token yet!!");
+      }
+    })();
+  }, []);
+
+  const deleteAccount = () => {
+    setLoading(true);
+
+    console.log(token);
+    axios
+      .delete(`${API_URl}/accounts/delete-user/`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setLoading(false);
+        AsyncStorage.removeItem("user_id");
+        AsyncStorage.removeItem("user_data");
+        AsyncStorage.removeItem("token");
+        setIsAuthenticated(false);
+        setIsOnboarded(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err.response) {
+          console.log("Error response data:", err.response.data);
+          // setIsModal(true);
+          // setMessage(err.response.data.error);
+          // setMessageType("error");
+        } else if (err.request) {
+          console.log("No response received:", err.request);
+        } else {
+          console.log("Request error:", err.message);
+        }
+      });
+  };
+
   return (
     <SafeAreaComponent classes={`px-[16px]`}>
       <View
@@ -44,7 +95,8 @@ const CustomerdeleteAccount = ({ navigation }) => {
         <SquareButton
           text={"Delete account"}
           styles={{ backgroundColor: colors.red }}
-          // onPress={deleteAccount}
+          onPress={deleteAccount}
+          loading={loading}
         />
       </View>
     </SafeAreaComponent>

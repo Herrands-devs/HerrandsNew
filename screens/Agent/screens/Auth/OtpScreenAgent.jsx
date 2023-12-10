@@ -17,7 +17,7 @@ import { API_URl } from "../../../../config";
 import axios from "axios";
 import ErrorIcon from "../../../../assets/error-message.png";
 import SuccessIcon from "../../../../assets/icons/thank-you.png";
-import { GlobalContext } from "../../../../context/context.store";
+import { GlobalContext } from "../../../../context/context-agent.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
@@ -34,7 +34,7 @@ const OtpScreenAgent = ({ navigation, route }) => {
   const [isModal, setIsModal] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(null);
-  const {  setToken  } = useContext(GlobalContext);
+  const { setToken  } = useContext(GlobalContext);
  
 
   const handleOtpChange = (newValues) => {

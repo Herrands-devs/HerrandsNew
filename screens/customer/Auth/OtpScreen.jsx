@@ -17,7 +17,7 @@ import { API_URl } from "../../../config";
 import axios from "axios";
 import ErrorIcon from "../../../assets/error-message.png";
 import SuccessIcon from "../../../assets/icons/thank-you.png";
-import { GlobalContext } from "../../../context/context.store";
+import { GlobalContext } from "../../../context/context-agent.store";
 
 const { width, height } = Dimensions.get("window");
 

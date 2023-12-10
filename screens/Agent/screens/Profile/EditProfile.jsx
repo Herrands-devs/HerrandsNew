@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
@@ -17,12 +17,19 @@ import {
 import { SquareButton } from "../../../components/common/Button";
 import { DropDownPicker } from "../../../components/common/Dropdown";
 import KeyboardAvoidingContainer from "../../../components/common/KeyboardAvoidingContainer";
+import { API_URl } from "../../../../config";
+import { GlobalContext } from "../../../../context/context-agent.store";
+import axios from "axios";
+import LoadingData from "../../../components/common/LoadingData";
+import isEmpty from "../../../components/isEmpty";
+import SafeAreaComponent from "../../../components/common/SafeAreaComponent";
 const { width, height } = Dimensions.get("window");
 
 const EditProfile = ({ navigation }) => {
   const { angleLeft } = iconsPack();
+  const { isToken ,  seletedState , setSelectedState, selectedPreference, setSelectedPreference , Agent } = useContext(GlobalContext)
   return (
-    <KeyboardAvoidingContainer>
+    <SafeAreaComponent>
       <TouchableOpacity className="p-6 font-montserratRegular flex flex-row items-center gap-5" onPress={() => navigation.goBack()}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={angleLeft} />
@@ -31,6 +38,7 @@ const EditProfile = ({ navigation }) => {
           Edit Profile
         </Text>
       </TouchableOpacity>
+      {isEmpty(Agent) ? <LoadingData /> :
       <View style={styles.container} className="p-3 gap-2">
          <View className="relative  flex flex-col w-full gap-2 items-center">
             <View className="w-full py-6 flex justify-center items-center">
@@ -53,6 +61,7 @@ const EditProfile = ({ navigation }) => {
                  style={"w-full mb-4"}
                  type={"phone-pad"}
                  label={"Mobile Number"}
+                  value={Agent && Agent?.phone_number.replace("+234" , "")}
                  placeHolder={"8045324621"}
                />
             </View>
@@ -60,46 +69,47 @@ const EditProfile = ({ navigation }) => {
             <DropDownPicker
               style={"w-full"}
               placeHolder={"Select"}
-              defaultOption={"Please Select"}
+              defaultOption={Agent.agent.state}
               label={"Where are you located ?*"}
+              selectState={seletedState}
               options={[
-                { label: "Abia" },
-                { label: "Adamawa" },
-                { label: "Akwa Ibom" },
-                { label: "Anambra" },
-                { label: "Bauchi" },
-                { label: "Bayelsa" },
-                { label: "Benue" },
-                { label: "Borno" },
-                { label: "Cross River" },
-                { label: "Delta" },
-                { label: "Ebonyi" },
-                { label: "Edo" },
-                { label: "Ekiti" },
-                { label: "Enugu" },
-                { label: "FCT - Abuja" },
-                { label: "Gombe" },
-                { label: "Imo" },
-                { label: "Jigawa" },
-                { label: "Kaduna" },
-                { label: "Kano" },
-                { label: "Katsina" },
-                { label: "Kebbi" },
-                { label: "Kogi" },
-                { label: "Kwara" },
-                { label: "Lagos" },
-                { label: "Nasarawa" },
-                { label: "Niger" },
-                { label: "Ogun" },
-                { label: "Ondo" },
-                { label: "Osun" },
-                { label: "Oyo" },
-                { label: "Plateau" },
-                { label: "Rivers" },
-                { label: "Sokoto" },
-                { label: "Taraba" },
-                { label: "Yobe" },
-                { label: "Zamfara" },
+                { title: "Abia" },
+                { title: "Adamawa" },
+                { title: "Akwa Ibom" },
+                { title: "Anambra" },
+                { title: "Bauchi" },
+                { title: "Bayelsa" },
+                { title: "Benue" },
+                { title: "Borno" },
+                { title: "Cross River" },
+                { title: "Delta" },
+                { title: "Ebonyi" },
+                { title: "Edo" },
+                { title: "Ekiti" },
+                { title: "Enugu" },
+                { title: "FCT - Abuja" },
+                { title: "Gombe" },
+                { title: "Imo" },
+                { title: "Jigawa" },
+                { title: "Kaduna" },
+                { title: "Kano" },
+                { title: "Katsina" },
+                { title: "Kebbi" },
+                { title: "Kogi" },
+                { title: "Kwara" },
+                { title: "Lagos" },
+                { title: "Nasarawa" },
+                { title: "Niger" },
+                { title: "Ogun" },
+                { title: "Ondo" },
+                { title: "Osun" },
+                { title: "Oyo" },
+                { title: "Plateau" },
+                { title: "Rivers" },
+                { title: "Sokoto" },
+                { title: "Taraba" },
+                { title: "Yobe" },
+                { title: "Zamfara" },
               ]}
             />
           </View>
@@ -141,7 +151,8 @@ const EditProfile = ({ navigation }) => {
             </View>
          </View>
       </View>
-    </KeyboardAvoidingContainer>
+      }
+    </SafeAreaComponent>
   );
 };
 
