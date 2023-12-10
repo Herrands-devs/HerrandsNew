@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import Map from "../../components/Map/Map";
 import { Dimensions } from "react-native";
@@ -19,6 +19,7 @@ import {
   TrackErrandModal,
 } from "../../components/common/Modals";
 import Loading from "../../components/common/Loading";
+import { GlobalContext } from "../../../context/context.store";
 
 const { width, height } = Dimensions.get("window");
 
@@ -31,26 +32,27 @@ const CustomerErrandMap = ({ navigation }) => {
   const [searchModal, setSearchModal] = useState(false);
   const [agentAcceptedModal, setAgentAcceptedModal] = useState(false);
   const [trackErrandModal, setTrackErrandModal] = useState(false);
+  const { rides } = useContext(GlobalContext);
 
   const handleCloseSidebar = () => {
     setIsOpen(false);
   };
 
-  const rides = [
-    {
-      title: "Send Van",
-      amount: 5000,
-      time: "8 mins",
-      image: Van,
-      icon: VanIcon,
-    },
-    {
-      title: "Send Card",
-      amount: 3000,
-      time: "4 mins",
-      image: Car,
-    },
-  ];
+  // const rides = [
+  //   {
+  //     title: "Send Van",
+  //     amount: 5000,
+  //     time: "8 mins",
+  //     image: Van,
+  //     icon: VanIcon,
+  //   },
+  //   {
+  //     title: "Send Card",
+  //     amount: 3000,
+  //     time: "4 mins",
+  //     image: Car,
+  //   },
+  // ];
 
   const modalRides = [
     {
@@ -132,6 +134,11 @@ const CustomerErrandMap = ({ navigation }) => {
     setAgentAcceptedModal(false);
   };
 
+  useEffect(() => {
+    console.log("rides:::", rides);
+    setIsModal(true);
+  }, [rides]);
+
   return (
     <View>
       <View className={``} style={{ height: height * 0.8 }}>
@@ -154,40 +161,41 @@ const CustomerErrandMap = ({ navigation }) => {
             className={`w-[78px] h-[10px] bg-[#C6C6C6] rounded-[4px]`}
           />
         </TouchableOpacity>
-        {rides.map((ride, i) => (
-          <TouchableOpacity
-            key={i}
-            className={`bg-[#F7F7F7] flex-row items-center justify-between px-[16px] py-[12px]`}
-            onPress={() => setIsModal(true)}
-          >
-            <View className={`flex-row items-center space-x-[33px]`}>
-              <Image source={ride.image} className={`w-[30px] h-[14px]`} />
-              <View>
-                {ride.icon ? (
-                  <View className={`flex-row items-center space-x-2`}>
-                    <Text className={`font-montserratSemiBold text-[14px]`}>
-                      {ride.title}
-                    </Text>
-                    <Image source={ride.icon} className={`w-[12px] h-[12px]`} />
-                  </View>
-                ) : (
-                  <Text className={`font-montserratSemiBold text-[14px]`}>
-                    {ride.title}
-                  </Text>
-                )}
-                <Text className={`text-[8px] font-montserratMedium`}>
-                  {ride.time}
-                </Text>
-              </View>
-            </View>
 
+        <TouchableOpacity
+          className={`bg-[#F7F7F7] flex-row items-center justify-between px-[16px] py-[12px]`}
+          onPress={() => setIsModal(true)}
+        >
+          {/* <View className={`flex-row items-center space-x-[33px]`}>
+            <Image source={rides.image} className={`w-[30px] h-[14px]`} />
             <View>
-              <Text className={`text-[16px] font-montserratBold`}>
-                {formatCurrency(ride.amount)}
+              {rides.icon ? (
+                <View className={`flex-row items-center space-x-2`}>
+                  <Text className={`font-montserratSemiBold text-[14px]`}>
+                    {rides.title}
+                  </Text>
+                  <Image source={rides.icon} className={`w-[12px] h-[12px]`} />
+                </View>
+              ) : (
+                <Text className={`font-montserratSemiBold text-[14px]`}>
+                  {rides.title}
+                </Text>
+              )}
+              <Text className={`text-[8px] font-montserratMedium`}>
+                {rides.time}
               </Text>
             </View>
-          </TouchableOpacity>
-        ))}
+          </View> */}
+          <View>
+            <Text>See Available Vehicles</Text>
+          </View>
+
+          {/* <View>
+            <Text className={`text-[16px] font-montserratBold`}>
+              {formatCurrency(rides.amount)}
+            </Text>
+          </View> */}
+        </TouchableOpacity>
       </View>
       {loading && <Loading />}
       <Sidebar
@@ -199,7 +207,7 @@ const CustomerErrandMap = ({ navigation }) => {
         isVisible={isModal}
         closeModal={() => setIsModal(false)}
         navigation={navigation}
-        rideList={modalRides}
+        rideList={rides}
         onPress={seeDetails}
       />
       <RideDetails

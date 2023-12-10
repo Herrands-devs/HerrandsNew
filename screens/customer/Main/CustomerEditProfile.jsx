@@ -11,12 +11,28 @@ import WorldIcon from "../../../assets/icons/world-icon.png";
 import DeleteIcon from "../../../assets/icons/delete-icon.png";
 import { SquareButton } from "../../components/common/Button";
 import { useState } from "react";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
 const CustomerEditProfile = ({ navigation }) => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
+  const [userData, setUserData] = useState();
+
+  useEffect(() => {
+    (async () => {
+      const userData = await AsyncStorage.getItem("user_data");
+
+      if (userData !== null) {
+        console.log("UserData on Edit screen:::", JSON.parse(userData));
+        setUserData(JSON.parse(userData));
+      } else {
+        console.log("There's no user data yet!!");
+      }
+    })();
+  }, []);
 
   return (
     <SafeAreaComponent>
@@ -55,22 +71,29 @@ const CustomerEditProfile = ({ navigation }) => {
         <PrimaryInput
           label={"First name"}
           placeHolder={"John"}
-          value={firstname}
+          value={firstname || userData?.first_name}
           onChangeText={(text) => setFirstname(text)}
         />
         <PrimaryInput
           label={"Last name"}
           placeHolder={"Doe"}
-          value={lastname}
+          value={lastname || userData?.last_name}
           onChangeText={(text) => setLastname(text)}
         />
-        <PhoneNumberInput label={"Phone number"} placeHolder={"70984624"} />
+        <PhoneNumberInput
+          label={"Phone number"}
+          placeHolder={userData?.phone_number}
+          disabled={false}
+          type={"phone-pad"}
+        />
         <PrimaryInput
           iconName={"mail"}
           label={"Email"}
           iconColor={colors.subTitle}
-          placeHolder={"Enter your email"}
+          placeHolder={userData?.email}
           type={"email-address"}
+          disabled={true}
+          value={userData?.email}
         />
       </View>
 

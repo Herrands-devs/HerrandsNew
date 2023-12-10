@@ -1,12 +1,18 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { getAsyncToken, getUserId } from "./asyncStorage";
-import { GlobalContext } from "../context/context-agent.store";
+import { GlobalContext } from "../context/context.store";
 
 const useSocket = () => {
   const [isConnected, setIsConnected] = useState(false);
   const socketRef = useRef(null);
   const [token, setToken] = useState(null);
-  const { createErrandSent, setCreatErrandSent,setReceiveErrand,setAcceptedErrand , userId} = useContext(GlobalContext);
+  const {
+    createErrandSent,
+    setCreatErrandSent,
+    setReceiveErrand,
+    setAcceptedErrand,
+    userId,
+  } = useContext(GlobalContext);
 
   const [messageToSend, setMessageToSend] = useState(null);
 
@@ -40,15 +46,21 @@ const useSocket = () => {
       };
       socket.onmessage = (event) => {
         console.log("Received message from the server:", event.data);
-        const data = JSON.parse(event.data)
-        if (data.type === 'errand.requested' && data.data.status === 'REQUESTED') {
-          setReceiveErrand(data.data)
-          setAcceptedErrand([])
-        }
-        else if(data.type === 'errand.accepted' && data.data.status === 'ACCEPTED' && data.data.agent?.id == userId) {
-          setReceiveErrand([])
-          setAcceptedErrand(data.data)
-          console.log('woll');
+        const data = JSON.parse(event.data);
+        if (
+          data.type === "errand.requested" &&
+          data.data.status === "REQUESTED"
+        ) {
+          setReceiveErrand(data.data);
+          setAcceptedErrand([]);
+        } else if (
+          data.type === "errand.accepted" &&
+          data.data.status === "ACCEPTED" &&
+          data.data.agent?.id == userId
+        ) {
+          setReceiveErrand([]);
+          setAcceptedErrand(data.data);
+          console.log("woll");
         }
       };
 

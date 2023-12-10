@@ -25,8 +25,14 @@ import DetailsIcon from "../../../assets/icons/details.png";
 import HorizontalLoader from "./HorizontalLoader";
 import AgentImage from "../../../assets/agent-image.png";
 import { useContext } from "react";
-import { GlobalContext } from "../../../context/context-agent.store";
+import { GlobalContext } from "../../../context/context.store";
 import ErrandProgressComp from "./ErrandProgressComp";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import Van from "../../../assets/icons/van.png";
+import Car from "../../../assets/icons/car.png";
+
+import { GOOGLE_MAP_APIKEY } from "@env";
+import { Keyboard } from "react-native";
 
 export const ResendModal = ({
   isVisible,
@@ -170,7 +176,7 @@ export const RidesModal = ({
   const slideUp = () => {
     Animated.parallel([
       Animated.timing(translateY, {
-        toValue: Platform.OS === "android" ? 250 : 220,
+        toValue: Platform.OS === "android" ? 250 : 360,
         duration: 300,
         useNativeDriver: false,
       }),
@@ -228,7 +234,7 @@ export const RidesModal = ({
                 className={`w-[78px] h-[10px] bg-[#C6C6C6] rounded-[4px]`}
               />
             </View>
-            <View style={styles.modalContent}>
+            {/* <View style={styles.modalContent}>
               {rideList.map((ride, i) => (
                 <TouchableOpacity
                   key={i}
@@ -275,6 +281,64 @@ export const RidesModal = ({
                   </View>
                 </TouchableOpacity>
               ))}
+              <View className={`items-center`}>
+                <RoundedButton
+                  text={"Send Now"}
+                  styles={{
+                    backgroundColor: colors.primaryColor,
+                    width: "80%",
+                    marginVertical: 11,
+                  }}
+                  onPress={onPress}
+                />
+              </View>
+            </View> */}
+            <View style={styles.modalContent}>
+              <TouchableOpacity
+                className={`${
+                  selectedItem === rideList.vehicleDetails?.id
+                    ? `bg-[#CCE0FD]`
+                    : `bg-[#F7F7F7]`
+                }  flex-row items-center justify-between px-[16px] py-[16px]`}
+                onPress={() => {
+                  selectRide(rideList.vehicleDetails?.id);
+                }}
+              >
+                <View className={`flex-row items-center space-x-[33px]`}>
+                  {rideList.vehicleDetails?.vehicle_type === "van" ? (
+                    <Image source={Van} className={`w-[30px] h-[14px]`} />
+                  ) : rideList.vehicleDetails?.vehicle_type === "car" ? (
+                    <Image source={Car} className={`w-[30px] h-[14px]`} />
+                  ) : null}
+                  <View>
+                    {rideList.vehicleDetails?.icon ? (
+                      <View className={`flex-row items-center space-x-2`}>
+                        <Text className={`font-montserratSemiBold text-[14px]`}>
+                          Send {rideList.vehicleDetails?.vehicle_type}
+                        </Text>
+                        <Image
+                          source={rideList.vehicleDetails?.icon}
+                          className={`w-[12px] h-[12px]`}
+                        />
+                      </View>
+                    ) : (
+                      <Text className={`font-montserratSemiBold text-[14px]`}>
+                        Send {rideList.vehicleDetails?.vehicle_type}
+                      </Text>
+                    )}
+                    <Text className={`text-[8px] font-montserratMedium`}>
+                      {rideList.estimated_drop_off_time}
+                    </Text>
+                  </View>
+                </View>
+
+                <View>
+                  <Text className={`text-[16px] font-montserratBold`}>
+                    {formatCurrency(rideList.vehicleDetails?.cost)}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
               <View className={`items-center`}>
                 <RoundedButton
                   text={"Send Now"}
@@ -998,6 +1062,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
     justifyContent: "center",
+    zIndex: 10,
     // alignItems: "center",
   },
   modal: {
@@ -1011,7 +1076,6 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
-    paddingBottom: 150,
   },
   modalContent: {
     paddingVertical: 10,

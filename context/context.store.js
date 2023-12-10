@@ -9,9 +9,9 @@ export const GlobalProvider = ({ children }) => {
   const [selectedPreference, setSelectedPreference] = useState("");
   const [seletedState, setSelectedState] = useState("");
   const [selectFile, setSelectedFile] = useState("");
-  const [hourRate , setHour] = useState("")
-  const [chat , setChat] = useState([])
-  const [ idType, setIdType  ] = useState(null);
+  const [hourRate, setHour] = useState("");
+  const [chat, setChat] = useState([]);
+  const [idType, setIdType] = useState(null);
   const [selectedService, setSelectedService] = useState([]);
   const [errandStates, setErrandStates] = useState({
     orderPlaced: "completed",
@@ -22,14 +22,22 @@ export const GlobalProvider = ({ children }) => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [isOnBoarded, setIsOnboarded] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isToken , setToken] = useState("")
-  const [isComplete , setIsComplete] = useState()
-  const [userId , setUserId] = useState()
-  const [userType, setUserType] = useState("")
-  const [Agent, setAgent] = useState([])
-  const [createErrandSent,setCreatErrandSent] = useState([])
-  const [receiveErrand,setReceiveErrand] = useState([])
-  const [acceptedErrand,setAcceptedErrand] = useState([])
+  const [isToken, setToken] = useState("");
+  const [isComplete, setIsComplete] = useState();
+  const [userId, setUserId] = useState();
+  const [Agent, setAgent] = useState([]);
+  const [receiveErrand, setReceiveErrand] = useState([]);
+  const [acceptedErrand, setAcceptedErrand] = useState([]);
+  const [userType, setUserType] = useState("");
+  const [itemAddress, setItemAddress] = useState();
+  const [recipientAddress, setRecipientAddress] = useState();
+  const [categoryId, setCategoryId] = useState();
+  const [createErrandSent, setCreatErrandSent] = useState(false);
+  const [errandRoute, setErrandRoute] = useState("");
+  const [vehicleType, setVehicleType] = useState("");
+  const [vehicleId, setVehicleId] = useState(null);
+  const [rides, setRides] = useState([]);
+
   useEffect(() => {
     if (isNewUser) {
       setIsOnboarded(false);
@@ -44,27 +52,50 @@ export const GlobalProvider = ({ children }) => {
     const user_id = await AsyncStorage.getItem("user_id");
     const userType = await AsyncStorage.getItem("userType");
     const Token = await AsyncStorage.getItem("token");
-    setToken(Token)
+    setToken(Token);
     setUserType(userType);
     if (user_id !== null) {
       setIsNewUser(false);
-      setUserId(user_id)
+      setUserId(user_id);
     } else {
       setIsNewUser(true);
     }
-    console.log("asyncStorage:::", user_id);
-    console.log("asyncStorage:::", userType);
-    console.log("asyncStorage:::", Token);
+    console.log("asyncStorage userid:::", user_id);
+    console.log("asyncStorage usertype:::", userType);
+    console.log("asyncStorage token:::", Token);
+  };
+
+  const getToken = async () => {
+    const token = await AsyncStorage.getItem("token");
+
+    if (token !== null) {
+      setToken(false);
+      setIsAuthenticated(true);
+      // console.log("asyncStorage token:::", token);
+    } else {
+      setToken(true);
+      setIsAuthenticated(false);
+    }
   };
 
   useEffect(() => {
+    console.log("User type:::", userType);
+  }, [userType]);
+
+  useEffect(() => {
+    getToken();
+  }, [isToken]);
+
+  useEffect(() => {
+    // AsyncStorage.removeItem("user_id");
+    // AsyncStorage.removeItem("token");
     getUserId();
-  }, [isNewUser, isAuthenticated, isToken]);
+  }, []);
 
   return (
     <GlobalContext.Provider
       value={{
-        userId , 
+        userId,
         setUserId,
         cards,
         setCards,
@@ -79,24 +110,23 @@ export const GlobalProvider = ({ children }) => {
         isAuthenticated,
         setIsAuthenticated,
         userType,
-        setUserType,
         selectedPreference,
         setSelectedPreference,
         seletedState,
         setSelectedState,
         selectedService,
         setSelectedService,
-        selectFile, 
+        selectFile,
         setSelectedFile,
         isToken,
         setToken,
-        isComplete, 
+        isComplete,
         setIsComplete,
-        hourRate, 
+        hourRate,
         setHour,
         Agent,
         setAgent,
-        idType, 
+        idType,
         setIdType,
         createErrandSent,
         setCreatErrandSent,
@@ -104,8 +134,23 @@ export const GlobalProvider = ({ children }) => {
         setReceiveErrand,
         acceptedErrand,
         setAcceptedErrand,
-        chat , 
-        setChat
+        chat,
+        setChat,
+        itemAddress,
+        setItemAddress,
+        recipientAddress,
+        setRecipientAddress,
+        categoryId,
+        setCategoryId,
+        errandRoute,
+        setErrandRoute,
+        vehicleType,
+        setVehicleType,
+        vehicleId,
+        setVehicleId,
+        rides,
+        setRides,
+        setUserType,
       }}
     >
       {children}

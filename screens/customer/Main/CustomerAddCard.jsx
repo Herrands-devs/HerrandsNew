@@ -13,7 +13,7 @@ import PaymentInput from "../../components/Payment/PaymentInput";
 import SecureIcon from "../../../assets/icons/secure-icon.png";
 import { SquareButton } from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
-import { GlobalContext } from "../../../context/context-agent.store";
+import { GlobalContext } from "../../../context/context.store";
 
 const { width, height } = Dimensions.get("window");
 

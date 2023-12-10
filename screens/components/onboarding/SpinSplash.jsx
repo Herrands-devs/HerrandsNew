@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, StyleSheet, Animated, Easing, Text } from "react-native";
 import { colors } from "../../../themes/colors";
 import { useContext } from "react";
-import { GlobalContext } from "../../../context/context-agent.store";
+import { GlobalContext } from "../../../context/context.store";
 
 const SpinSplash = ({ navigation }) => {
   const spinValue = new Animated.Value(0);

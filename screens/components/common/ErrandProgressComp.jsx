@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useContext } from "react";
-import { GlobalContext } from "../../../context/context-agent.store";
+import { GlobalContext } from "../../../context/context.store";
 import InactiveTrack from "../../../assets/inactive-track.png";
 import OngoingTrack from "../../../assets/ongoing-track.png";
 import CompletedTrack from "../../../assets/completed-track.png";

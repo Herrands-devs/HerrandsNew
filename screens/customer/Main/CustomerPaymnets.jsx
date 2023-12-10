@@ -18,7 +18,7 @@ import {
 } from "../../components/customer-home-screen/PaymentCards";
 import AddIcon from "../../../assets/icons/add-icon.png";
 import NoCardModal from "../../components/customer-home-screen/NoCardModal";
-import { GlobalContext } from "../../../context/context-agent.store";
+import { GlobalContext } from "../../../context/context.store";
 
 const { width, height } = Dimensions.get("window");
 

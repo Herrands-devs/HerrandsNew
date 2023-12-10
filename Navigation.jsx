@@ -26,7 +26,8 @@ import CustomerdeleteAccount from "./screens/customer/Main/CustomerdeleteAccount
 import MyErrandsCustomer from "./screens/customer/Main/MyErrandsCustomer";
 import { NavigationContainer } from "@react-navigation/native";
 import { useContext } from "react";
-import { GlobalContext } from "./context/context-agent.store";
+import { GlobalContext } from "./context/context.store";
+import SelectAddress from "./screens/customer/Main/SelectAddress";
 import AuthScreen from "./screens/Agent/screens/AuthScreen";
 import LoginScreen from "./screens/Agent/screens/Auth/LoginScreen";
 import SignUpScreen from "./screens/Agent/screens/Auth/SignUpScreen";
@@ -88,7 +89,6 @@ const Authentication = () => {
   );
 };
 
-
 const AgentAuth = () => {
   return (
     <Stack.Navigator
@@ -128,6 +128,7 @@ const Agent = () => {
     </Stack.Navigator>
   );
 };
+
 const MainCustomer = () => {
   return (
     <Stack.Navigator
@@ -167,28 +168,32 @@ const MainCustomer = () => {
         component={CustomerdeleteAccount}
       />
       <Stack.Screen name="MyErrandsCustomer" component={MyErrandsCustomer} />
+      <Stack.Screen name="SelectAddress" component={SelectAddress} />
     </Stack.Navigator>
   );
 };
 
 const Navigation = () => {
-  const { userType, isToken ,isNewUser, isOnBoarded, isAuthenticated } = useContext(GlobalContext);
- 
+  const { userType, isToken, isNewUser, isOnBoarded, isAuthenticated } =
+    useContext(GlobalContext);
+
   return (
     <NavigationContainer>
-      {!isOnBoarded ? (
+      {isNewUser ? (
         <Onboarding />
       ) : isAuthenticated ? (
-        <MainCustomer />
-      ) : (
-        userType == 'Agent' ? (
-          isEmpty(isToken) ?
-            <AgentAuth /> 
-          :
+        <>
+          {userType === "Agent" ? (
             <Agent />
-      ) :
-        <Authentication />  
-      )}
+          ) : userType === "Customer" ? (
+            <MainCustomer />
+          ) : null}
+        </>
+      ) : userType === "Agent" ? (
+        <AgentAuth />
+      ) : userType === "Customer" ? (
+        <Authentication />
+      ) : null}
     </NavigationContainer>
   );
 };

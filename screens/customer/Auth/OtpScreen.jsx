@@ -17,7 +17,8 @@ import { API_URl } from "../../../config";
 import axios from "axios";
 import ErrorIcon from "../../../assets/error-message.png";
 import SuccessIcon from "../../../assets/icons/thank-you.png";
-import { GlobalContext } from "../../../context/context-agent.store";
+import { GlobalContext } from "../../../context/context.store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 
@@ -58,6 +59,9 @@ const OtpScreen = ({ navigation, route }) => {
           setLoading(false);
           console.log(response.data);
           setIsAuthenticated(true);
+          AsyncStorage.setItem("user_id", response.data.user.id);
+          AsyncStorage.setItem("token", response.data.token);
+          AsyncStorage.setItem("user_data", JSON.stringify(response.data.user));
         } else {
           setLoading(false);
           console.log("response error:::", response.data);
@@ -72,6 +76,9 @@ const OtpScreen = ({ navigation, route }) => {
           setMessageType("error");
         } else if (err.request) {
           console.log("No response received:", err.request);
+          setIsModal(true);
+          setMessage("Server downtime");
+          setMessageType("error");
         } else {
           console.log("Request error:", err.message);
         }

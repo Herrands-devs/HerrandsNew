@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { colors } from "../../../themes/colors";
+import { GlobalContext } from "../../../context/context.store";
 
 const { width, height } = Dimensions.get("window");
 
@@ -21,9 +22,11 @@ const CategoryModal = ({
   initalValue,
   title,
   options,
+  setSubCategories,
 }) => {
   const translateX = useRef(new Animated.Value(initalValue)).current;
   const opacity = useRef(new Animated.Value(0)).current;
+  const { setSelectedcategory, setCategoryId } = useContext(GlobalContext);
 
   const slideIn = () => {
     Animated.parallel([
@@ -72,7 +75,12 @@ const CategoryModal = ({
       animationType="none"
       onRequestClose={slideOut}
     >
-      <TouchableWithoutFeedback onPress={slideOut}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          slideOut();
+          setSubCategories([]);
+        }}
+      >
         <View style={styles.overlay}>
           <Animated.View
             style={[
@@ -93,11 +101,20 @@ const CategoryModal = ({
                 <View className={`mt-[27px]`}>
                   {options &&
                     options.map((text, i) => (
-                      <TouchableOpacity key={i} className={`my-[16px]`}>
+                      <TouchableOpacity
+                        key={i}
+                        className={`my-[16px]`}
+                        onPress={() => {
+                          setSelectedcategory(text.name);
+                          console.log("selected category:::", text.name);
+                          setCategoryId(text.id);
+                          slideOut();
+                        }}
+                      >
                         <Text
                           className={`text-[14px] font-montserratMedium text-subTitle`}
                         >
-                          {text.title}
+                          {text.name}
                         </Text>
                       </TouchableOpacity>
                     ))}

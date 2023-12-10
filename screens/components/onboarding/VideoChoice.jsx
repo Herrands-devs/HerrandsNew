@@ -1,11 +1,14 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import { Video } from "expo-av";
 import { LayeredBtn } from "../common/Button";
 import { colors } from "../../../themes/colors";
+import { GlobalContext } from "../../../context/context.store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function VideoChoice({ navigation }) {
   const videoRef = useRef(null);
+  const { setUserType } = useContext(GlobalContext);
 
   useEffect(() => {
     (async () => {
@@ -41,7 +44,11 @@ function VideoChoice({ navigation }) {
               width: "100%",
             }}
             subTextTop={8}
-            onPress={() => navigation.navigate("CreateAccountCustomer")}
+            onPress={() => {
+              navigation.navigate("CreateAccountCustomer");
+              AsyncStorage.setItem("userType", "Customer");
+              setUserType("Customer")
+            }}
             textClass={`text-white`}
           />
           <LayeredBtn
@@ -53,7 +60,11 @@ function VideoChoice({ navigation }) {
               marginTop: 27,
             }}
             subTextTop={8}
-            onPress={() => navigation.navigate("AuthScreen")}
+            onPress={() => {
+              navigation.navigate("AuthScreen");
+              AsyncStorage.setItem("userType", "Agent");
+              setUserType("Agent")
+            }}
             textClass={`text-black`}
           />
         </View>

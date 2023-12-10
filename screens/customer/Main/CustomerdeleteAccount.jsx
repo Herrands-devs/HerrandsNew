@@ -11,7 +11,7 @@ import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import CloseIcon from "../../../assets/icons/resend-close.png";
 import { SquareButton } from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
-import { GlobalContext } from "../../../context/context-agent.store";
+import { GlobalContext } from "../../../context/context.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API_URl } from "../../../config";

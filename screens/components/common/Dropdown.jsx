@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { GlobalContext } from "../../../context/context-agent.store";
-import { Feather } from '@expo/vector-icons';
+import { GlobalContext } from "../../../context/context.store";
+import { Feather } from "@expo/vector-icons";
 
 export const DropDownPicker = ({
   style,
@@ -19,7 +19,7 @@ export const DropDownPicker = ({
   options,
   labelStyles,
   selectState,
-  setSelectedState
+  setSelectedState,
 }) => {
   const viewRef = useRef();
   useEffect(() => {
@@ -28,7 +28,7 @@ export const DropDownPicker = ({
   const [isFocused, setFocused] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [value, setValue] = useState(selectState);
-  const [filter , setFilter] = useState("")
+  const [filter, setFilter] = useState("");
   return (
     <View className="relative w-[100%] mb-6" ref={viewRef}>
       <View className="flex z-0 flex-row items-center gap-2">
@@ -78,10 +78,10 @@ export const DropDownPicker = ({
               if (text === "") {
                 setSelectedState("");
                 setValue("");
-                setFilter("")
+                setFilter("");
               } else {
                 setValue(text);
-                setFilter(text)
+                setFilter(text);
               }
             }}
           />
@@ -90,18 +90,20 @@ export const DropDownPicker = ({
       {isActive && (
         <View className="absolute top-[100%] w-full">
           <ScrollView className="w-full h-[150px] z-[100]  border border-[#c4c4c463] rounded-b-sm px-1 py-3 bg-white">
-            {options.filter(opt => opt.title.includes(filter)).map(option => (
-              <TouchableOpacity
-                onPress={() => {
-                  setValue(option.title);
-                  setIsActive(false);
-                  setSelectedState(option.id ? option.id : option.title );
-                }}
-                className={`mb-[10px] text-[#6B7C97]`}
-              >
-                <Text className="p-2 text-[#6B7C97]">{option.title}</Text>
-              </TouchableOpacity>
-            ))}
+            {options
+              .filter((opt) => opt.title.includes(filter))
+              .map((option) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setValue(option.title);
+                    setIsActive(false);
+                    setSelectedState(option.id ? option.id : option.title);
+                  }}
+                  className={`mb-[10px] text-[#6B7C97]`}
+                >
+                  <Text className="p-2 text-[#6B7C97]">{option.title}</Text>
+                </TouchableOpacity>
+              ))}
           </ScrollView>
         </View>
       )}
@@ -119,7 +121,7 @@ export const DropDownPickerMultiple = ({
   options,
   labelStyles,
   selectState,
-  setSelectedState
+  setSelectedState,
 }) => {
   const viewRef = useRef();
   useEffect(() => {
@@ -128,24 +130,24 @@ export const DropDownPickerMultiple = ({
   const [isFocused, setFocused] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [value, setValue] = useState("");
+  const { setSelectedcategory, setCategoryId, selectedCategory } =
+    useContext(GlobalContext);
 
-  const  handleSelect = (value, text) => {
-    if(selectState.includes(value)) {
-      const newSelected = []
-        for (let i = 0; i < selectState.length; i++) {
-          if(selectState[i] != value) {
-            newSelected.push(selectState[i])
-          }
+  const handleSelect = (value, text) => {
+    if (selectState.includes(value)) {
+      const newSelected = [];
+      for (let i = 0; i < selectState.length; i++) {
+        if (selectState[i] != value) {
+          newSelected.push(selectState[i]);
         }
-        setSelectedState(newSelected)
+      }
+      setSelectedState(newSelected);
     } else {
-      setSelectedState((prev) => [
-        ...prev , value
-      ])
-      setValue(text)
+      setSelectedState((prev) => [...prev, value]);
+      setValue(text);
     }
-  }
-  console.log(selectState)
+  };
+  console.log(selectState);
   return (
     <View className="relative w-[100%] mb-6" ref={viewRef}>
       <View className="flex z-0 flex-row items-center gap-2">
@@ -178,7 +180,11 @@ export const DropDownPickerMultiple = ({
             className="w-full h-full flex justify-center cursor-pointer"
           >
             <Text className="text-[#6B7C97] font-montserratRegular">
-              {value ? value : defaultOption}
+              {value
+                ? value
+                : selectedCategory
+                ? selectedCategory
+                : defaultOption}
             </Text>
           </TouchableOpacity>
         ) : (
@@ -205,17 +211,19 @@ export const DropDownPickerMultiple = ({
       {isActive && (
         <View className="absolute top-[100%] w-full">
           <ScrollView className="w-full h-[150px] z-[100]  border border-[#c4c4c463] rounded-b-sm px-1 py-3 bg-white">
-            {options.map((option, index) => (
+            {options?.map((option, index) => (
               <TouchableOpacity
                 key={index}
                 onPress={() => {
-                  handleSelect(option.id,option.title)
+                  handleSelect(option.id, option.title);
                 }}
                 className={`mb-[10px] flex flex-row items-center text-[#6B7C97]`}
               >
                 <Text className="p-2 text-[#6B7C97]">{option.title}</Text>
                 <View>
-                  {selectState.includes(option.id) && <Feather name="check" size={14} color="green" />}
+                  {selectState.includes(option.id) && (
+                    <Feather name="check" size={14} color="green" />
+                  )}
                 </View>
               </TouchableOpacity>
             ))}

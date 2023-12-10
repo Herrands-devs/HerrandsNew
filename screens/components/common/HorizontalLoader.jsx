@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Animated } from "react-native";
 import { colors } from "../../../themes/colors";
-import { GlobalContext } from "../../../context/context-agent.store";
+import { GlobalContext } from "../../../context/context.store";
 
 const HorizontalLoader = ({
   duration

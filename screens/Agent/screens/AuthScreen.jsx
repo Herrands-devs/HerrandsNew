@@ -3,9 +3,7 @@ import React from "react";
 import { SquareButton } from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
 
-const AuthScreen = ({
-   navigation
-}) => {
+const AuthScreen = ({ navigation }) => {
   const firstImage = require("../../../assets/first-bg.png");
   return (
     <ImageBackground source={firstImage}>
@@ -14,9 +12,9 @@ const AuthScreen = ({
       >
       <View className={`flex-col gap-y-3 items-center`}>
           <Text className={`text-white text-[18px] font-montserratBold`}>
-          Run Errands at your Convenience
-         </Text>
-         <Text
+            Run Errands at your Convenience
+          </Text>
+          <Text
             className={`text-white text-[14px] font-montserratRegular max-w-[216px] text-center mt-[8px]`}
           >
             Get paid for your time

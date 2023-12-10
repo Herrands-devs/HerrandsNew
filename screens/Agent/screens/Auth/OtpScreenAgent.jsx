@@ -11,13 +11,16 @@ import React, { useContext, useEffect, useState } from "react";
 import SafeAreaComponent from "../../../components/common/SafeAreaComponent";
 import { TouchableOpacity } from "react-native";
 import { OtpInputs } from "../../../components/common/Inputs";
-import { ResendModal, SuccessErrorModal } from "../../../components/common/Modals";
+import {
+  ResendModal,
+  SuccessErrorModal,
+} from "../../../components/common/Modals";
 import Loading from "../../../components/common/Loading";
 import { API_URl } from "../../../../config";
 import axios from "axios";
 import ErrorIcon from "../../../../assets/error-message.png";
 import SuccessIcon from "../../../../assets/icons/thank-you.png";
-import { GlobalContext } from "../../../../context/context-agent.store";
+import { GlobalContext } from "../../../../context/context.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
@@ -34,8 +37,7 @@ const OtpScreenAgent = ({ navigation, route }) => {
   const [isModal, setIsModal] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(null);
-  const { setToken  } = useContext(GlobalContext);
- 
+  const { setToken } = useContext(GlobalContext);
 
   const handleOtpChange = (newValues) => {
     setOtpValues(newValues);
@@ -56,19 +58,19 @@ const OtpScreenAgent = ({ navigation, route }) => {
     axios
       .post(`${API_URl}/accounts/validate-otp/`, data)
       .then((response) => {
-        console.log(response.status)
+        console.log(response.status);
         if (response.status === 200 || response.status === 201) {
-          console.log(response.data)
+          console.log(response.data);
           const userId = response.data.user.id;
           AsyncStorage.setItem("user_id", userId);
           AsyncStorage.setItem("token", response.data.token);
-          setToken(response.data.token)
-          const isComplete = response.data.user.account_completed
-          if(isComplete) {
+          setToken(response.data.token);
+          const isComplete = response.data.user.account_completed;
+          if (isComplete) {
             setLoading(false);
-            navigation.navigate('HomeScreen')
+            navigation.navigate("HomeScreen");
           } else {
-            navigation.navigate('CompleteScreen')
+            navigation.navigate("CompleteScreen");
           }
         } else {
           setLoading(false);
