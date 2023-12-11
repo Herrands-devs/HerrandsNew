@@ -89,11 +89,6 @@ const CustomerCreateErrand = ({ navigation }) => {
   const [subCategories, setSubCategories] = useState([]);
   const [vehicles, setVehicles] = useState([]);
 
-  useEffect(() => {
-    setRouteToGo(errandRoute);
-    console.log("route:::", errandRoute);
-  }, [errandRoute]);
-
   const getTravelTime = async () => {
     if (itemAddress !== undefined || recipientAddress !== undefined) {
       fetch(
@@ -189,7 +184,7 @@ const CustomerCreateErrand = ({ navigation }) => {
     await axios
       .get("https://herrand-backend-5a39ee15054e.herokuapp.com/api/categories")
       .then((res) => {
-        // console.log("responseeee", res.data);
+        console.log("categories responseeee", res.data);
         setCategories(res.data);
       })
       .catch((err) => {
@@ -203,7 +198,7 @@ const CustomerCreateErrand = ({ navigation }) => {
         `https://herrand-backend-5a39ee15054e.herokuapp.com/api/subtypes/?category_id=${id}`
       )
       .then((res) => {
-        // console.log("subcategories response:::", res.data);
+        console.log("subcategories response:::", res.data);
         setSubCategories(res.data);
       })
       .catch((err) => {

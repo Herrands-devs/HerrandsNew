@@ -215,6 +215,7 @@ const CustomerErrandMap = ({ navigation }) => {
         closeModal={() => setDetailsModal(false)}
         onAddNote={openAddNotes}
         onPress={confirmOrder}
+        rideList={rides}
       />
       <RideAddNotes
         isVisible={addNotesModal}

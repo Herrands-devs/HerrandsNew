@@ -437,16 +437,23 @@ export const RideDetails = ({
             </View>
             <View style={styles.modalContent}>
               <View
+                className={`flex-row items-center px-[16px] justify-between mb-[20px]`}
+              >
+                <Text className={`text-[20px] font-montserratSemiBold`}>
+                  Final Address
+                </Text>
+              </View>
+              <View
                 className={`flex-row items-center px-[16px] justify-between`}
               >
                 <Text className={`text-[20px] font-montserratSemiBold`}>
-                  Ibukun street
+                  {rideList.drop_off_address}
                 </Text>
                 <Image source={LocationIcon} className={`w-[24px] h-[24px]`} />
               </View>
               <View className={`px-[16px] my-[20px]`}>
                 <Text className={`text-[16px] font-montserratSemiBold`}>
-                  N 9000
+                  {formatCurrency(rideList.vehicleDetails?.cost)}
                 </Text>
               </View>
               <View className={`px-[16px]`}>
@@ -757,7 +764,7 @@ export const AgentAcceptedModal = ({
       animationType="none"
       onRequestClose={slideDown}
     >
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={slideDown}>
         <View style={styles.ridesOverlay}>
           <Animated.View
             style={[
