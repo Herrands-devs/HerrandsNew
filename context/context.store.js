@@ -37,6 +37,8 @@ export const GlobalProvider = ({ children }) => {
   const [vehicleType, setVehicleType] = useState("");
   const [vehicleId, setVehicleId] = useState(null);
   const [rides, setRides] = useState([]);
+  const [socketUrl , setSocketUrl] = useState("errand")
+  const [message , setMessage] = useState([])
 
   useEffect(() => {
     if (isNewUser) {
@@ -47,7 +49,7 @@ export const GlobalProvider = ({ children }) => {
   }, [isNewUser]);
 
   const getUserId = async () => {
-    // AsyncStorage.removeItem("user_id");
+    // AsyncStorage.removeItem("userType");
     // AsyncStorage.removeItem("token");
     const user_id = await AsyncStorage.getItem("user_id");
     const userType = await AsyncStorage.getItem("userType");
@@ -69,11 +71,11 @@ export const GlobalProvider = ({ children }) => {
     const token = await AsyncStorage.getItem("token");
 
     if (token !== null) {
-      setToken(false);
+      setToken(token);
       setIsAuthenticated(true);
       // console.log("asyncStorage token:::", token);
     } else {
-      setToken(true);
+      setToken("");
       setIsAuthenticated(false);
     }
   };
@@ -151,6 +153,11 @@ export const GlobalProvider = ({ children }) => {
         rides,
         setRides,
         setUserType,
+        socketUrl , 
+        setSocketUrl,
+        message , 
+        setMessage
+        
       }}
     >
       {children}

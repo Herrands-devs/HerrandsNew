@@ -174,7 +174,7 @@ const MainCustomer = () => {
 };
 
 const Navigation = () => {
-  const { userType, isToken, isNewUser, isOnBoarded, isAuthenticated } =
+  const { userType, isNewUser, isOnBoarded, isAuthenticated } =
     useContext(GlobalContext);
 
   return (

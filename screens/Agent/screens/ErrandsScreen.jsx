@@ -13,14 +13,15 @@ import axios from "axios";
 import { GlobalContext } from "../../../context/context.store";
 import isEmpty from "../../components/isEmpty";
 
-const FirstRoute = (navigation, isLoading, errandsData, refreshing) => {
+const FirstRoute = (navigation, isLoading, errandsData, refreshing, handleRefresh) => {
+  console.log(refreshing)
   return (
     <ScrollView
       className="flex gap-[1px]"
       RefreshControl={
         <RefreshControl
           refreshing={refreshing}
-          onRefresh={errandsData}
+          onRefresh={handleRefresh}
           colors={["#333333"]} // Android
           tintColor={"#33333"} // iOS
         />
@@ -57,7 +58,7 @@ const FirstRoute = (navigation, isLoading, errandsData, refreshing) => {
 
               <View className="flex flex-col gap-2">
                 <Text className="text-[#000E23] text-[20px]">
-                  {item.subtype.name}
+                  {item?.subtype?.name}
                 </Text>
                 <Text className="text-[#C6C6C6] text-[14px] font-montserratRegular">
                   Duration : {item.estimated_drop_off_time}
@@ -138,7 +139,7 @@ const SecondRoute = (navigation, isFetching, completedErrands, refreshing) => {
 
               <View className="flex flex-col gap-2">
                 <Text className="text-[#000E23] text-[20px]">
-                  {item.subtype.name}
+                  {item?.subtype?.name}
                 </Text>
                 <Text className="text-[#C6C6C6] text-[14px] font-montserratRegular">
                   Duration : {item.estimated_drop_off_time}
@@ -179,7 +180,7 @@ export const ErrandsScreen = ({ navigation }) => {
   const { isToken } = useContext(GlobalContext);
   const [isLoading, setIsLoading] = useState(true);
   const [errandsData, setErrandsData] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState(true);
   const [isFetching, setIsFetching] = useState(true);
   const [completedErrands, setCompleted] = useState([]);
   const layout = useWindowDimensions();
@@ -196,7 +197,7 @@ export const ErrandsScreen = ({ navigation }) => {
     />
   );
 
-  useEffect(() => {
+  const fetchErrands = () => {
     axios
       .get(`${API_URl}/api/user_errand_tasks/agent_errands/`, {
         headers: {
@@ -208,8 +209,18 @@ export const ErrandsScreen = ({ navigation }) => {
         setErrandsData(response.data);
         setIsLoading(false);
       })
-      .catch((err) => console.log(err));
-  }, [API_URl]);
+    .catch((err) => console.log(err));
+  }
+
+  useEffect(() => {
+    fetchErrands()
+  }, []);
+
+  const handleRefresh = () => {
+    console.log('yes')
+    setRefreshing(true); // Set refreshing to true to indicate that a refresh is in progress
+    fetchErrands(); // Fetch data again
+  };
 
   useEffect(() => {
     axios
@@ -262,7 +273,8 @@ export const ErrandsScreen = ({ navigation }) => {
                   navigation,
                   isLoading,
                   errandsData,
-                  refreshing
+                  refreshing,
+                  handleRefresh
                 );
               case "second":
                 return SecondRoute(
