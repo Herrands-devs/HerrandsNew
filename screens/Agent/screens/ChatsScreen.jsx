@@ -14,16 +14,17 @@ import axios from "axios";
 import { API_URl } from "../../../config";
 import { GlobalContext } from "../../../context/context.store";
 import Loading from "../../components/common/Loading";
+import isEmpty from "../../components/isEmpty";
 
 const ChatsScreen = ({ navigation }) => {
-  const [message, setMessage] = useState([]);
-  const { isToken, setChat } = useContext(GlobalContext);
+  const [chat, setMessage] = useState([]);
+  const { isToken, socketUrl ,message} = useContext(GlobalContext);
   const [isLoading, setLoading] = useState(false);
   useEffect(() => {
     setLoading(true);
     axios
       .get(
-        `${API_URl}/api/conversations/e6d1250a-f4a6-4ee7-a4df-70290aaf6eb0/`,
+        `${API_URl}/api/agent-conversations`,
         {
           headers: {
             "Content-type": "application/json",
@@ -32,13 +33,12 @@ const ChatsScreen = ({ navigation }) => {
         }
       )
       .then((response) => {
-        console.log(response.data[0]);
-        setMessage(response.data[0]);
-        setChat(response.data[0]);
+        setMessage(response.data);
         setLoading(false);
       })
       .catch((err) => console.log(err));
-  }, [API_URl]);
+  }, []);
+  console.log(socketUrl)
   return (
     <SafeAreaView className="bg-white">
       <Text className="text-[24px] p-6 text-[#000E23] font-semibold font-MontserratMedium">
@@ -53,10 +53,14 @@ const ChatsScreen = ({ navigation }) => {
             <ActivityIndicator />
           </View>
         ) : (
+        chat &&
+          chat?.reverse().map((item , index) => {
+          return (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Chat", { chat: message });
+              navigation.navigate("Chat", { chat: item.errand , customer : item.customer });
             }}
+            key={index}
             className="relative flex gap-5  flex-row"
           >
             <View className="relative w-[48px] h-[48px]">
@@ -64,15 +68,24 @@ const ChatsScreen = ({ navigation }) => {
                 source={require("../../../assets/herrand-profile.png")}
                 className="rounded-full object-cover w-full h-full"
               />
+              
               <View
-                className="bg-[#1FF30C] border-2 border-white w-[14px] h-[14px] rounded-full"
+                className={`${item.customer.status === 'Active' ? 'bg-[#1FF30C]' :'bg-[#AEAEAE]' } border-2 border-white w-[14px] h-[14px] rounded-full`}
                 style={styles.badge}
               ></View>
             </View>
             <View className="flex justify-between">
-              <Text className="font-montserratSemiBold">Ritilayo Ronko</Text>
-              <Text className="text-sm font-montserratRegular text-[#AEAEAE]">
-                Please i need help buying...
+              <Text className="font-montserratSemiBold">{item.customer?.first_name} {item.customer?.last_name}</Text>
+              <Text className="text-sm italic text-[#AEAEAE]">
+                {isEmpty(item.last_message.text) ?
+                'Chat Initiated....'
+                :
+                (isEmpty(message) ?
+                  item.last_message.text
+                  :
+                  message[message.length() - 1].text
+                )
+                }
               </Text>
             </View>
             <View className="flex justify-between items-end absolute right-0">
@@ -84,6 +97,8 @@ const ChatsScreen = ({ navigation }) => {
               </View>
             </View>
           </TouchableOpacity>
+          )
+        })
         )}
       </ScrollView>
     </SafeAreaView>
