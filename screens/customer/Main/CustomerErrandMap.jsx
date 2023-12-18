@@ -32,7 +32,8 @@ const CustomerErrandMap = ({ navigation }) => {
   const [searchModal, setSearchModal] = useState(false);
   const [agentAcceptedModal, setAgentAcceptedModal] = useState(false);
   const [trackErrandModal, setTrackErrandModal] = useState(false);
-  const { rides } = useContext(GlobalContext);
+  const { rides, errandAccepted, setErrandAccepted } =
+    useContext(GlobalContext);
 
   const handleCloseSidebar = () => {
     setIsOpen(false);
@@ -116,18 +117,28 @@ const CustomerErrandMap = ({ navigation }) => {
 
     setTimeout(() => {
       setLoading(false);
-      openAcceptedModal();
+      setSearchModal(true);
     }, 3000);
   };
 
-  const openAcceptedModal = () => {
-    setSearchModal(true);
+  useEffect(() => {
+    if (searchModal) {
+      if (errandAccepted) {
+        setSearchModal(false);
+        setAgentAcceptedModal(true);
+        setErrandAccepted(false);
+      }
+    }
+  }, [searchModal, errandAccepted]);
 
-    setTimeout(() => {
-      setSearchModal(false);
-      setAgentAcceptedModal(true);
-    }, 3000);
-  };
+  // const openAcceptedModal = () => {
+  //   setSearchModal(true);
+
+  //   setTimeout(() => {
+  //     setSearchModal(false);
+  //     setAgentAcceptedModal(true);
+  //   }, 3000);
+  // };
 
   const trackErrand = () => {
     setTrackErrandModal(true);

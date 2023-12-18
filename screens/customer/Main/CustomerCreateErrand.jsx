@@ -56,13 +56,11 @@ const CustomerCreateErrand = ({ navigation }) => {
     itemAddress,
     recipientAddress,
     categoryId,
-    createErrandSent,
-    setCreatErrandSent,
     setSelectedcategory,
-    errandRoute,
-    setErrandRoute,
     vehicleType,
     vehicleId,
+    setCategoryId,
+    subTypeId
   } = useContext(GlobalContext);
   const [categories, setCategories] = useState();
   const [userId, setUserId] = useState("");
@@ -111,10 +109,10 @@ const CustomerCreateErrand = ({ navigation }) => {
   }, [itemAddress, recipientAddress]);
 
   const message = {
-    type: "create.errand",
+    type: "create.routine_errand",
     data: {
       category: categoryId,
-      subtype: "1",
+      subtype: subTypeId,
       pick_up_lat: itemAddress && itemAddress.details.lat,
       pick_up_long: itemAddress && itemAddress.details.lng,
       pick_up_address: itemAddress && itemAddress.description,
@@ -228,182 +226,6 @@ const CustomerCreateErrand = ({ navigation }) => {
     fetchSubCategories(1);
   }, []);
 
-  // const routineList = [
-  //   {
-  //     id: 1,
-  //     title: "Send a package",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Pickup/drop off item",
-  //   },
-
-  //   {
-  //     id: 4,
-  //     title: "Shop for groceries",
-  //   },
-  // ];
-
-  // const groceryList = [
-  //   {
-  //     id: 1,
-  //     title: "Go somewhere with an agent",
-  //   },
-  // ];
-
-  // const socialList = [
-  //   {
-  //     id: 1,
-  //     title: "Manage my facebook page",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Manage my instagram page",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Manage my twitter page",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Manage my telegram group/channel",
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Manage my linkedin page",
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Manage my tiktok account",
-  //   },
-  //   {
-  //     id: 7,
-  //     title: "Manage my youtube channel",
-  //   },
-  // ];
-
-  // const officeList = [
-  //   {
-  //     id: 2,
-  //     title: "Do data entry",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Type a document",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Take meeting notes",
-  //   },
-
-  //   {
-  //     id: 8,
-  //     title: "Manage my email inbox",
-  //   },
-  // ];
-
-  // const householdList = [
-  //   {
-  //     id: 1,
-  //     title: "Clean up my house",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Carry a household item",
-  //   },
-  // ];
-
-  const CarryHouseholdItemsFields = () => {
-    return (
-      <View className={`space-y-[26px]`}>
-        <View>
-          <PrimaryInput
-            label={"Item's description"}
-            placeHolder={"What's the item to pick up?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Item's address"}
-            placeHolder={"What's the location of the item?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Custodian's phone"}
-            placeHolder={"Custodian of item's hotline?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Recipient's address"}
-            placeHolder={"Where will the item be delivered?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Recipient's phone"}
-            placeHolder={"Recipient of the item's hotline?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Any instructions"}
-            placeHolder={"Tell us anything we need to know"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const ShopForGroceriesFields = () => {
-    return (
-      <View className={`space-y-[26px]`}>
-        <View>
-          <PrimaryInput
-            label={"What items do you want to purcahse?"}
-            placeHolder={"List the items to purchase"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Your estimated price"}
-            placeHolder={"How much do you think this will cost?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Your house address"}
-            placeHolder={"Where should your items be delivered?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Your phone number"}
-            placeHolder={"Give us a hotline to reach you"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Please add more details"}
-            placeHolder={"Tell us anything we need to know"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-      </View>
-    );
-  };
-
   const ManageEmailFields = () => {
     return (
       <View className={`space-y-[26px]`}>
@@ -452,94 +274,6 @@ const CustomerCreateErrand = ({ navigation }) => {
         </View>
       </View>
     );
-  };
-
-  const ArrangeTravelsField = () => {
-    return (
-      <View className={`space-y-[26px]`}>
-        <View>
-          <PrimaryInput
-            label={"What would you like help with?"}
-            placeHolder={"Please be specific with your tasks"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-
-        <View>
-          <PrimaryInput
-            label={"When do you want this completed?"}
-            placeHolder={"Select date and time"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Kindly give us more details"}
-            placeHolder={"Tell us anything we need to know..."}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Any relevcant file(s)"}
-            placeHolder={"No file chosen"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const CleanMyHouseFields = () => {
-    return (
-      <View className={`space-y-[26px]`}>
-        <View>
-          <PrimaryInput
-            label={"What do you need assistance with?"}
-            placeHolder={"Please be specific with your tasks"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-
-        <View>
-          <PrimaryInput
-            label={"For how long?"}
-            placeHolder={"The number of hours this will take"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Meet-up address"}
-            placeHolder={"Where should the Herrands agent meet you?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Please add any instructions"}
-            placeHolder={"Tell us anything we need to know"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const navigateToNext = () => {
-    if (
-      selectedState === "Pickup/drop off item" ||
-      selectedState === "Carry a household item" ||
-      selectedState === "Shop for groceries"
-    ) {
-      navigation.navigate("CustomerErrandMap");
-    } else if (
-      selectedState === "Manage my email inbox" ||
-      selectedState === "Arrange my travels" ||
-      selectedState === "Clean up my house"
-    ) {
-      navigation.navigate("CustomerVirtualProcess");
-    }
   };
 
   useEffect(() => {
@@ -607,6 +341,7 @@ const CustomerCreateErrand = ({ navigation }) => {
                             }
                             title={category.name}
                             onPress={() => {
+                              setCategoryId(category.id);
                               if (category.name === "Routine errands") {
                                 setModalStates({
                                   ...modalStates,
@@ -775,28 +510,62 @@ const CustomerCreateErrand = ({ navigation }) => {
                     />
                   </View>
                 </View>
-              ) : selectedState === "Carry a household item" ? (
+              ) : selectedState === "Send a package" ? (
                 <View className={`space-y-[26px]`}>
-                  <View>
-                    <PrimaryInput
-                      label={"Item's description"}
-                      placeHolder={"What's the item to pick up?"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
+                  {/* <View> */}
+                  <PrimaryInput
+                    label={"Item's description"}
+                    placeHolder={"What's the item to pick up?"}
+                    labelStyle={{
+                      fontSize: 16,
+                      fontFamily: "MontserratSemiBold",
+                    }}
+                    value={pickItemsValues.item_description}
+                    onChangeText={(text) =>
+                      setPickItemsValues({
+                        ...pickItemsValues,
+                        item_description: text,
+                      })
+                    }
+                    type="default"
+                  />
+
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select vehicle"}
+                      options={vehicles}
+                      label={"What type of vehicle do you need?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
                     />
                   </View>
-                  <View>
-                    <PrimaryInput
-                      label={"Item's address"}
-                      placeHolder={"What's the location of the item?"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                    />
-                  </View>
+                  {/* </View> */}
+                  <TouchableOpacity
+                    style={{ zIndex: 10 }}
+                    onPress={() =>
+                      navigation.navigate("SelectAddress", { type: "item" })
+                    }
+                  >
+                    <Text
+                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
+                    >
+                      Item's address
+                    </Text>
+                    <View
+                      className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                    >
+                      <Text
+                        className={`${
+                          itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                        } text-[14px] font-montserratSemiBold`}
+                      >
+                        {itemAddress === undefined
+                          ? "Where is the location of the item?"
+                          : itemAddress.description}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                   <View>
                     <PrimaryInput
                       label={"Custodian's phone"}
@@ -805,17 +574,48 @@ const CustomerCreateErrand = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={pickItemsValues.sendder_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          sendder_contact: text,
+                        })
+                      }
+                      type={"phone-pad"}
                     />
                   </View>
                   <View>
-                    <PrimaryInput
-                      label={"Recipient's address"}
-                      placeHolder={"Where will the item be delivered?"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                    />
+                    <TouchableOpacity
+                      style={{ zIndex: 10 }}
+                      onPress={() =>
+                        navigation.navigate("SelectAddress", {
+                          type: "recipient",
+                        })
+                      }
+                    >
+                      <Text
+                        className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                        style={{
+                          fontSize: 16,
+                          fontFamily: "MontserratSemiBold",
+                        }}
+                      >
+                        Recipient's address
+                      </Text>
+                      <View
+                        className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                      >
+                        <Text
+                          className={`${
+                            recipientAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                          } text-[14px] font-montserratSemiBold`}
+                        >
+                          {recipientAddress === undefined
+                            ? "Where will the item be delivered?"
+                            : recipientAddress.description}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
                   <View>
                     <PrimaryInput
@@ -825,16 +625,140 @@ const CustomerCreateErrand = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={pickItemsValues.recipient_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          recipient_contact: text,
+                        })
+                      }
+                      type={"phone-pad"}
                     />
                   </View>
+                </View>
+              ) : selectedState === "Carry a household item" ? (
+                <View className={`space-y-[26px]`}>
+                  {/* <View> */}
+                  <PrimaryInput
+                    label={"Item's description"}
+                    placeHolder={"What's the item to pick up?"}
+                    labelStyle={{
+                      fontSize: 16,
+                      fontFamily: "MontserratSemiBold",
+                    }}
+                    value={pickItemsValues.item_description}
+                    onChangeText={(text) =>
+                      setPickItemsValues({
+                        ...pickItemsValues,
+                        item_description: text,
+                      })
+                    }
+                    type="default"
+                  />
+
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select vehicle"}
+                      options={vehicles}
+                      label={"What type of vehicle do you need?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
+                    />
+                  </View>
+                  {/* </View> */}
+                  <TouchableOpacity
+                    style={{ zIndex: 10 }}
+                    onPress={() =>
+                      navigation.navigate("SelectAddress", { type: "item" })
+                    }
+                  >
+                    <Text
+                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
+                    >
+                      Item's address
+                    </Text>
+                    <View
+                      className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                    >
+                      <Text
+                        className={`${
+                          itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                        } text-[14px] font-montserratSemiBold`}
+                      >
+                        {itemAddress === undefined
+                          ? "Where is the location of the item?"
+                          : itemAddress.description}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                   <View>
                     <PrimaryInput
-                      label={"Any instructions"}
-                      placeHolder={"Tell us anything we need to know"}
+                      label={"Custodian's phone"}
+                      placeHolder={"Custodian of item's hotline?"}
                       labelStyle={{
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={pickItemsValues.sendder_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          sendder_contact: text,
+                        })
+                      }
+                      type={"phone-pad"}
+                    />
+                  </View>
+                  <View>
+                    <TouchableOpacity
+                      style={{ zIndex: 10 }}
+                      onPress={() =>
+                        navigation.navigate("SelectAddress", {
+                          type: "recipient",
+                        })
+                      }
+                    >
+                      <Text
+                        className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                        style={{
+                          fontSize: 16,
+                          fontFamily: "MontserratSemiBold",
+                        }}
+                      >
+                        Recipient's address
+                      </Text>
+                      <View
+                        className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                      >
+                        <Text
+                          className={`${
+                            recipientAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                          } text-[14px] font-montserratSemiBold`}
+                        >
+                          {recipientAddress === undefined
+                            ? "Where will the item be delivered?"
+                            : recipientAddress.description}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <PrimaryInput
+                      label={"Recipient's phone"}
+                      placeHolder={"Recipient of the item's hotline?"}
+                      labelStyle={{
+                        fontSize: 16,
+                        fontFamily: "MontserratSemiBold",
+                      }}
+                      value={pickItemsValues.recipient_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          recipient_contact: text,
+                        })
+                      }
+                      type={"phone-pad"}
                     />
                   </View>
                 </View>
@@ -881,11 +805,59 @@ const CustomerCreateErrand = ({ navigation }) => {
                     />
                   </View>
                 </View>
-              ) : selectedState === "Manage my email inbox" ? (
+              ) : selectedState === "Manage my social page" ? (
                 <ManageEmailFields />
-              ) : selectedState === "Arrange my travels" ? (
-                <ArrangeTravelsField />
+              ) : selectedState === "Take meeting notes" ? (
+                <ManageEmailFields />
               ) : selectedState === "Clean up my house" ? (
+                <View className={`space-y-[26px]`}>
+                  <View>
+                    <PrimaryInput
+                      label={"What do you need assistance with?"}
+                      placeHolder={"Please be specific with your tasks"}
+                      labelStyle={{
+                        fontSize: 16,
+                        fontFamily: "MontserratSemiBold",
+                      }}
+                    />
+                  </View>
+
+                  <View>
+                    <PrimaryInput
+                      label={"For how long?"}
+                      placeHolder={"The number of hours this will take"}
+                      labelStyle={{
+                        fontSize: 16,
+                        fontFamily: "MontserratSemiBold",
+                      }}
+                    />
+                  </View>
+                  <View>
+                    <PrimaryInput
+                      label={"Meet-up address"}
+                      placeHolder={"Where should the Herrands agent meet you?"}
+                      labelStyle={{
+                        fontSize: 16,
+                        fontFamily: "MontserratSemiBold",
+                      }}
+                    />
+                  </View>
+                  <View>
+                    <PrimaryInput
+                      label={"Please add any instructions"}
+                      placeHolder={"Tell us anything we need to know"}
+                      labelStyle={{
+                        fontSize: 16,
+                        fontFamily: "MontserratSemiBold",
+                      }}
+                    />
+                  </View>
+                </View>
+              ) : selectedState === "Type a document" ? (
+                <ManageEmailFields />
+              ) : selectedState === "Do data entry" ? (
+                <ManageEmailFields />
+              ) : selectedState === "Go somewhere with an agent" ? (
                 <View className={`space-y-[26px]`}>
                   <View>
                     <PrimaryInput

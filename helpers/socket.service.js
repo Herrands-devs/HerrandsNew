@@ -13,6 +13,7 @@ const useSocket = () => {
     errandRoute,
     setErrandRoute,
     setRides,
+    setErrandAccepted,
   } = useContext(GlobalContext);
   const navigation = useNavigation();
 
@@ -60,8 +61,13 @@ const useSocket = () => {
                 estimated_drop_off_time:
                   parsedData.data.estimated_drop_off_time,
                 drop_off_address: parsedData.data.drop_off_address,
+                total_cost: parsedData.data.total_cost,
+                errand_id: parsedData.data.id,
               });
               console.log("parsed data:::", parsedData.data.vehicle_type);
+            }
+            if (parsedData.type === "errand.accepted") {
+              setErrandAccepted(true);
             }
             setCreatErrandSent(true);
           } else {
@@ -109,7 +115,6 @@ const useSocket = () => {
   };
 
   const handleSendMessage = (message) => {
-    setErrandRoute("");
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(message));
       console.log("message sent in socket", message);
@@ -139,7 +144,7 @@ const useSocket = () => {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Run the effect whenever the token changes
+  }, [token]); // Run the effect whenever the token changes
 
   return {
     handleButtonClick,

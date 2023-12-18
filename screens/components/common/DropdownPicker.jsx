@@ -25,7 +25,7 @@ export const DropDownPicker = ({
   const [isFocused, setFocused] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [value, setValue] = useState("");
-  const { setSelectedcategory, setCategoryId, selectedCategory } =
+  const { setSelectedcategory, setSubTypeId, selectedCategory } =
     useContext(GlobalContext);
 
   return (
@@ -97,7 +97,7 @@ export const DropDownPicker = ({
                   setValue(option.name);
                   setIsActive(false);
                   setSelectedcategory(option.name);
-                  setCategoryId(option.id);
+                  setSubTypeId(option.id);
                 }}
                 className={`mb-[10px]`}
               >

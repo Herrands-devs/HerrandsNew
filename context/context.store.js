@@ -37,6 +37,9 @@ export const GlobalProvider = ({ children }) => {
   const [vehicleType, setVehicleType] = useState("");
   const [vehicleId, setVehicleId] = useState(null);
   const [rides, setRides] = useState([]);
+  const [addNote, setAddNote] = useState("");
+  const [subTypeId, setSubTypeId] = useState();
+  const [errandAccepted, setErrandAccepted] = useState(false);
 
   useEffect(() => {
     if (isNewUser) {
@@ -151,6 +154,12 @@ export const GlobalProvider = ({ children }) => {
         rides,
         setRides,
         setUserType,
+        addNote,
+        setAddNote,
+        subTypeId,
+        setSubTypeId,
+        errandAccepted,
+        setErrandAccepted,
       }}
     >
       {children}
