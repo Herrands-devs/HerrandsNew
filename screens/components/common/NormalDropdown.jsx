@@ -5,8 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import { GlobalContext } from "../../../context/context.store";
+import CarIcon from "../../../assets/icons/car.png";
+import BikeIcon from "../../../assets/icons/bike.png";
+import VanIcon from "../../../assets/icons/van.png";
+import SomeoneIcon from "../../../assets/icons/someone.png";
 
 export const NormalDropdown = ({
   style,
@@ -61,9 +66,41 @@ export const NormalDropdown = ({
             onPress={() => setIsActive(!isActive)}
             className="w-full h-full flex justify-center cursor-pointer"
           >
-            <Text className="text-[#6B7C97] font-montserratRegular">
-              {value ? value : vehicleType ? vehicleType : defaultOption}
-            </Text>
+            {value === "van" ? (
+              <View className={`flex-row items-center`}>
+                <Image source={VanIcon} />
+                <Text className="p-2 text-[#6B7C97]">
+                  i need a van for this errand
+                </Text>
+              </View>
+            ) : value === "car" ? (
+              <View className={`flex-row items-center`}>
+                <Image source={CarIcon} />
+                <Text className="p-2 text-[#6B7C97]">
+                  i need a car for this errand
+                </Text>
+              </View>
+            ) : value === "bike" ? (
+              <View className={`flex-row items-center`}>
+                <Image source={BikeIcon} />
+                <Text className="p-2 text-[#6B7C97]">
+                  i need a bike for this errand
+                </Text>
+              </View>
+            ) : value === "someone" ? (
+              <View className={`flex-row items-center`}>
+                <Image source={SomeoneIcon} />
+                <Text className="p-2 text-[#6B7C97]">
+                  i need someone for this errand
+                </Text>
+              </View>
+            ) : vehicleType ? (
+              <></>
+            ) : (
+              <Text className="text-[#6B7C97] font-montserratRegular">
+                {defaultOption}
+              </Text>
+            )}
           </TouchableOpacity>
         ) : (
           <TextInput
@@ -93,9 +130,38 @@ export const NormalDropdown = ({
                   setVehicleId(option.id);
                 }}
               >
-                <Text className="p-2 text-[#6B7C97]">
-                  {option.vehicle_type}
-                </Text>
+                {option.vehicle_type === "car" && (
+                  <View className={`flex-row items-center`}>
+                    <Image source={CarIcon} />
+                    <Text className="p-2 text-[#6B7C97]">
+                      i need a car for this errand
+                    </Text>
+                  </View>
+                )}
+                {option.vehicle_type === "bike" && (
+                  <View className={`flex-row items-center`}>
+                    <Image source={BikeIcon} />
+                    <Text className="p-2 text-[#6B7C97]">
+                      i need a bike for this errand
+                    </Text>
+                  </View>
+                )}
+                {option.vehicle_type === "van" && (
+                  <View className={`flex-row items-center`}>
+                    <Image source={VanIcon} />
+                    <Text className="p-2 text-[#6B7C97]">
+                      i need a van for this errand
+                    </Text>
+                  </View>
+                )}
+                {option.vehicle_type === "someone" && (
+                  <View className={`flex-row items-center`}>
+                    <Image source={SomeoneIcon} />
+                    <Text className="p-2 text-[#6B7C97]">
+                      i need someone for this errand
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
             ))}
           </ScrollView>

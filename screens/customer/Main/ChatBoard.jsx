@@ -11,19 +11,18 @@ import { Dimensions, Image, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome, Entypo, Ionicons } from "@expo/vector-icons";
 import { TextInput } from "react-native";
-import KeyboardAvoidingContainer from "../../../components/common/KeyboardAvoidingContainer";
 import { Platform } from "react-native";
 import axios from "axios";
-import { API_URl } from "../../../../config";
-import { GlobalContext } from "../../../../context/context.store";
-import isEmpty from "../../../components/isEmpty";
-import useSocket from "../../../../helpers/socket.service";
+import { GlobalContext } from "../../../context/context.store";
+import isEmpty from "../../components/isEmpty";
+import useSocket from "../../../helpers/socket.service";
+import { API_URl } from "../../../config";
 
-const ChatBoard = ({ navigation, route }) => {
+const ChatBoardCustomer = ({ navigation, route }) => {
   const { userId, isToken, setSocketUrl } = useContext(GlobalContext);
   const [message, setMessage] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const { chat, customer } = route.params;
+  const { chat, agent } = route.params;
   const [textInput, setText] = useState("");
   const { sendMessage, handleButtonClick, isConnected } = useSocket();
 
@@ -81,7 +80,7 @@ const ChatBoard = ({ navigation, route }) => {
     <View className="relative">
       <View className="w-full h-screen absolute">
         <Image
-          source={require("../../../../assets/chatbg.png")}
+          source={require("../../../assets/chatbg.png")}
           className="w-full h-full"
         />
       </View>
@@ -95,7 +94,7 @@ const ChatBoard = ({ navigation, route }) => {
           </TouchableOpacity>
           <View className="relative w-[48px] h-[48px]">
             <Image
-              source={require("../../../../assets/herrand-profile.png")}
+              source={require("../../../assets/herrand-profile.png")}
               className="rounded-full object-cover w-full h-full"
             />
             <View
@@ -105,12 +104,12 @@ const ChatBoard = ({ navigation, route }) => {
           </View>
           <View className="flex justify-around">
             <Text className="font-montserratSemiBold text-white">
-              {/* {message.customer.first_name} */}
-              {customer?.first_name} {customer?.last_name}
+              {/* {message.agent.first_name} */}
+              {agent?.first_name} {agent?.last_name}
               {/* Kelly otewo */}
             </Text>
             <Text className="text-sm font-montserratRegular text-[#AEAEAE]">
-              {customer?.status}
+              {agent?.status}
             </Text>
           </View>
           <View className="flex justify-between top-6 items-end absolute right-5">
@@ -247,4 +246,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatBoard;
+export default ChatBoardCustomer;

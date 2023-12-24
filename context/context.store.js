@@ -31,7 +31,7 @@ export const GlobalProvider = ({ children }) => {
   const [userType, setUserType] = useState("");
   const [itemAddress, setItemAddress] = useState();
   const [recipientAddress, setRecipientAddress] = useState();
-  const [categoryId, setCategoryId] = useState();
+  const [categoryId, setCategoryId] = useState(1);
   const [createErrandSent, setCreatErrandSent] = useState(false);
   const [errandRoute, setErrandRoute] = useState("");
   const [vehicleType, setVehicleType] = useState("");
@@ -40,6 +40,12 @@ export const GlobalProvider = ({ children }) => {
   const [addNote, setAddNote] = useState("");
   const [subTypeId, setSubTypeId] = useState();
   const [errandAccepted, setErrandAccepted] = useState(false);
+  const [socketUrl, setSocketUrl] = useState("errand");
+  const [message, setMessage] = useState([]);
+  const [searchModal, setSearchModal] = useState(false);
+  const [rideDetailsModal, setRideDetailsModal] = useState(false);
+  const [agentInfo, setAgentInfo] = useState({});
+  const [errandId, setErrandId] = useState(null);
 
   useEffect(() => {
     if (isNewUser) {
@@ -50,7 +56,7 @@ export const GlobalProvider = ({ children }) => {
   }, [isNewUser]);
 
   const getUserId = async () => {
-    // AsyncStorage.removeItem("user_id");
+    // AsyncStorage.removeItem("userType");
     // AsyncStorage.removeItem("token");
     const user_id = await AsyncStorage.getItem("user_id");
     const userType = await AsyncStorage.getItem("userType");
@@ -65,18 +71,18 @@ export const GlobalProvider = ({ children }) => {
     }
     console.log("asyncStorage userid:::", user_id);
     console.log("asyncStorage usertype:::", userType);
-    console.log("asyncStorage token:::", Token);
+    // console.log("asyncStorage token:::", Token);
   };
 
   const getToken = async () => {
     const token = await AsyncStorage.getItem("token");
 
     if (token !== null) {
-      setToken(false);
+      setToken(token);
       setIsAuthenticated(true);
       // console.log("asyncStorage token:::", token);
     } else {
-      setToken(true);
+      setToken("");
       setIsAuthenticated(false);
     }
   };
@@ -92,6 +98,9 @@ export const GlobalProvider = ({ children }) => {
   useEffect(() => {
     // AsyncStorage.removeItem("user_id");
     // AsyncStorage.removeItem("token");
+    // AsyncStorage.removeItem("userType");
+    // setErrandAccepted(false);
+    console.log("Errand accepted state:::", errandAccepted);
     getUserId();
   }, []);
 
@@ -160,6 +169,18 @@ export const GlobalProvider = ({ children }) => {
         setSubTypeId,
         errandAccepted,
         setErrandAccepted,
+        socketUrl,
+        setSocketUrl,
+        message,
+        setMessage,
+        searchModal,
+        setSearchModal,
+        rideDetailsModal,
+        setRideDetailsModal,
+        agentInfo,
+        setAgentInfo,
+        errandId,
+        setErrandId,
       }}
     >
       {children}

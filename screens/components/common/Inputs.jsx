@@ -20,6 +20,7 @@ export const PrimaryInput = ({
   labelStyle,
   isError,
   maxLength,
+  mainType,
   ...rest
 }) => {
   const [isFocused, setFocused] = useState(false);

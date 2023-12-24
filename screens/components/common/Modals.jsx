@@ -397,6 +397,7 @@ export const RideDetails = ({
   const completeErrandCreation = async () => {
     setLoading(true);
     sendMessage(message);
+    console.log("main message sent...", message);
     setTimeout(() => {
       onPress();
       setLoading(false);
@@ -746,14 +747,18 @@ export const AgentAcceptedModal = ({
   closeModal,
   onPress,
   openDetails,
+  navigation,
 }) => {
   const translateY = useRef(new Animated.Value(500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const [selectedItem, setSelectedItem] = useState(0);
+  const { agentInfo, errandId } = useContext(GlobalContext);
 
   const selectRide = (id) => {
     setSelectedItem(id);
   };
+
+  console.log("Agent info:::", agentInfo, errandId);
 
   const slideUp = () => {
     Animated.parallel([
@@ -835,13 +840,17 @@ export const AgentAcceptedModal = ({
                     <Text
                       className={`text-center text-[12px] font-montserratSemiBold`}
                     >
-                      Collins
+                      {agentInfo.first_name}
                     </Text>
                   </View>
 
                   <View>
                     <TouchableOpacity
                       className={`bg-[#ccc] w-[64px] h-[64px] rounded-full justify-center items-center`}
+                      onPress={() => {
+                        navigation.navigate("ChatScreen");
+                        slideDown();
+                      }}
                     >
                       <Image
                         source={AddNoteIcon}

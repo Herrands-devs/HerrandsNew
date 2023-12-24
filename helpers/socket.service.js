@@ -8,12 +8,13 @@ const useSocket = () => {
   const socketRef = useRef(null);
   const [token, setToken] = useState(null);
   const {
-    createErrandSent,
     setCreatErrandSent,
-    errandRoute,
-    setErrandRoute,
     setRides,
     setErrandAccepted,
+    setSearchModal,
+    setRideDetailsModal,
+    setAgentInfo,
+    setErrandId,
   } = useContext(GlobalContext);
   const navigation = useNavigation();
 
@@ -21,14 +22,14 @@ const useSocket = () => {
 
   const fetchToken = async () => {
     const asyncToken = await getAsyncToken();
-    console.log("token:::", asyncToken);
+    // console.log("token:::", asyncToken);
     setToken(asyncToken);
   };
 
   const initializeSocket = () => {
     if (!token) return;
 
-    const SOCKET_URL = `https://herrand-backend-5a39ee15054e.herokuapp.com/errand/?token=${token}`;
+    const SOCKET_URL = `https://jellyfish-app-gd9q8.ondigitalocean.app/errand/?token=${token}`;
 
     const connectWebSocket = () => {
       try {
@@ -50,12 +51,32 @@ const useSocket = () => {
         };
 
         socket.onmessage = (event) => {
-          console.log("Received message from the server:", event.data);
+          // console.log("Received message from the server:", event.data);
           if (event.data) {
             const parsedData = JSON.parse(event.data);
             console.log("parsed data:::", parsedData);
+            console.log("type:::", parsedData.type);
+            if (parsedData.type === "errand.accepted") {
+              console.log("Errand has been accepted");
+              setErrandAccepted(true);
+              setSearchModal(false);
+              setRideDetailsModal(true);
+              setAgentInfo(parsedData.data.agent);
+              setErrandId(parsedData.data.id);
+              connectWebSocket();
+            }
+            if (parsedData.type === "errand.created") {
+              setCreatErrandSent(true);
+              console.log("Message has been sent!!!!!");
+              connectWebSocket();
+            }
+            // connectWebSocket();
             if (parsedData.data) {
-              navigation.navigate("CustomerErrandMap");
+              if (parsedData.data.describe_errand === null) {
+                navigation.navigate("CustomerErrandMap");
+              } else {
+                return;
+              }
               setRides({
                 vehicleDetails: parsedData.data.vehicle_type,
                 estimated_drop_off_time:
@@ -64,12 +85,7 @@ const useSocket = () => {
                 total_cost: parsedData.data.total_cost,
                 errand_id: parsedData.data.id,
               });
-              console.log("parsed data:::", parsedData.data.vehicle_type);
             }
-            if (parsedData.type === "errand.accepted") {
-              setErrandAccepted(true);
-            }
-            setCreatErrandSent(true);
           } else {
             setCreatErrandSent(false);
           }
@@ -100,16 +116,6 @@ const useSocket = () => {
         connectWebSocket();
       }
     };
-
-    // const reconnect = () => {
-    //   if (reconnectAttempts < maxReconnectAttempts) {
-    //     reconnectAttempts++;
-    //     console.log(`Reconnecting attempt ${reconnectAttempts}...`);
-    //     setTimeout(() => connectWebSocket(), 1000); // You can adjust the delay as needed
-    //   } else {
-    //     console.log("Max reconnect attempts reached. Unable to reconnect.");
-    //   }
-    // };
 
     connectWebSocket();
   };
@@ -151,6 +157,7 @@ const useSocket = () => {
     isConnected,
     sendMessage: handleSendMessage,
     // ...other functions and state you want to expose
+    initializeSocket,
   };
 };
 

@@ -61,12 +61,11 @@ const InProgressBoard = ({ navigation, route }) => {
             status: value,
           },
         });
-        console.log("yes");
-        setStatus(value);
+        console.log('hello')
       } else {
-        console.log("no");
+        handleButtonClick();
       }
-    }, 8000);
+    }, 3000);
   };
 
   return (

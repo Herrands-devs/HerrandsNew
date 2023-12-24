@@ -92,6 +92,11 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
       href: "CustomerPayments",
     },
     {
+      title: "My Chats",
+      icon: require("../../../assets/icons/add-note.png"),
+      href: "ChatScreen",
+    },
+    {
       title: "Report an issue",
       icon: require("../../../assets/icons/report-icon.png"),
       href: "",

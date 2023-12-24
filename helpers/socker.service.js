@@ -12,20 +12,21 @@ const useSocket = () => {
     setReceiveErrand,
     setAcceptedErrand,
     userId,
+    socketUrl
   } = useContext(GlobalContext);
 
   const [messageToSend, setMessageToSend] = useState(null);
 
   const fetchToken = async () => {
     const asyncToken = await getAsyncToken();
-    console.log("token:::", asyncToken);
+    // console.log("token:::", asyncToken);
     setToken(asyncToken);
   };
 
   const initializeSocket = () => {
     if (!token) return;
 
-    const SOCKET_URL = `https://herrand-backend-5a39ee15054e.herokuapp.com/errand/?token=${token}`;
+    const SOCKET_URL = `https://herrand-backend-5a39ee15054e.herokuapp.com/${socketUrl}/?token=${token}`;
 
     try {
       const socket = new WebSocket(SOCKET_URL, {
