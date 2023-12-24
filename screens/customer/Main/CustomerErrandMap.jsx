@@ -29,71 +29,23 @@ const CustomerErrandMap = ({ navigation }) => {
   const [detailsModal, setDetailsModal] = useState(false);
   const [addNotesModal, setAddNotesModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchModal, setSearchModal] = useState(false);
+  // const [searchModal, setSearchModal] = useState(false);
   const [agentAcceptedModal, setAgentAcceptedModal] = useState(false);
   const [trackErrandModal, setTrackErrandModal] = useState(false);
-  const { rides } = useContext(GlobalContext);
+  const {
+    rides,
+    errandAccepted,
+    setErrandAccepted,
+    createErrandSent,
+    searchModal,
+    setSearchModal,
+    rideDetailsModal,
+    setRideDetailsModal,
+  } = useContext(GlobalContext);
 
   const handleCloseSidebar = () => {
     setIsOpen(false);
   };
-
-  // const rides = [
-  //   {
-  //     title: "Send Van",
-  //     amount: 5000,
-  //     time: "8 mins",
-  //     image: Van,
-  //     icon: VanIcon,
-  //   },
-  //   {
-  //     title: "Send Card",
-  //     amount: 3000,
-  //     time: "4 mins",
-  //     image: Car,
-  //   },
-  // ];
-
-  const modalRides = [
-    {
-      title: "Send Van",
-      amount: 5000,
-      time: "8 mins",
-      image: Van,
-      icon: VanIcon,
-      id: 1,
-    },
-    {
-      title: "Send Card",
-      amount: 3000,
-      time: "4 mins",
-      image: Car,
-      id: 2,
-    },
-    {
-      title: "Send Van",
-      amount: 5000,
-      time: "8 mins",
-      image: Van,
-      icon: VanIcon,
-      id: 3,
-    },
-    {
-      title: "Send Card",
-      amount: 3000,
-      time: "4 mins",
-      image: Car,
-      id: 4,
-    },
-    {
-      title: "Send Van",
-      amount: 5000,
-      time: "8 mins",
-      image: Van,
-      icon: VanIcon,
-      id: 5,
-    },
-  ];
 
   const seeDetails = () => {
     setIsModal(false);
@@ -116,18 +68,31 @@ const CustomerErrandMap = ({ navigation }) => {
 
     setTimeout(() => {
       setLoading(false);
-      openAcceptedModal();
+      setSearchModal(true);
     }, 3000);
   };
 
-  const openAcceptedModal = () => {
-    setSearchModal(true);
+  useEffect(() => {
+    console.log("errand accepted:::", errandAccepted);
+  }, [errandAccepted]);
 
-    setTimeout(() => {
-      setSearchModal(false);
+  useEffect(() => {
+    if (errandAccepted) {
+      setSearchModal(!searchModal);
       setAgentAcceptedModal(true);
-    }, 3000);
-  };
+      setErrandAccepted(false);
+    }
+    console.log("errand accepted:::", errandAccepted);
+  }, [errandAccepted]);
+
+  // const openAcceptedModal = () => {
+  //   setSearchModal(true);
+
+  //   setTimeout(() => {
+  //     setSearchModal(false);
+  //     setAgentAcceptedModal(true);
+  //   }, 3000);
+  // };
 
   const trackErrand = () => {
     setTrackErrandModal(true);
@@ -215,6 +180,7 @@ const CustomerErrandMap = ({ navigation }) => {
         closeModal={() => setDetailsModal(false)}
         onAddNote={openAddNotes}
         onPress={confirmOrder}
+        rideList={rides}
       />
       <RideAddNotes
         isVisible={addNotesModal}
@@ -226,9 +192,10 @@ const CustomerErrandMap = ({ navigation }) => {
         closeModal={() => setSearchModal(false)}
       />
       <AgentAcceptedModal
-        isVisible={agentAcceptedModal}
-        closeModal={() => setAgentAcceptedModal(false)}
+        isVisible={rideDetailsModal}
+        closeModal={() => setRideDetailsModal(false)}
         onPress={trackErrand}
+        navigation={navigation}
       />
       <TrackErrandModal
         isVisible={trackErrandModal}

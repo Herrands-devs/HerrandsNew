@@ -15,7 +15,10 @@ import ResendClose from "../../../assets/icons/resend-close.png";
 import BySms from "../../../assets/icons/by-sms-icon.png";
 import ByCall from "../../../assets/icons/by-call-icon.png";
 import EditNumber from "../../../assets/icons/edit-number-icon.png";
-import { formatCurrency } from "../../../helpers/CurrencyFormatter";
+import {
+  formatCurrency,
+  shortenString,
+} from "../../../helpers/CurrencyFormatter";
 import { RoundedButton } from "./Button";
 import { colors } from "../../../themes/colors";
 import { useState } from "react";
@@ -33,6 +36,7 @@ import Car from "../../../assets/icons/car.png";
 
 import { GOOGLE_MAP_APIKEY } from "@env";
 import { Keyboard } from "react-native";
+import useSocket from "../../../helpers/socket.service";
 
 export const ResendModal = ({
   isVisible,
@@ -168,6 +172,7 @@ export const RidesModal = ({
   const translateY = useRef(new Animated.Value(500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const [selectedItem, setSelectedItem] = useState(0);
+  // console.log("ride list:::", rideList);
 
   const selectRide = (id) => {
     setSelectedItem(id);
@@ -334,7 +339,7 @@ export const RidesModal = ({
 
                 <View>
                   <Text className={`text-[16px] font-montserratBold`}>
-                    {formatCurrency(rideList.vehicleDetails?.cost)}
+                    {formatCurrency(rideList.total_cost)}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -369,9 +374,34 @@ export const RideDetails = ({
   const translateY = useRef(new Animated.Value(500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const [selectedItem, setSelectedItem] = useState(0);
+  const { addNote } = useContext(GlobalContext);
+  const { sendMessage, handleButtonClick } = useSocket();
+  const [loading, setLoading] = useState(false);
 
   const selectRide = (id) => {
     setSelectedItem(id);
+  };
+
+  useEffect(() => {
+    handleButtonClick();
+  }, []);
+
+  const message = {
+    type: "complete.routine_errand",
+    data: {
+      id: rideList.errand_id,
+      describe_errand: addNote,
+    },
+  };
+
+  const completeErrandCreation = async () => {
+    setLoading(true);
+    sendMessage(message);
+    console.log("main message sent...", message);
+    setTimeout(() => {
+      onPress();
+      setLoading(false);
+    }, 3000);
   };
 
   const slideUp = () => {
@@ -437,16 +467,23 @@ export const RideDetails = ({
             </View>
             <View style={styles.modalContent}>
               <View
+                className={`flex-row items-center px-[16px] justify-between mb-[20px]`}
+              >
+                <Text className={`text-[20px] font-montserratSemiBold`}>
+                  Final Address
+                </Text>
+              </View>
+              <View
                 className={`flex-row items-center px-[16px] justify-between`}
               >
                 <Text className={`text-[20px] font-montserratSemiBold`}>
-                  Ibukun street
+                  {rideList?.drop_off_address}
                 </Text>
                 <Image source={LocationIcon} className={`w-[24px] h-[24px]`} />
               </View>
               <View className={`px-[16px] my-[20px]`}>
                 <Text className={`text-[16px] font-montserratSemiBold`}>
-                  N 9000
+                  {formatCurrency(rideList.total_cost)}
                 </Text>
               </View>
               <View className={`px-[16px]`}>
@@ -468,7 +505,8 @@ export const RideDetails = ({
                     width: "80%",
                     marginVertical: 11,
                   }}
-                  onPress={onPress}
+                  onPress={completeErrandCreation}
+                  loading={loading}
                 />
               </View>
             </View>
@@ -488,6 +526,8 @@ export const RideAddNotes = ({
   const translateY = useRef(new Animated.Value(500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const [selectedItem, setSelectedItem] = useState(0);
+  const [notes, setNotes] = useState("");
+  const { setAddNote } = useContext(GlobalContext);
 
   const selectRide = (id) => {
     setSelectedItem(id);
@@ -575,6 +615,11 @@ export const RideAddNotes = ({
                     numberOfLines={4}
                     className={`h-[100%] w-[100%] rounded-[4px] p-[16px] text-[16px] font-montserratMedium`}
                     placeholder="Add a note for a smoother pick-up and delivery"
+                    value={notes}
+                    onChangeText={(text) => {
+                      setNotes(text);
+                      setAddNote(text);
+                    }}
                   />
                 </View>
               </View>
@@ -702,14 +747,18 @@ export const AgentAcceptedModal = ({
   closeModal,
   onPress,
   openDetails,
+  navigation,
 }) => {
   const translateY = useRef(new Animated.Value(500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const [selectedItem, setSelectedItem] = useState(0);
+  const { agentInfo, errandId } = useContext(GlobalContext);
 
   const selectRide = (id) => {
     setSelectedItem(id);
   };
+
+  console.log("Agent info:::", agentInfo, errandId);
 
   const slideUp = () => {
     Animated.parallel([
@@ -757,7 +806,7 @@ export const AgentAcceptedModal = ({
       animationType="none"
       onRequestClose={slideDown}
     >
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={slideDown}>
         <View style={styles.ridesOverlay}>
           <Animated.View
             style={[
@@ -791,13 +840,17 @@ export const AgentAcceptedModal = ({
                     <Text
                       className={`text-center text-[12px] font-montserratSemiBold`}
                     >
-                      Collins
+                      {agentInfo.first_name}
                     </Text>
                   </View>
 
                   <View>
                     <TouchableOpacity
                       className={`bg-[#ccc] w-[64px] h-[64px] rounded-full justify-center items-center`}
+                      onPress={() => {
+                        navigation.navigate("ChatScreen");
+                        slideDown();
+                      }}
                     >
                       <Image
                         source={AddNoteIcon}
@@ -910,7 +963,7 @@ export const TrackErrandModal = ({
       animationType="none"
       onRequestClose={slideDown}
     >
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={slideDown}>
         <View style={styles.ridesOverlay}>
           <Animated.View
             style={[

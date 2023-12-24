@@ -26,7 +26,7 @@ const CategoryModal = ({
 }) => {
   const translateX = useRef(new Animated.Value(initalValue)).current;
   const opacity = useRef(new Animated.Value(0)).current;
-  const { setSelectedcategory, setCategoryId } = useContext(GlobalContext);
+  const { setSelectedcategory, setSubTypeId } = useContext(GlobalContext);
 
   const slideIn = () => {
     Animated.parallel([
@@ -107,7 +107,7 @@ const CategoryModal = ({
                         onPress={() => {
                           setSelectedcategory(text.name);
                           console.log("selected category:::", text.name);
-                          setCategoryId(text.id);
+                          setSubTypeId(text.id);
                           slideOut();
                         }}
                       >

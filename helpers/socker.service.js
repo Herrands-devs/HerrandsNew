@@ -19,7 +19,7 @@ const useSocket = () => {
 
   const fetchToken = async () => {
     const asyncToken = await getAsyncToken();
-    console.log("token:::", asyncToken);
+    // console.log("token:::", asyncToken);
     setToken(asyncToken);
   };
 

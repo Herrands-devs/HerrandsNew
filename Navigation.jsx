@@ -41,6 +41,8 @@ import HomeScreen from "./screens/Agent/screens/HomeScreen";
 import isEmpty from "./screens/components/isEmpty";
 import ChatBoard from "./screens/Agent/screens/components/ChatBoard";
 import InProgressBoard from "./screens/Agent/screens/Errands/InProgress";
+import ChatsScreen from "./screens/customer/Main/ChatsScreen";
+import ChatBoardCustomer from "./screens/customer/Main/ChatBoard";
 
 const Stack = createNativeStackNavigator();
 
@@ -169,6 +171,8 @@ const MainCustomer = () => {
       />
       <Stack.Screen name="MyErrandsCustomer" component={MyErrandsCustomer} />
       <Stack.Screen name="SelectAddress" component={SelectAddress} />
+      <Stack.Screen name="ChatScreen" component={ChatsScreen} />
+      <Stack.Screen name="Chat" component={ChatBoardCustomer} />
     </Stack.Navigator>
   );
 };

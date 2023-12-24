@@ -39,6 +39,7 @@ import { SuccessErrorModal } from "../../components/common/Modals";
 import ErrorIcon from "../../../assets/error-message.png";
 import SuccessIcon from "../../../assets/icons/thank-you.png";
 import { GOOGLE_MAP_APIKEY } from "@env";
+import { API_URl } from "../../../config";
 
 const { width, height } = Dimensions.get("window");
 
@@ -56,13 +57,11 @@ const CustomerCreateErrand = ({ navigation }) => {
     itemAddress,
     recipientAddress,
     categoryId,
-    createErrandSent,
-    setCreatErrandSent,
     setSelectedcategory,
-    errandRoute,
-    setErrandRoute,
     vehicleType,
     vehicleId,
+    setCategoryId,
+    subTypeId,
   } = useContext(GlobalContext);
   const [categories, setCategories] = useState();
   const [userId, setUserId] = useState("");
@@ -89,10 +88,110 @@ const CustomerCreateErrand = ({ navigation }) => {
   const [subCategories, setSubCategories] = useState([]);
   const [vehicles, setVehicles] = useState([]);
 
-  useEffect(() => {
-    setRouteToGo(errandRoute);
-    console.log("route:::", errandRoute);
-  }, [errandRoute]);
+  const [estimatedPrice, setEstimatedPrice] = useState("");
+  const [itemsToPurchase, setItemsToPurchase] = useState("");
+  const [groceryPhoneNumber, setGroceryPhoneNumber] = useState("");
+
+  const [cleanHouseAssistance, setCleanHouseAssistance] = useState("");
+  const [cleanHouseHowLong, setCleanHouseHowLong] = useState("");
+  const [timeType, setTimeType] = useState("hours");
+
+  const cleanHouseMessage = {
+    type: "create.household_chores",
+    data: {
+      category: categoryId,
+      subtype: subTypeId,
+      drop_off_address: itemAddress && itemAddress.description,
+      drop_off_lat: itemAddress && itemAddress.details.lat.toFixed(2),
+      drop_off_long: itemAddress && itemAddress.details.lng.toFixed(2),
+      how_long: Number(cleanHouseHowLong),
+      time_cap:
+        timeType === "hours"
+          ? "HOURS"
+          : timeType === "days"
+          ? "DAYS"
+          : timeType === "months"
+          ? "MONTHS"
+          : null,
+      item_description: cleanHouseAssistance,
+      customer: userId,
+      vehicle_type: vehicleId,
+      status: "REQUESTED",
+    },
+  };
+
+  const sendCleanHouseMessage = () => {
+    console.log("message after completion", cleanHouseMessage);
+    setLoading(true);
+
+    if (
+      !cleanHouseMessage.data.drop_off_lat ||
+      !cleanHouseMessage.data.drop_off_long ||
+      !cleanHouseMessage.data.drop_off_address ||
+      cleanHouseAssistance === "" ||
+      cleanHouseHowLong === "" ||
+      timeType === ""
+    ) {
+      setLoading(false);
+      setIsModal(true);
+      setModalMessage("No field can be empty.");
+      setMessageType("error");
+      return;
+    } else {
+      sendMessage(cleanHouseMessage);
+      setTimeout(() => {
+        // {
+        //   errandRoute === "" ? null : navigation.navigate("CustomerErrandMap");
+        // }
+        setLoading(false);
+      }, 3000);
+    }
+  };
+
+  const groceryMessage = {
+    type: "create.routine_errand",
+    data: {
+      category: categoryId,
+      subtype: subTypeId,
+      drop_off_address: recipientAddress && recipientAddress.description,
+      drop_off_lat: recipientAddress && recipientAddress.details.lat,
+      drop_off_long: recipientAddress && recipientAddress.details.lng,
+      recipient_contact: "+234" + groceryPhoneNumber,
+      customer: userId,
+      vehicle_type: vehicleId,
+      grocery_list: itemsToPurchase,
+      grocery_estimated_price: estimatedPrice,
+      status: "REQUESTED",
+    },
+  };
+
+  const sendGroceryMessage = () => {
+    console.log("message after completion", groceryMessage);
+    setLoading(true);
+
+    if (
+      !groceryMessage.data.drop_off_lat ||
+      !groceryMessage.data.drop_off_long ||
+      !groceryMessage.data.drop_off_address ||
+      groceryPhoneNumber === "" ||
+      itemsToPurchase === "" ||
+      estimatedPrice === ""
+    ) {
+      setLoading(false);
+      setIsModal(true);
+      setModalMessage("No field can be empty.");
+      setMessageType("error");
+      return;
+    } else {
+      sendMessage(groceryMessage);
+      setTimeout(() => {
+        // {
+        //   errandRoute === "" ? null : navigation.navigate("CustomerErrandMap");
+        // }
+        setLoading(false);
+      }, 3000);
+    }
+  };
 
   const getTravelTime = async () => {
     if (itemAddress !== undefined || recipientAddress !== undefined) {
@@ -116,10 +215,10 @@ const CustomerCreateErrand = ({ navigation }) => {
   }, [itemAddress, recipientAddress]);
 
   const message = {
-    type: "create.errand",
+    type: "create.routine_errand",
     data: {
       category: categoryId,
-      subtype: "1",
+      subtype: subTypeId,
       pick_up_lat: itemAddress && itemAddress.details.lat,
       pick_up_long: itemAddress && itemAddress.details.lng,
       pick_up_address: itemAddress && itemAddress.description,
@@ -129,13 +228,11 @@ const CustomerCreateErrand = ({ navigation }) => {
       recipient_contact: "+234" + pickItemsValues.recipient_contact,
       sendder_contact: "+234" + pickItemsValues.sendder_contact,
       item_description: pickItemsValues.item_description,
-      describe_errand: pickItemsValues.describe_errand,
       customer: userId,
       due_date: "2023-11-01T12:00:00Z",
       status: "REQUESTED",
       estimated_drop_off_time: pickItemsValues.estimated_drop_off_time,
       vehicle_type: vehicleId,
-      // files: [],
     },
   };
 
@@ -187,9 +284,9 @@ const CustomerCreateErrand = ({ navigation }) => {
 
   const fetchCategoriesAction = async () => {
     await axios
-      .get("https://herrand-backend-5a39ee15054e.herokuapp.com/api/categories")
+      .get(`https://jellyfish-app-gd9q8.ondigitalocean.app/api/categories`)
       .then((res) => {
-        // console.log("responseeee", res.data);
+        console.log("categories responseeee", res.data);
         setCategories(res.data);
       })
       .catch((err) => {
@@ -200,10 +297,10 @@ const CustomerCreateErrand = ({ navigation }) => {
   const fetchSubCategories = async (id) => {
     axios
       .get(
-        `https://herrand-backend-5a39ee15054e.herokuapp.com/api/subtypes/?category_id=${id}`
+        `https://jellyfish-app-gd9q8.ondigitalocean.app/api/subtypes/?category_id=${id}`
       )
       .then((res) => {
-        // console.log("subcategories response:::", res.data);
+        console.log("subcategories response:::", res.data);
         setSubCategories(res.data);
       })
       .catch((err) => {
@@ -213,9 +310,7 @@ const CustomerCreateErrand = ({ navigation }) => {
 
   const fetchVehicleTypes = () => {
     axios
-      .get(
-        "https://herrand-backend-5a39ee15054e.herokuapp.com/api/vehicle-metric/"
-      )
+      .get("https://jellyfish-app-gd9q8.ondigitalocean.app/api/vehicle-metric/")
       .then((res) => {
         console.log("Vehicle type:::", res.data);
         setVehicles(res.data);
@@ -232,182 +327,6 @@ const CustomerCreateErrand = ({ navigation }) => {
     fetchVehicleTypes();
     fetchSubCategories(1);
   }, []);
-
-  // const routineList = [
-  //   {
-  //     id: 1,
-  //     title: "Send a package",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Pickup/drop off item",
-  //   },
-
-  //   {
-  //     id: 4,
-  //     title: "Shop for groceries",
-  //   },
-  // ];
-
-  // const groceryList = [
-  //   {
-  //     id: 1,
-  //     title: "Go somewhere with an agent",
-  //   },
-  // ];
-
-  // const socialList = [
-  //   {
-  //     id: 1,
-  //     title: "Manage my facebook page",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Manage my instagram page",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Manage my twitter page",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Manage my telegram group/channel",
-  //   },
-  //   {
-  //     id: 5,
-  //     title: "Manage my linkedin page",
-  //   },
-  //   {
-  //     id: 6,
-  //     title: "Manage my tiktok account",
-  //   },
-  //   {
-  //     id: 7,
-  //     title: "Manage my youtube channel",
-  //   },
-  // ];
-
-  // const officeList = [
-  //   {
-  //     id: 2,
-  //     title: "Do data entry",
-  //   },
-  //   {
-  //     id: 3,
-  //     title: "Type a document",
-  //   },
-  //   {
-  //     id: 4,
-  //     title: "Take meeting notes",
-  //   },
-
-  //   {
-  //     id: 8,
-  //     title: "Manage my email inbox",
-  //   },
-  // ];
-
-  // const householdList = [
-  //   {
-  //     id: 1,
-  //     title: "Clean up my house",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Carry a household item",
-  //   },
-  // ];
-
-  const CarryHouseholdItemsFields = () => {
-    return (
-      <View className={`space-y-[26px]`}>
-        <View>
-          <PrimaryInput
-            label={"Item's description"}
-            placeHolder={"What's the item to pick up?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Item's address"}
-            placeHolder={"What's the location of the item?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Custodian's phone"}
-            placeHolder={"Custodian of item's hotline?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Recipient's address"}
-            placeHolder={"Where will the item be delivered?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Recipient's phone"}
-            placeHolder={"Recipient of the item's hotline?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Any instructions"}
-            placeHolder={"Tell us anything we need to know"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const ShopForGroceriesFields = () => {
-    return (
-      <View className={`space-y-[26px]`}>
-        <View>
-          <PrimaryInput
-            label={"What items do you want to purcahse?"}
-            placeHolder={"List the items to purchase"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Your estimated price"}
-            placeHolder={"How much do you think this will cost?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Your house address"}
-            placeHolder={"Where should your items be delivered?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Your phone number"}
-            placeHolder={"Give us a hotline to reach you"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Please add more details"}
-            placeHolder={"Tell us anything we need to know"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-      </View>
-    );
-  };
 
   const ManageEmailFields = () => {
     return (
@@ -459,94 +378,6 @@ const CustomerCreateErrand = ({ navigation }) => {
     );
   };
 
-  const ArrangeTravelsField = () => {
-    return (
-      <View className={`space-y-[26px]`}>
-        <View>
-          <PrimaryInput
-            label={"What would you like help with?"}
-            placeHolder={"Please be specific with your tasks"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-
-        <View>
-          <PrimaryInput
-            label={"When do you want this completed?"}
-            placeHolder={"Select date and time"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Kindly give us more details"}
-            placeHolder={"Tell us anything we need to know..."}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Any relevcant file(s)"}
-            placeHolder={"No file chosen"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const CleanMyHouseFields = () => {
-    return (
-      <View className={`space-y-[26px]`}>
-        <View>
-          <PrimaryInput
-            label={"What do you need assistance with?"}
-            placeHolder={"Please be specific with your tasks"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-
-        <View>
-          <PrimaryInput
-            label={"For how long?"}
-            placeHolder={"The number of hours this will take"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Meet-up address"}
-            placeHolder={"Where should the Herrands agent meet you?"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-        <View>
-          <PrimaryInput
-            label={"Please add any instructions"}
-            placeHolder={"Tell us anything we need to know"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-          />
-        </View>
-      </View>
-    );
-  };
-
-  const navigateToNext = () => {
-    if (
-      selectedState === "Pickup/drop off item" ||
-      selectedState === "Carry a household item" ||
-      selectedState === "Shop for groceries"
-    ) {
-      navigation.navigate("CustomerErrandMap");
-    } else if (
-      selectedState === "Manage my email inbox" ||
-      selectedState === "Arrange my travels" ||
-      selectedState === "Clean up my house"
-    ) {
-      navigation.navigate("CustomerVirtualProcess");
-    }
-  };
-
   useEffect(() => {
     setSelectedState(selectedCategory);
     console.log(selectedCategory);
@@ -558,7 +389,7 @@ const CustomerCreateErrand = ({ navigation }) => {
       style={{ flex: 1 }}
     >
       <SafeAreaComponent>
-        <View className={`px-[16px]`}>
+        <View className={`px-[16px] flex-row items-center justify-between`}>
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
@@ -568,9 +399,24 @@ const CustomerCreateErrand = ({ navigation }) => {
           >
             <Image source={BackIcon} className={`w-[24px] h-[24px]`} />
           </TouchableOpacity>
+
+          {selectedState !== "" && (
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedState("");
+                setSelectedcategory("");
+              }}
+            >
+              <Text
+                className={`text-[14px] text-primaryColor font-montserratBold`}
+              >
+                Go back to category
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
 
-        <View className={`px-[16px] mt-[16px]`}>
+        <View className={`px-[16px] mt-[24px]`}>
           <View>
             <View className={`z-10`}>
               <DropDownPicker
@@ -592,7 +438,7 @@ const CustomerCreateErrand = ({ navigation }) => {
                     Search by category
                   </Text>
                   <View
-                    style={{ marginTop: height * 0.047, paddingLeft: 29 }}
+                    style={{ marginTop: height * 0.047, paddingLeft: 20 }}
                     className={`flex-row items-center flex-wrap gap-5`}
                   >
                     {categories &&
@@ -606,12 +452,13 @@ const CustomerCreateErrand = ({ navigation }) => {
                                 ? CartIcon
                                 : category.name === "Virtual errands"
                                 ? OfficeIcon
-                                : category.name === "Household errands"
+                                : category.name === "Household errand"
                                 ? HouseIcon
                                 : null
                             }
                             title={category.name}
                             onPress={() => {
+                              setCategoryId(category.id);
                               if (category.name === "Routine errands") {
                                 setModalStates({
                                   ...modalStates,
@@ -641,7 +488,7 @@ const CustomerCreateErrand = ({ navigation }) => {
                                 fetchSubCategories(category.id);
                               }
 
-                              if (category.name === "Household errands") {
+                              if (category.name === "Household errand") {
                                 setModalStates({
                                   ...modalStates,
                                   houseHold: true,
@@ -676,7 +523,133 @@ const CustomerCreateErrand = ({ navigation }) => {
 
                   <View className={`z-20`}>
                     <NormalDropdown
-                      defaultOption={"Select vehicle"}
+                      defaultOption={"Select One"}
+                      options={vehicles}
+                      label={"What type of vehicle do you need?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
+                    />
+                  </View>
+                  {/* </View> */}
+                  <TouchableOpacity
+                    style={{ zIndex: 10 }}
+                    onPress={() =>
+                      navigation.navigate("SelectAddress", { type: "item" })
+                    }
+                  >
+                    <Text
+                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
+                    >
+                      Item's address
+                    </Text>
+                    <View
+                      className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                    >
+                      <Text
+                        className={`${
+                          itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                        } text-[14px] font-montserratSemiBold`}
+                      >
+                        {itemAddress === undefined
+                          ? "Where is the location of the item?"
+                          : itemAddress.description}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <View>
+                    <PrimaryInput
+                      label={"Custodian's phone"}
+                      placeHolder={"Custodian of item's hotline?"}
+                      labelStyle={{
+                        fontSize: 16,
+                        fontFamily: "MontserratSemiBold",
+                      }}
+                      value={pickItemsValues.sendder_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          sendder_contact: text,
+                        })
+                      }
+                      type={"phone-pad"}
+                    />
+                  </View>
+                  <View>
+                    <TouchableOpacity
+                      style={{ zIndex: 10 }}
+                      onPress={() =>
+                        navigation.navigate("SelectAddress", {
+                          type: "recipient",
+                        })
+                      }
+                    >
+                      <Text
+                        className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                        style={{
+                          fontSize: 16,
+                          fontFamily: "MontserratSemiBold",
+                        }}
+                      >
+                        Recipient's address
+                      </Text>
+                      <View
+                        className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                      >
+                        <Text
+                          className={`${
+                            recipientAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                          } text-[14px] font-montserratSemiBold`}
+                        >
+                          {recipientAddress === undefined
+                            ? "Where will the item be delivered?"
+                            : recipientAddress.description}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <PrimaryInput
+                      label={"Recipient's phone"}
+                      placeHolder={"Recipient of the item's hotline?"}
+                      labelStyle={{
+                        fontSize: 16,
+                        fontFamily: "MontserratSemiBold",
+                      }}
+                      value={pickItemsValues.recipient_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          recipient_contact: text,
+                        })
+                      }
+                      type={"phone-pad"}
+                    />
+                  </View>
+                </View>
+              ) : selectedState === "Send a package" ? (
+                <View className={`space-y-[26px]`}>
+                  {/* <View> */}
+                  <PrimaryInput
+                    label={"Item's description"}
+                    placeHolder={"What's the item to pick up?"}
+                    labelStyle={{
+                      fontSize: 16,
+                      fontFamily: "MontserratSemiBold",
+                    }}
+                    value={pickItemsValues.item_description}
+                    onChangeText={(text) =>
+                      setPickItemsValues({
+                        ...pickItemsValues,
+                        item_description: text,
+                      })
+                    }
+                    type="default"
+                  />
+
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select One"}
                       options={vehicles}
                       label={"What type of vehicle do you need?"}
                       value={vehicleType}
@@ -782,26 +755,60 @@ const CustomerCreateErrand = ({ navigation }) => {
                 </View>
               ) : selectedState === "Carry a household item" ? (
                 <View className={`space-y-[26px]`}>
-                  <View>
-                    <PrimaryInput
-                      label={"Item's description"}
-                      placeHolder={"What's the item to pick up?"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
+                  {/* <View> */}
+                  <PrimaryInput
+                    label={"Item's description"}
+                    placeHolder={"What's the item to pick up?"}
+                    labelStyle={{
+                      fontSize: 16,
+                      fontFamily: "MontserratSemiBold",
+                    }}
+                    value={pickItemsValues.item_description}
+                    onChangeText={(text) =>
+                      setPickItemsValues({
+                        ...pickItemsValues,
+                        item_description: text,
+                      })
+                    }
+                    type="default"
+                  />
+
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select One"}
+                      options={vehicles}
+                      label={"What type of vehicle do you need?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
                     />
                   </View>
-                  <View>
-                    <PrimaryInput
-                      label={"Item's address"}
-                      placeHolder={"What's the location of the item?"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                    />
-                  </View>
+                  {/* </View> */}
+                  <TouchableOpacity
+                    style={{ zIndex: 10 }}
+                    onPress={() =>
+                      navigation.navigate("SelectAddress", { type: "item" })
+                    }
+                  >
+                    <Text
+                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
+                    >
+                      Item's address
+                    </Text>
+                    <View
+                      className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                    >
+                      <Text
+                        className={`${
+                          itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                        } text-[14px] font-montserratSemiBold`}
+                      >
+                        {itemAddress === undefined
+                          ? "Where is the location of the item?"
+                          : itemAddress.description}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                   <View>
                     <PrimaryInput
                       label={"Custodian's phone"}
@@ -810,17 +817,48 @@ const CustomerCreateErrand = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={pickItemsValues.sendder_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          sendder_contact: text,
+                        })
+                      }
+                      type={"phone-pad"}
                     />
                   </View>
                   <View>
-                    <PrimaryInput
-                      label={"Recipient's address"}
-                      placeHolder={"Where will the item be delivered?"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                    />
+                    <TouchableOpacity
+                      style={{ zIndex: 10 }}
+                      onPress={() =>
+                        navigation.navigate("SelectAddress", {
+                          type: "recipient",
+                        })
+                      }
+                    >
+                      <Text
+                        className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                        style={{
+                          fontSize: 16,
+                          fontFamily: "MontserratSemiBold",
+                        }}
+                      >
+                        Recipient's address
+                      </Text>
+                      <View
+                        className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                      >
+                        <Text
+                          className={`${
+                            recipientAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                          } text-[14px] font-montserratSemiBold`}
+                        >
+                          {recipientAddress === undefined
+                            ? "Where will the item be delivered?"
+                            : recipientAddress.description}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
                   <View>
                     <PrimaryInput
@@ -830,21 +868,28 @@ const CustomerCreateErrand = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
-                    />
-                  </View>
-                  <View>
-                    <PrimaryInput
-                      label={"Any instructions"}
-                      placeHolder={"Tell us anything we need to know"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
+                      value={pickItemsValues.recipient_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          recipient_contact: text,
+                        })
+                      }
+                      type={"phone-pad"}
                     />
                   </View>
                 </View>
               ) : selectedState === "Shop for groceries" ? (
                 <View className={`space-y-[26px]`}>
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select One"}
+                      options={vehicles}
+                      label={"Which would you prefer?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
+                    />
+                  </View>
                   <View>
                     <PrimaryInput
                       label={"What items do you want to purcahse?"}
@@ -853,9 +898,11 @@ const CustomerCreateErrand = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={itemsToPurchase}
+                      onChangeText={(text) => setItemsToPurchase(text)}
                     />
                   </View>
-                  <View>
+                  {/* <View>
                     <PrimaryInput
                       label={"For how long?"}
                       placeHolder={"The number of hours this will take"}
@@ -864,16 +911,52 @@ const CustomerCreateErrand = ({ navigation }) => {
                         fontFamily: "MontserratSemiBold",
                       }}
                     />
-                  </View>
+                  </View> */}
                   <View>
                     <PrimaryInput
-                      label={"Your house address"}
-                      placeHolder={"Where should your items be delivered?"}
+                      label={"What is your Estimated price?"}
+                      placeHolder={"The amount you want to spend"}
                       labelStyle={{
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      type={"phone-pad"}
+                      value={estimatedPrice}
+                      onChangeText={(text) => setEstimatedPrice(text)}
                     />
+                  </View>
+                  <View>
+                    <TouchableOpacity
+                      style={{ zIndex: 10 }}
+                      onPress={() =>
+                        navigation.navigate("SelectAddress", {
+                          type: "recipient",
+                        })
+                      }
+                    >
+                      <Text
+                        className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                        style={{
+                          fontSize: 16,
+                          fontFamily: "MontserratSemiBold",
+                        }}
+                      >
+                        Recipient's address
+                      </Text>
+                      <View
+                        className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                      >
+                        <Text
+                          className={`${
+                            recipientAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                          } text-[14px] font-montserratSemiBold`}
+                        >
+                          {recipientAddress === undefined
+                            ? "Where will the item be delivered?"
+                            : recipientAddress.description}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
                   </View>
                   <View>
                     <PrimaryInput
@@ -883,15 +966,27 @@ const CustomerCreateErrand = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={groceryPhoneNumber}
+                      onChangeText={(text) => setGroceryPhoneNumber(text)}
+                      type={"phone-pad"}
                     />
                   </View>
                 </View>
-              ) : selectedState === "Manage my email inbox" ? (
+              ) : selectedState === "Manage my social page" ? (
                 <ManageEmailFields />
-              ) : selectedState === "Arrange my travels" ? (
-                <ArrangeTravelsField />
+              ) : selectedState === "Take meeting notes" ? (
+                <ManageEmailFields />
               ) : selectedState === "Clean up my house" ? (
                 <View className={`space-y-[26px]`}>
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select One"}
+                      options={vehicles}
+                      label={"Which would you prefer?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
+                    />
+                  </View>
                   <View>
                     <PrimaryInput
                       label={"What do you need assistance with?"}
@@ -900,6 +995,8 @@ const CustomerCreateErrand = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={cleanHouseAssistance}
+                      onChangeText={(text) => setCleanHouseAssistance(text)}
                     />
                   </View>
 
@@ -911,28 +1008,185 @@ const CustomerCreateErrand = ({ navigation }) => {
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={cleanHouseHowLong}
+                      onChangeText={(text) => setCleanHouseHowLong(text)}
+                      type={"phone-pad"}
+                    />
+                  </View>
+
+                  <View className={`flex-row items-center space-x-[20px]`}>
+                    <TouchableOpacity
+                      className={`border rounded-[4px] p-[10px] ${
+                        timeType === "hours" && `bg-primaryColor border-0`
+                      }`}
+                      onPress={() => setTimeType("hours")}
+                    >
+                      <Text
+                        className={`${timeType === "hours" && `text-white`}`}
+                      >
+                        Hours
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className={`border rounded-[4px] p-[10px] ${
+                        timeType === "days" && `bg-primaryColor border-0`
+                      }`}
+                      onPress={() => setTimeType("days")}
+                    >
+                      <Text
+                        className={`${timeType === "days" && `text-white`}`}
+                      >
+                        Days
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className={`border rounded-[4px] p-[10px] ${
+                        timeType === "months" && `bg-primaryColor border-0`
+                      }`}
+                      onPress={() => setTimeType("months")}
+                    >
+                      <Text
+                        className={`${timeType === "months" && `text-white`}`}
+                      >
+                        Months
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <TouchableOpacity
+                    style={{ zIndex: 10 }}
+                    onPress={() =>
+                      navigation.navigate("SelectAddress", { type: "item" })
+                    }
+                  >
+                    <Text
+                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
+                    >
+                      Meet up address
+                    </Text>
+                    <View
+                      className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                    >
+                      <Text
+                        className={`${
+                          itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                        } text-[14px] font-montserratSemiBold`}
+                      >
+                        {itemAddress === undefined
+                          ? "Where should the Herrands agent meet you?"
+                          : itemAddress.description}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ) : selectedState === "Type a document" ? (
+                <ManageEmailFields />
+              ) : selectedState === "Do data entry" ? (
+                <ManageEmailFields />
+              ) : selectedState === "Go somewhere with an agent" ? (
+                <View className={`space-y-[26px]`}>
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select One"}
+                      options={vehicles}
+                      label={"Which would you prefer?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
                     />
                   </View>
                   <View>
                     <PrimaryInput
-                      label={"Meet-up address"}
-                      placeHolder={"Where should the Herrands agent meet you?"}
+                      label={"What do you need assistance with?"}
+                      placeHolder={"Please be specific with your tasks"}
                       labelStyle={{
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={cleanHouseAssistance}
+                      onChangeText={(text) => setCleanHouseAssistance(text)}
                     />
                   </View>
+
                   <View>
                     <PrimaryInput
-                      label={"Please add any instructions"}
-                      placeHolder={"Tell us anything we need to know"}
+                      label={"For how long?"}
+                      placeHolder={"The number of hours this will take"}
                       labelStyle={{
                         fontSize: 16,
                         fontFamily: "MontserratSemiBold",
                       }}
+                      value={cleanHouseHowLong}
+                      onChangeText={(text) => setCleanHouseHowLong(text)}
+                      type={"phone-pad"}
                     />
                   </View>
+
+                  <View className={`flex-row items-center space-x-[20px]`}>
+                    <TouchableOpacity
+                      className={`border rounded-[4px] p-[10px] ${
+                        timeType === "hours" && `bg-primaryColor border-0`
+                      }`}
+                      onPress={() => setTimeType("hours")}
+                    >
+                      <Text
+                        className={`${timeType === "hours" && `text-white`}`}
+                      >
+                        Hours
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className={`border rounded-[4px] p-[10px] ${
+                        timeType === "days" && `bg-primaryColor border-0`
+                      }`}
+                      onPress={() => setTimeType("days")}
+                    >
+                      <Text
+                        className={`${timeType === "days" && `text-white`}`}
+                      >
+                        Days
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className={`border rounded-[4px] p-[10px] ${
+                        timeType === "months" && `bg-primaryColor border-0`
+                      }`}
+                      onPress={() => setTimeType("months")}
+                    >
+                      <Text
+                        className={`${timeType === "months" && `text-white`}`}
+                      >
+                        Months
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <TouchableOpacity
+                    style={{ zIndex: 10 }}
+                    onPress={() =>
+                      navigation.navigate("SelectAddress", { type: "item" })
+                    }
+                  >
+                    <Text
+                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
+                    >
+                      Meet up address
+                    </Text>
+                    <View
+                      className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                    >
+                      <Text
+                        className={`${
+                          itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                        } text-[14px] font-montserratSemiBold`}
+                      >
+                        {itemAddress === undefined
+                          ? "Where should the Herrands agent meet you?"
+                          : itemAddress.description}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               ) : null}
             </View>
@@ -956,7 +1210,22 @@ const CustomerCreateErrand = ({ navigation }) => {
                 text={"Send"}
                 styles={{ backgroundColor: colors.primaryColor }}
                 onPress={() => {
-                  sendMessageAction();
+                  console.log("category before sending:::", selectedCategory);
+                  if (selectedCategory === "Shop for groceries") {
+                    sendGroceryMessage();
+                  } else if (
+                    selectedCategory === "Pickup/drop off item" ||
+                    selectedCategory === "Send a package" ||
+                    selectedCategory === "Carry a household item"
+                  ) {
+                    sendMessageAction();
+                  } else if (
+                    selectedCategory === "Clean up my house" ||
+                    selectedCategory === "Go somewhere with an agent"
+                  ) {
+                    sendCleanHouseMessage();
+                  }
+                  //
                 }}
                 loading={loading}
               />

@@ -17,74 +17,66 @@ import axios from "axios";
 import { API_URl } from "../../../../config";
 import { GlobalContext } from "../../../../context/context.store";
 import isEmpty from "../../../components/isEmpty";
-import useSocket from "../../../../helpers/socker.service";
+import useSocket from "../../../../helpers/socket.service";
 
 const ChatBoard = ({ navigation, route }) => {
-  const { userId ,isToken,setSocketUrl } = useContext(GlobalContext);
-  const [message , setMessage] = useState([])
+  const { userId, isToken, setSocketUrl } = useContext(GlobalContext);
+  const [message, setMessage] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const { chat , customer} = route.params;
-  const [textInput , setText] = useState("")
+  const { chat, customer } = route.params;
+  const [textInput, setText] = useState("");
   const { sendMessage, handleButtonClick, isConnected } = useSocket();
-  useEffect(() => {
 
-    handleButtonClick();
-    if (isConnected) {
-      console.log("yes");
-    } else {
-      console.log("no");
-    }
-  });
   useEffect(() => {
-    setSocketUrl('ws/chat/'+chat)
-    setLoading(true)
+    setSocketUrl("ws/chat/" + chat);
+    setLoading(true);
     axios
-      .get(
-        `${API_URl}/api/conversations/`+chat,
-        {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${isToken}`,
-          },
-        }
-      )
+      .get(`${API_URl}/api/conversations/` + chat, {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${isToken}`,
+        },
+      })
       .then((response) => {
         setMessage(response.data[0].message_set);
-        setLoading(false)
-        scrollToBottom()
+        setLoading(false);
+        scrollToBottom();
         // setChat(response.data[0]);
       })
       .catch((err) => console.log(err));
   }, [API_URl]);
+
   const handleSendMessage = () => {
-    if(isEmpty(textInput)) {
+    if (isEmpty(textInput)) {
       return;
     } else {
       if (isConnected) {
         sendMessage({
-          "message": textInput
+          message: textInput,
         });
-        setMessage((prev) => [...prev , 
+        setMessage((prev) => [
+          ...prev,
           {
-            "id": 20,
-            "text": textInput,
-            "attachment": null,
-            "timestamp": new Date(),
-            "sender": userId,
-            "conversation_id": 1
-          }
-        ])
-        setText('')
+            id: 20,
+            text: textInput,
+            attachment: null,
+            timestamp: new Date(),
+            sender: userId,
+            conversation_id: 1,
+          },
+        ]);
+        setText("");
       } else {
         handleButtonClick();
       }
     }
-  }
+  };
   const scrollViewRef = useRef();
 
   const scrollToBottom = () => {
     scrollViewRef.current.scrollToEnd({ animated: true });
   };
+  
   return (
     <View className="relative">
       <View className="w-full h-screen absolute">
@@ -130,21 +122,28 @@ const ChatBoard = ({ navigation, route }) => {
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           className="flex justify-between h-[95%]"
         >
-          <ScrollView className="flex gap-y-4 p-3 mt-4" onContentSizeChange={() => scrollViewRef.current.scrollToEnd({animated : true})} ref={scrollViewRef}>
+          <ScrollView
+            className="flex gap-y-4 p-3 mt-4"
+            onContentSizeChange={() =>
+              scrollViewRef.current.scrollToEnd({ animated: true })
+            }
+            ref={scrollViewRef}
+          >
             <View className="flex justify-center items-center">
               <View className="bg-slate-200 p-1 rounded-md">
                 <Text>Start Conversation</Text>
               </View>
             </View>
-          {isLoading ?
-           <View className="flex justify-center items-center">
-            <View className="bg-black opacity-60 flex rounded-full w-[40px] h-[40px]  justify-center items-center">
-               <ActivityIndicator />
-             </View>
-           </View>
-           :
-            // Left chat
-            (!isEmpty(message) && message.map((item, index) => {
+            {isLoading ? (
+              <View className="flex justify-center items-center">
+                <View className="bg-black opacity-60 flex rounded-full w-[40px] h-[40px]  justify-center items-center">
+                  <ActivityIndicator />
+                </View>
+              </View>
+            ) : (
+              // Left chat
+              !isEmpty(message) &&
+              message.map((item, index) => {
                 return item.sender !== userId ? (
                   <View className="w-full flex flex-row">
                     <View
@@ -202,13 +201,14 @@ const ChatBoard = ({ navigation, route }) => {
                     </View>
                   </View>
                 );
-                
               })
-            )
-          }
-          <View className="h-[60px] w-full" />
+            )}
+            <View className="h-[60px] w-full" />
           </ScrollView>
-          <View className="bg-[#1f2227] flex flex-row justify-between  p-5 align-baseline z-20 relative bottom-0" onPress={scrollToBottom}>
+          <View
+            className="bg-[#1f2227] flex flex-row justify-between  p-5 align-baseline z-20 relative bottom-0"
+            onPress={scrollToBottom}
+          >
             <TextInput
               multiline={true}
               numberOfLines={4}
@@ -217,15 +217,19 @@ const ChatBoard = ({ navigation, route }) => {
               placeholderTextColor={"#ffffff"}
               className="font-montserratRegular w-[90%] text-white"
               onChangeText={(text) => {
-                setText(text) 
+                setText(text);
+              }}
+              onFocus={() =>
+                scrollViewRef.current.scrollToEnd({ animated: true })
               }
-              }
-              onFocus={() => scrollViewRef.current.scrollToEnd({animated : true})}
             />
-            <Pressable onPress={() => {
-              handleSendMessage()
-              scrollToBottom()
-            }} className="w-[10%] flex justify-center items-end">
+            <Pressable
+              onPress={() => {
+                handleSendMessage();
+                scrollToBottom();
+              }}
+              className="w-[10%] flex justify-center items-end"
+            >
               <Ionicons name="send-sharp" size={24} color="#6B7C97" />
             </Pressable>
           </View>
