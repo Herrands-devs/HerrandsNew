@@ -13,7 +13,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Switch } from "@rneui/themed";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 import axios from "axios";
 import LoadingData from "../../components/common/LoadingData";
 import isEmpty from "../../components/isEmpty";

@@ -26,7 +26,7 @@ import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API_URl } from "../../../../config";
+import { API_URl } from "../@env";
 
 const CompleteScreen = ({ navigation }) => {
   const [hourRate, setHour] = useState("");

@@ -13,7 +13,7 @@ import { TouchableOpacity } from "react-native";
 import { OtpInputs } from "../../components/common/Inputs";
 import { ResendModal, SuccessErrorModal } from "../../components/common/Modals";
 import Loading from "../../components/common/Loading";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 import axios from "axios";
 import ErrorIcon from "../../../assets/error-message.png";
 import SuccessIcon from "../../../assets/icons/thank-you.png";

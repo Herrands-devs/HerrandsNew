@@ -39,7 +39,7 @@ import { LoadingModal, SuccessErrorModal } from "../../components/common/Modals"
 import ErrorIcon from "../../../assets/error-message.png";
 import SuccessIcon from "../../../assets/icons/thank-you.png";
 import { GOOGLE_MAP_APIKEY } from "@env";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 import KeyboardAvoidingContainer from "../../components/common/KeyboardAvoidingContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { DataSelector, storeSubCategory } from "../../../reducers/dataReducer";

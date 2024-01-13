@@ -16,7 +16,7 @@ import axios from "axios";
 import { GlobalContext } from "../../../context/context.store";
 import isEmpty from "../../components/isEmpty";
 import useSocket from "../../../helpers/socket.service";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 
 const ChatBoardCustomer = ({ navigation, route }) => {
   const { userId, isToken, setSocketUrl } = useContext(GlobalContext);

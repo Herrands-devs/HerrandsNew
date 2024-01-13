@@ -7,7 +7,7 @@ import {
   IncomeOrder,
   NoOrder,
 } from "./components/DashboardComponent";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 import { GlobalContext } from "../../../context/context.store";
 import axios from "axios";
 import * as Location from "expo-location";

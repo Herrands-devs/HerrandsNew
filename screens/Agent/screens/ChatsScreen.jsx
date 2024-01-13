@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { RoundedInput } from "../../components/common/Inputs";
 import { Image } from "react-native";
 import axios from "axios";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 import { GlobalContext } from "../../../context/context.store";
 import Loading from "../../components/common/Loading";
 import isEmpty from "../../components/isEmpty";

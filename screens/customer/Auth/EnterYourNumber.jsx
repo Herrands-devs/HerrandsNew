@@ -11,7 +11,7 @@ import { PhoneNumberInput, PrimaryInput } from "../../components/common/Inputs";
 import { colors } from "../../../themes/colors";
 import { RoundedButton } from "../../components/common/Button";
 import SafeAreaComponent from "../../components/common/SafeAreaComponent";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 import axios from "axios";
 import { SuccessErrorModal } from "../../components/common/Modals";
 import ErrorIcon from "../../../assets/error-message.png";

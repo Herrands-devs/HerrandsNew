@@ -10,7 +10,7 @@ import {
 import { colors } from "../../../themes/colors";
 import { useState } from "react";
 import axios from "axios";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SuccessErrorModal } from "../../components/common/Modals";
 import ErrorIcon from "../../../assets/error-message.png";

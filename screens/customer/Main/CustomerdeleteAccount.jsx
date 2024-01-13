@@ -14,7 +14,7 @@ import { colors } from "../../../themes/colors";
 import { GlobalContext } from "../../../context/context.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 
 const { width, height } = Dimensions.get("window");
 

@@ -14,7 +14,7 @@ import { TextInput } from "react-native";
 import KeyboardAvoidingContainer from "../../../components/common/KeyboardAvoidingContainer";
 import { Platform } from "react-native";
 import axios from "axios";
-import { API_URl } from "../../../../config";
+import { API_URl } from "../@env";
 import { GlobalContext } from "../../../../context/context.store";
 import isEmpty from "../../../components/isEmpty";
 import useSocket from "../../../../helpers/socket.service";

@@ -16,7 +16,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useContext } from "react";
 import { GlobalContext } from "../../../context/context.store";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 import { SuccessErrorModal } from "../../components/common/Modals";
 import ErrorIcon from "../../../assets/error-message.png";
 import SuccessIcon from "../../../assets/icons/thank-you.png";

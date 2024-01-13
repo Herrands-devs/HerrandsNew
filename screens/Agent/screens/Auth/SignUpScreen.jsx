@@ -26,7 +26,7 @@ import {
 } from "../../../components/common/Dropdown";
 import KeyboardAvoidingContainer from "../../../components/common/KeyboardAvoidingContainer";
 import axios from "axios";
-import { API_URl } from "../../../../config";
+import { API_URl } from "../@env";
 import { GlobalContext } from "../../../../context/context.store";
 import isEmpty from "../../../components/isEmpty";
 import AsyncStorage from "@react-native-async-storage/async-storage";

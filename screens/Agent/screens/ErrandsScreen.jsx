@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Text, View, ScrollView, useWindowDimensions } from "react-native";
 import { TabView, TabBar } from "react-native-tab-view";
-import { API_URl } from "../../../config";
+import { API_URl } from "@env";
 import axios from "axios";
 import { GlobalContext } from "../../../context/context.store";
 import isEmpty from "../../components/isEmpty";

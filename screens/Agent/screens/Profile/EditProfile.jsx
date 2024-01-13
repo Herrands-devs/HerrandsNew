@@ -17,7 +17,7 @@ import {
 import { SquareButton } from "../../../components/common/Button";
 import { DropDownPicker } from "../../../components/common/Dropdown";
 import KeyboardAvoidingContainer from "../../../components/common/KeyboardAvoidingContainer";
-import { API_URl } from "../../../../config";
+import { API_URl } from "../@env";
 import { GlobalContext } from "../../../../context/context.store";
 import axios from "axios";
 import LoadingData from "../../../components/common/LoadingData";
