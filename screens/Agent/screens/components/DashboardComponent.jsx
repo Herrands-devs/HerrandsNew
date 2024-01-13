@@ -71,7 +71,7 @@ export const NoOrder = () => {
 };
 
 export const IncomeOrder = ({ data }) => {
-  const [update, setUpdate] = useState(false);
+  const {isAcceptingErrand, setIsAccepting} = useContext(GlobalContext)
   const { sendMessage, handleButtonClick, isConnected, set } = useSocket();
   const { userId } = useContext(GlobalContext);
   useEffect(() => {
@@ -84,10 +84,9 @@ export const IncomeOrder = ({ data }) => {
   });
   console.log("ID :::", userId);
   const handleAcceptErrand = () => {
-    setUpdate(true);
+    setIsAccepting(true)
     setTimeout(() => {
       if (isConnected) {
-        setUpdate(false);
         sendMessage({
           type: "update.errand",
           data: {
@@ -96,11 +95,11 @@ export const IncomeOrder = ({ data }) => {
             status: "ACCEPTED",
           },
         });
-        console.log("yes");
+        setIsAccepting(false);
       } else {
         console.log("no");
       }
-    }, 8000);
+    }, 5000);
   };
   return (
     <>
@@ -164,7 +163,7 @@ export const IncomeOrder = ({ data }) => {
                 Recipients Address
               </Text>
               <Text className="text-[16px] font-montserratRegular text-[#000E23]">
-                1hr 45min
+                {data.estimated_drop_off_time}
               </Text>
             </View>
             <View className="flex flex-row items-center">
@@ -203,7 +202,6 @@ export const IncomeOrder = ({ data }) => {
             /> */}
         </View>
       </View>
-      {update && <BottomSheetLoading />}
     </>
   );
 };

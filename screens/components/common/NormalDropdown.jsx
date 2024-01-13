@@ -36,10 +36,10 @@ export const NormalDropdown = ({
     useContext(GlobalContext);
 
   return (
-    <View className="relative w-[100%] mb-6" ref={viewRef}>
+    <View className="relative w-[100%]" ref={viewRef}>
       <View className="flex z-0 flex-row items-center gap-2">
         <Text
-          className="text-[#6B7C97] text-[14px] font-montserratRegular py-2"
+          className="text-[#6B7C97] text-[14px] font-montserratSemiBold py-2"
           style={labelStyles}
         >
           {label}
@@ -54,10 +54,12 @@ export const NormalDropdown = ({
             borderWidth: 2,
             borderRadius: "4px",
             borderColor: "#0066F5",
+            backgroundColor : 'White'
           },
           !isFocused && {
             borderRadius: 4,
             borderColor: "#E9E9E9",
+            backgroundColor : '#F7F7F7'
           },
         ]}
       >
@@ -97,7 +99,7 @@ export const NormalDropdown = ({
             ) : vehicleType ? (
               <></>
             ) : (
-              <Text className="text-[#6B7C97] font-montserratRegular">
+              <Text className="text-[#6B7C97] font-montserratSemiBold">
                 {defaultOption}
               </Text>
             )}
@@ -108,8 +110,8 @@ export const NormalDropdown = ({
             type={type}
             value={value}
             placeholder={placeHolder}
-            placeholderTextColor="#C6C6C6"
-            className="w-full h-full flex justify-center text-[14px] px-2"
+            placeholderTextColor="#6B7C97"
+            className="w-full h-full flex justify-center font-montserratSemiBold text-[14px] px-2"
             style={[disabled && { backgroundColor: "#C6C6C6", color: "white" }]}
             editable={!disabled}
             onChangeText={onChangeText}

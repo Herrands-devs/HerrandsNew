@@ -14,7 +14,6 @@ import { GlobalContext } from "../../../context/context.store";
 import isEmpty from "../../components/isEmpty";
 
 const FirstRoute = (navigation, isLoading, errandsData, refreshing, handleRefresh) => {
-  console.log(refreshing)
   return (
     <ScrollView
       className="flex gap-[1px]"

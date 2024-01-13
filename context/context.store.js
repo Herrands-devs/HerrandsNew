@@ -46,6 +46,9 @@ export const GlobalProvider = ({ children }) => {
   const [rideDetailsModal, setRideDetailsModal] = useState(false);
   const [agentInfo, setAgentInfo] = useState({});
   const [errandId, setErrandId] = useState(null);
+  const [isAcceptingErrand , setIsAccepting] = useState(false)
+
+  const [socketRef , setSocket] = useState(null)
 
   useEffect(() => {
     if (isNewUser) {
@@ -56,8 +59,8 @@ export const GlobalProvider = ({ children }) => {
   }, [isNewUser]);
 
   const getUserId = async () => {
-    // AsyncStorage.removeItem("userType");
     // AsyncStorage.removeItem("token");
+    // AsyncStorage.removeItem("user_id");
     const user_id = await AsyncStorage.getItem("user_id");
     const userType = await AsyncStorage.getItem("userType");
     const Token = await AsyncStorage.getItem("token");
@@ -71,7 +74,7 @@ export const GlobalProvider = ({ children }) => {
     }
     console.log("asyncStorage userid:::", user_id);
     console.log("asyncStorage usertype:::", userType);
-    // console.log("asyncStorage token:::", Token);
+    console.log("asyncStorage token:::", Token);
   };
 
   const getToken = async () => {
@@ -181,6 +184,10 @@ export const GlobalProvider = ({ children }) => {
         setAgentInfo,
         errandId,
         setErrandId,
+        isAcceptingErrand, 
+        setIsAccepting,
+        socketRef , 
+        setSocket
       }}
     >
       {children}
