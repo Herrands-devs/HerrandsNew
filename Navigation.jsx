@@ -240,21 +240,11 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      {isNewUser ? (
+      {isNewUser ? 
         <Onboarding />
-      ) : isAuthenticated ? (
-        <>
-          {userType === "Agent" ? (
-            <Agent />
-          ) : userType === "Customer" ? (
-            <MainCustomer />
-          ) : null}
-        </>
-      ) : userType === "Agent" ? (
-        <AgentAuth />
-      ) : userType === "Customer" ? (
-        <Authentication />
-      ) : null}
+        :
+        <MainCustomer />
+      }
     </NavigationContainer>
   );
 };
