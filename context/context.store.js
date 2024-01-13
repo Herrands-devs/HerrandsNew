@@ -68,6 +68,7 @@ export const GlobalProvider = ({ children }) => {
       setUserId(user_id);
     } else {
       setIsNewUser(true);
+      setUserId(null);
     }
     console.log("asyncStorage userid:::", user_id);
     console.log("asyncStorage usertype:::", userType);
