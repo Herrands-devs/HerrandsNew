@@ -50,22 +50,23 @@ const ChatBoard = ({ navigation, route }) => {
     if (isEmpty(textInput)) {
       return;
     } else {
+      setMessage((prev) => [
+        ...prev,
+        {
+          id: 20,
+          text: textInput,
+          attachment: null,
+          timestamp: new Date(),
+          sender: userId,
+          conversation_id: 1,
+        },
+      ]);
+      setText("");
       if (isConnected) {
+        console.log('connected');
         sendMessage({
           message: textInput,
         });
-        setMessage((prev) => [
-          ...prev,
-          {
-            id: 20,
-            text: textInput,
-            attachment: null,
-            timestamp: new Date(),
-            sender: userId,
-            conversation_id: 1,
-          },
-        ]);
-        setText("");
       } else {
         handleButtonClick();
       }
@@ -123,7 +124,7 @@ const ChatBoard = ({ navigation, route }) => {
           className="flex justify-between h-[95%]"
         >
           <ScrollView
-            className="flex gap-y-4 p-3 mt-4"
+            className="flex gap-y-4  p-3 pb-50 mt-4"
             onContentSizeChange={() =>
               scrollViewRef.current.scrollToEnd({ animated: true })
             }
@@ -203,11 +204,11 @@ const ChatBoard = ({ navigation, route }) => {
                 );
               })
             )}
-            <View className="h-[60px] w-full" />
           </ScrollView>
           <View
             className="bg-[#1f2227] flex flex-row justify-between  p-5 align-baseline z-20 relative bottom-0"
             onPress={scrollToBottom}
+
           >
             <TextInput
               multiline={true}
