@@ -27,7 +27,6 @@ const CategoryModal = ({
   const translateX = useRef(new Animated.Value(initalValue)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const { setSelectedcategory, setSubTypeId } = useContext(GlobalContext);
-
   const slideIn = () => {
     Animated.parallel([
       Animated.timing(translateX, {

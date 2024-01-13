@@ -21,6 +21,7 @@ export const PrimaryInput = ({
   isError,
   maxLength,
   mainType,
+  bgColor,
   ...rest
 }) => {
   const [isFocused, setFocused] = useState(false);
@@ -34,7 +35,7 @@ export const PrimaryInput = ({
           </TouchableOpacity>
         )}
         <Text
-          className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+          className="text-[#6B7C97] text-[14px] py-2 font-montserratSemiBold"
           style={labelStyle}
         >
           {label}
@@ -48,13 +49,14 @@ export const PrimaryInput = ({
           value={value}
           maxLength={maxLength}
           placeholder={placeHolder}
-          placeholderTextColor="#C6C6C6"
-          className="w-full h-full flex justify-center border text-[14px] px-2 font-montserratRegular"
+          placeholderTextColor="#6B7C97"
+          className={`w-full h-full ${bgColor && 'bg-[#F7F7F7]'} flex justify-center border text-[14px] px-2 font-montserratSemiBold`}
           style={[
             isFocused && {
               borderWidth: 2,
               borderRadius: 4,
               borderColor: "#0066F5",
+              backgroundColor : bgColor ? 'white' : ''
             },
             !isFocused && {
               borderRadius: 4,
@@ -191,6 +193,7 @@ export const PhoneNumberInput = ({
   iconSize,
   iconColor,
   disabled,
+  bgColor,
   ...rest
 }) => {
   const [isFocused, setFocused] = useState(false);
@@ -205,7 +208,7 @@ export const PhoneNumberInput = ({
       <View
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style} h-[45px]  border  rounded-[4px] flex flex-row items-center px-2 ${
+        className={`${style} h-[45px] ${bgColor && 'bg-[#F7F7F7]'} border  rounded-[4px] flex flex-row items-center px-2 ${
           isFocused && "shadow-sm"
         }`}
         style={[
@@ -213,6 +216,7 @@ export const PhoneNumberInput = ({
             borderWidth: 2,
             borderRadius: 4,
             borderColor: "#0066F5",
+            backgroundColor : bgColor ? 'white' : ''
           },
           !isFocused && {
             borderColor: "#E9E9E9",
@@ -361,7 +365,7 @@ export const UploadInp = ({
         onPress={handleDocumentSelection}
       >
         <View className="w-[30%] h-full flex justify-center items-center">
-          <View className="bg-[#F1F1F1] h-[35px] flex justify-center items-center p-2 font-medium text-[12px] font-montserratRegular">
+          <View className="bg-[#F7F7F7] h-[35px] flex justify-center items-center p-2 font-medium text-[12px] font-montserratRegular">
             <Text>Choose files</Text>
           </View>
         </View>

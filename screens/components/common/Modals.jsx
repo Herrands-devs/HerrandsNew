@@ -28,7 +28,7 @@ import DetailsIcon from "../../../assets/icons/details.png";
 import HorizontalLoader from "./HorizontalLoader";
 import AgentImage from "../../../assets/agent-image.png";
 import { useContext } from "react";
-import { GlobalContext } from "../../../context/context.store";
+import { GlobalContext, GlobalProvider } from "../../../context/context.store";
 import ErrandProgressComp from "./ErrandProgressComp";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import Van from "../../../assets/icons/van.png";
@@ -37,6 +37,11 @@ import Car from "../../../assets/icons/car.png";
 import { GOOGLE_MAP_APIKEY } from "@env";
 import { Keyboard } from "react-native";
 import useSocket from "../../../helpers/socket.service";
+import LoaderKit from "react-native-loader-kit";
+import AnimatedLoader from "react-native-animated-loader";
+import { useDispatch, useSelector } from "react-redux";
+import { DataSelector, toggleIsLoading } from "../../../reducers/dataReducer";
+import InfiniteLoader from "./InfiniteLoader";
 
 export const ResendModal = ({
   isVisible,
@@ -339,7 +344,7 @@ export const RidesModal = ({
 
                 <View>
                   <Text className={`text-[16px] font-montserratBold`}>
-                    {formatCurrency(rideList.total_cost)}
+                    {formatCurrency(rideList.vehicleDetails?.cost)}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -350,7 +355,7 @@ export const RidesModal = ({
                   styles={{
                     backgroundColor: colors.primaryColor,
                     width: "80%",
-                    marginVertical: 11,
+                    marginVertical: 20,
                   }}
                   onPress={onPress}
                 />
@@ -368,23 +373,19 @@ export const RideDetails = ({
   closeModal,
   navigation,
   rideList,
-  onPress,
   onAddNote,
 }) => {
   const translateY = useRef(new Animated.Value(500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
   const [selectedItem, setSelectedItem] = useState(0);
-  const { addNote } = useContext(GlobalContext);
-  const { sendMessage, handleButtonClick } = useSocket();
-  const [loading, setLoading] = useState(false);
+  const { addNote ,setSearchModal} = useContext(GlobalContext);
+  const { isLoading }  = useSelector(DataSelector)
+  const { sendMessage } = useSocket()
+  const dispatch = useDispatch();
 
   const selectRide = (id) => {
     setSelectedItem(id);
   };
-
-  useEffect(() => {
-    handleButtonClick();
-  }, []);
 
   const message = {
     type: "complete.routine_errand",
@@ -395,12 +396,14 @@ export const RideDetails = ({
   };
 
   const completeErrandCreation = async () => {
-    setLoading(true);
     sendMessage(message);
     console.log("main message sent...", message);
+    setSearchModal(true);
     setTimeout(() => {
-      onPress();
-      setLoading(false);
+      dispatch(toggleIsLoading({
+        data : false
+      }))
+      setSearchModal(true);
     }, 3000);
   };
 
@@ -469,21 +472,21 @@ export const RideDetails = ({
               <View
                 className={`flex-row items-center px-[16px] justify-between mb-[20px]`}
               >
-                <Text className={`text-[20px] font-montserratSemiBold`}>
+                <Text className={`font-montserratRegular text-[16px]`}>
                   Final Address
                 </Text>
               </View>
               <View
-                className={`flex-row items-center px-[16px] justify-between`}
+                className={`flex-row w-[100%] items-center px-[16px] justify-between`}
               >
-                <Text className={`text-[20px] font-montserratSemiBold`}>
+                <Text className={`text-[18px] w-[90%] font-montserratBold`}>
                   {rideList?.drop_off_address}
                 </Text>
                 <Image source={LocationIcon} className={`w-[24px] h-[24px]`} />
               </View>
               <View className={`px-[16px] my-[20px]`}>
                 <Text className={`text-[16px] font-montserratSemiBold`}>
-                  {formatCurrency(rideList.total_cost)}
+                  {formatCurrency(rideList.vehicleDetails?.cost)}
                 </Text>
               </View>
               <View className={`px-[16px]`}>
@@ -506,13 +509,13 @@ export const RideDetails = ({
                     marginVertical: 11,
                   }}
                   onPress={completeErrandCreation}
-                  loading={loading}
                 />
               </View>
             </View>
           </Animated.View>
         </View>
       </TouchableWithoutFeedback>
+      <LoadingModal isVisible={isLoading} />
     </Modal>
   );
 };
@@ -703,14 +706,15 @@ export const SearchinAgentModal = ({
       onRequestClose={slideDown}
     >
       <TouchableWithoutFeedback>
-        <View style={styles.ridesOverlay}>
+      <View style={[styles.ridesOverlay, { alignItems: "center" }]}>
           <Animated.View
             style={[
-              styles.ridesModal,
+              styles.loadModal,
               {
                 transform: [{ translateY }],
               },
             ]}
+            className="px-6 relative bottom-0 h-[60%]"
           >
             <View className={`items-center pt-[8px] pb-[22px]`}>
               <TouchableOpacity
@@ -731,8 +735,8 @@ export const SearchinAgentModal = ({
                 </Text>
               </View>
 
-              <View className={`mb-[118px] mt-[50px]`}>
-                <HorizontalLoader />
+              <View className={`mb-[17px] mt-[50px]`}>
+                <InfiniteLoader />
               </View>
             </View>
           </Animated.View>
@@ -987,6 +991,63 @@ export const TrackErrandModal = ({
   );
 };
 
+export const LoadingModal = ({ isVisible, closeModal }) => {
+  const translateY = useRef(new Animated.Value(500)).current;
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  const slideUp = () => {
+    Animated.parallel([
+      Animated.timing(translateY, {
+        toValue: Platform.OS === "android" ? 250 : 300,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+      Animated.timing(opacity, {
+        toValue: 0.7,
+        duration: 300,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  };
+
+  useEffect(() => {
+    if (isVisible) {
+      slideUp();
+    }
+  }, [isVisible]);
+  return (
+    <Modal
+      transparent={true}
+      visible={isVisible}
+      animationType="none"
+    >
+      <TouchableWithoutFeedback>
+        <View style={[styles.ridesOverlay, { alignItems: "center" }]}>
+          <Animated.View
+            style={[
+              {
+                transform: [{ translateY }],
+              },
+            ]}
+            className="h-[50%]"
+          >
+            <View>
+              <AnimatedLoader
+                visible={true}
+                overlayColor="rgba(0,0,0,0.5)"
+                source={require("../../../assets/loader.json")}
+                animationStyle={styles.lottie}
+                speed={2}
+              >
+              </AnimatedLoader>
+            </View>
+          </Animated.View>
+        </View>
+      </TouchableWithoutFeedback>
+    </Modal>
+  );
+};
+
 export const SuccessErrorModal = ({
   isVisible,
   closeModal,
@@ -1129,8 +1190,23 @@ const styles = StyleSheet.create({
     width: "100%",
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
+    paddingBottom: 10,
   },
   modalContent: {
-    paddingVertical: 10,
+    paddingVertical: 15,
+    paddingBottom: 10,
+  },
+  loadModal: {
+    backgroundColor : 'white',
+    borderRadius: 16,
+    width: "100%",
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0,
+    position: "absolute",
+    bottom: 0,
+  },
+  lottie: {
+    width: 60,
+    height: 60,
   },
 });

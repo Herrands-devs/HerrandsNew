@@ -17,6 +17,7 @@ export const DropDownPicker = ({
   defaultOption,
   options,
   labelStyles,
+  bgColor
 }) => {
   const viewRef = useRef();
   useEffect(() => {
@@ -29,7 +30,7 @@ export const DropDownPicker = ({
     useContext(GlobalContext);
 
   return (
-    <View className="relative w-[100%] mb-6" ref={viewRef}>
+    <View className={`relative w-[100%] mb-6`}  ref={viewRef}>
       <View className="flex z-0 flex-row items-center gap-2">
         <Text
           className="text-[#6B7C97] text-[14px] font-montserratRegular py-2"
@@ -41,7 +42,7 @@ export const DropDownPicker = ({
       <View
         onPress={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style} border h-[45px]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
+        className={`${style} border h-[45px] bg-[${bgColor}]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
         style={[
           isFocused && {
             borderWidth: 2,
@@ -59,7 +60,7 @@ export const DropDownPicker = ({
             onPress={() => setIsActive(!isActive)}
             className="w-full h-full flex justify-center cursor-pointer"
           >
-            <Text className="text-[#6B7C97] font-montserratRegular">
+            <Text className="text-[#6B7C97] font-montserratSemiBold">
               {value
                 ? value
                 : selectedCategory
@@ -73,8 +74,8 @@ export const DropDownPicker = ({
             type={type}
             value={value}
             placeholder={placeHolder}
-            placeholderTextColor="#C6C6C6"
-            className="w-full h-full flex justify-center text-[14px] px-2"
+            placeholderTextColor="#6B7C97"
+            className="w-full h-full flex justify-center font-montserratSemiBold text-[14px] px-2"
             style={[disabled && { backgroundColor: "#C6C6C6", color: "white" }]}
             editable={!disabled}
             onChangeText={(text) => {
@@ -96,7 +97,7 @@ export const DropDownPicker = ({
                 onPress={() => {
                   setValue(option.name);
                   setIsActive(false);
-                  setSelectedcategory(option.name);
+                  setSelectedcategory(option.category);
                   setSubTypeId(option.id);
                 }}
                 className={`mb-[10px]`}

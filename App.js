@@ -7,6 +7,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Navigation from "./Navigation";
 import { GlobalProvider } from "./context/context.store";
+import store from "./store";
+import { Provider } from "react-redux";
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -36,7 +38,9 @@ export default function App() {
         backgroundColor="#0066F5"
         barStyle="light-content"
       />
-      <Navigation />
+      <Provider store={store}>
+        <Navigation />
+      </Provider>
     </GlobalProvider>
   );
 }

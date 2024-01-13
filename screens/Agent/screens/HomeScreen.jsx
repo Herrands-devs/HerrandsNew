@@ -8,6 +8,7 @@ import Profilescreen from "./ProfileScreen";
 import EarningsScreen from "./EarningsScreen";
 import { Platform } from "react-native";
 import ChatsScreen from "./ChatsScreen";
+import BottomSheetLoading from "../../components/common/BottomSheetLoading";
 
 const HomeScreen = () => {
   const Tab = createBottomTabNavigator();
@@ -22,6 +23,7 @@ const HomeScreen = () => {
     profileIcon,
   } = iconsPack();
   return (
+  <>
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -65,6 +67,8 @@ const HomeScreen = () => {
         options={{ headerShown: false, tabBarStyle: { display: "none" } }}
       />
     </Tab.Navigator>
+    <BottomSheetLoading />
+    </>
   );
 };
 

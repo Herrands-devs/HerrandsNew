@@ -20,56 +20,46 @@ import {
 } from "../../components/common/Modals";
 import Loading from "../../components/common/Loading";
 import { GlobalContext } from "../../../context/context.store";
+import { useDispatch } from "react-redux";
+import { toggleIsLoading } from "../../../reducers/dataReducer";
 
 const { width, height } = Dimensions.get("window");
 
 const CustomerErrandMap = ({ navigation }) => {
+  const dispatch = useDispatch()
   const [isOpen, setIsOpen] = useState(false);
-  const [isModal, setIsModal] = useState(false);
-  const [detailsModal, setDetailsModal] = useState(false);
-  const [addNotesModal, setAddNotesModal] = useState(false);
-  const [loading, setLoading] = useState(false);
-  // const [searchModal, setSearchModal] = useState(false);
   const [agentAcceptedModal, setAgentAcceptedModal] = useState(false);
   const [trackErrandModal, setTrackErrandModal] = useState(false);
   const {
     rides,
     errandAccepted,
     setErrandAccepted,
-    createErrandSent,
     searchModal,
     setSearchModal,
     rideDetailsModal,
     setRideDetailsModal,
   } = useContext(GlobalContext);
+  const [isModal, setModal] = useState({
+    isRide  : true,
+    isDetails : false,
+    isNote : false,
+    isTrack : false,
 
+  })
   const handleCloseSidebar = () => {
     setIsOpen(false);
   };
 
   const seeDetails = () => {
-    setIsModal(false);
-    setDetailsModal(true);
+    setModal({...isModal , isDetails : true, isRide : false})
   };
 
   const openAddNotes = () => {
-    setDetailsModal(false);
-    setAddNotesModal(true);
+    setModal({...isModal , isDetails : false, isNote : true})
   };
 
   const openDetails = () => {
-    setAddNotesModal(false);
-    setDetailsModal(true);
-  };
-
-  const confirmOrder = () => {
-    setDetailsModal(false);
-    setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-      setSearchModal(true);
-    }, 3000);
+    setModal({...isModal , isDetails : false, isNote : false})
   };
 
   useEffect(() => {
@@ -84,25 +74,24 @@ const CustomerErrandMap = ({ navigation }) => {
     }
     console.log("errand accepted:::", errandAccepted);
   }, [errandAccepted]);
-
-  // const openAcceptedModal = () => {
-  //   setSearchModal(true);
-
-  //   setTimeout(() => {
-  //     setSearchModal(false);
-  //     setAgentAcceptedModal(true);
-  //   }, 3000);
-  // };
-
   const trackErrand = () => {
     setTrackErrandModal(true);
     setAgentAcceptedModal(false);
   };
 
+
   useEffect(() => {
-    console.log("rides:::", rides);
-    setIsModal(true);
-  }, [rides]);
+    if(searchModal) {
+      setModal({
+        isRide  : false,
+        isDetails : false,
+        isNote : false,
+        isTrack : false,
+      })
+    }
+    console.log('I am here', searchModal)
+  },[searchModal])
+
 
   return (
     <View>
@@ -120,7 +109,7 @@ const CustomerErrandMap = ({ navigation }) => {
       <View style={{ height: height * 0.3 }} className={`bg-white`}>
         <TouchableOpacity
           className={`py-[8px] flex-row justify-center`}
-          onPress={() => setIsModal(true)}
+          onPress={() => setModal({...isModal , isRide : true})}
         >
           <TouchableOpacity
             className={`w-[78px] h-[10px] bg-[#C6C6C6] rounded-[4px]`}
@@ -129,62 +118,34 @@ const CustomerErrandMap = ({ navigation }) => {
 
         <TouchableOpacity
           className={`bg-[#F7F7F7] flex-row items-center justify-between px-[16px] py-[12px]`}
-          onPress={() => setIsModal(true)}
+          onPress={() => setModal({...isModal , isRide : true})}
         >
-          {/* <View className={`flex-row items-center space-x-[33px]`}>
-            <Image source={rides.image} className={`w-[30px] h-[14px]`} />
-            <View>
-              {rides.icon ? (
-                <View className={`flex-row items-center space-x-2`}>
-                  <Text className={`font-montserratSemiBold text-[14px]`}>
-                    {rides.title}
-                  </Text>
-                  <Image source={rides.icon} className={`w-[12px] h-[12px]`} />
-                </View>
-              ) : (
-                <Text className={`font-montserratSemiBold text-[14px]`}>
-                  {rides.title}
-                </Text>
-              )}
-              <Text className={`text-[8px] font-montserratMedium`}>
-                {rides.time}
-              </Text>
-            </View>
-          </View> */}
           <View>
             <Text>See Available Vehicles</Text>
           </View>
-
-          {/* <View>
-            <Text className={`text-[16px] font-montserratBold`}>
-              {formatCurrency(rides.amount)}
-            </Text>
-          </View> */}
         </TouchableOpacity>
       </View>
-      {loading && <Loading />}
       <Sidebar
         isOpen={isOpen}
         onClose={handleCloseSidebar}
         navigation={navigation}
       />
       <RidesModal
-        isVisible={isModal}
-        closeModal={() => setIsModal(false)}
+        isVisible={isModal.isRide}
+        closeModal={() => setModal({...isModal , isRide : false})}
         navigation={navigation}
         rideList={rides}
         onPress={seeDetails}
       />
       <RideDetails
-        isVisible={detailsModal}
-        closeModal={() => setDetailsModal(false)}
+        isVisible={isModal.isDetails}
+        closeModal={() => setModal({...isModal , isDetails : false})}
         onAddNote={openAddNotes}
-        onPress={confirmOrder}
         rideList={rides}
       />
       <RideAddNotes
-        isVisible={addNotesModal}
-        closeModal={() => setAddNotesModal(false)}
+        isVisible={isModal.isNote}
+        closeModal={() => setModal({...isModal , isNote : false})}
         openDetails={openDetails}
       />
       <SearchinAgentModal

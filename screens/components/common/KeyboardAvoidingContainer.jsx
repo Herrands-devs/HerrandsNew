@@ -1,10 +1,11 @@
 import React from 'react'
+import { View } from 'react-native'
 import { KeyboardAvoidingView, Platform, ScrollView, StatusBar, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const KeyboardAvoidingContainer = ({children , style}) => {
    return (
-      <SafeAreaView style={{flex : 1 , backgroundColor : 'white'}}>
+      <View style={{flex : 1}}>
          <KeyboardAvoidingView 
             style={{flex : 1}}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -16,15 +17,13 @@ const KeyboardAvoidingContainer = ({children , style}) => {
                {children}
             </ScrollView>
          </KeyboardAvoidingView>
-      </SafeAreaView>
+      </View>
    )
 }
 
 
 const styles = StyleSheet.create({
    contentContainer : {
-      height: 100,
-      
    }
 })
 export default KeyboardAvoidingContainer
