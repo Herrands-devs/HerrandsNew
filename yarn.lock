@@ -6250,11 +6250,6 @@ react-native-keyboard-aware-scroll-view@^0.9.5:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-react-native-loader-kit@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-loader-kit/-/react-native-loader-kit-2.0.5.tgz#ef5c5b756ab1581fbf0a536a24e6e2d7bf122e97"
-  integrity sha512-wpk0gOqRcQjoFaFsIXg4Y4fA1AJWmjrgxzwzaPpchwp7myuwkuQsQUDbBvaU/cIFj24qYmoGWmH+X27NVDB2HQ==
-
 react-native-maps-directions@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/react-native-maps-directions/-/react-native-maps-directions-1.9.0.tgz#63ae8e8b36499042a658e43cd4836ac89aab8b7d"

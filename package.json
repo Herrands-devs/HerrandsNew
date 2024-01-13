@@ -45,7 +45,6 @@
     "react-native-image-picker": "^7.0.1",
     "react-native-ionicons": "^4.x",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
-    "react-native-loader-kit": "^2.0.5",
     "react-native-maps": "1.7.1",
     "react-native-maps-directions": "^1.9.0",
     "react-native-pager-view": "6.2.0",

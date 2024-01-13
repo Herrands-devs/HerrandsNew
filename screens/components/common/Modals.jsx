@@ -37,7 +37,6 @@ import Car from "../../../assets/icons/car.png";
 import { GOOGLE_MAP_APIKEY } from "@env";
 import { Keyboard } from "react-native";
 import useSocket from "../../../helpers/socket.service";
-import LoaderKit from "react-native-loader-kit";
 import AnimatedLoader from "react-native-animated-loader";
 import { useDispatch, useSelector } from "react-redux";
 import { DataSelector, toggleIsLoading } from "../../../reducers/dataReducer";
