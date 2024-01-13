@@ -22,7 +22,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mycompany.herrands"
     },
     "android": {
       "adaptiveIcon": {
@@ -34,15 +35,13 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-     
-    },
-    
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "updates": {
-      "url": "https://u.expo.dev/f987072c-c056-46b4-8bbb-f0d2e6ae602b"
+    "extra": {
+      "eas": {
+        "projectId": "7c89e47e-0130-4c81-85f0-6507665fd9da"
+      }
     }
   }
 }

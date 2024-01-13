@@ -18,30 +18,30 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { GOOGLE_MAP_APIKEY } from "@env";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useDispatch, useSelector } from "react-redux";
+import { connectToSocket, fetchAllSubCategories, fetchCategoriesAction, fetchVehicleTypes } from "../../../helpers/fetchData";
+import { toggleIsSocketConnected } from "../../../reducers/dataReducer";
 
 const CustomerHome = ({ navigation }) => {
   const videoRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { handleButtonClick, sendMessage, isConnected } = useSocket();
+  const { isConnected , fetchToken } = useSocket();
   const insets = useSafeAreaInsets();
 
+  const dispatch = useDispatch()
   useEffect(() => {
-    console.log("is connected from home:::", isConnected);
-  }, [isConnected]);
+    fetchCategoriesAction(dispatch)
+    fetchAllSubCategories(dispatch)
+    fetchVehicleTypes(dispatch)
+    fetchToken()
+    if(isConnected) {
+      dispatch(toggleIsSocketConnected({
+        data : isConnected
+      }))
+      console.log("Heyy, This is socker", isConnected);
+    }
+  },[]);
 
-  // const message = {
-  //   type: "create.errand",
-  //   data: {
-  //     category: "3",
-  //     subtype: "2",
-  //     describe_errand:
-  //       "Book my mother's flight for me, details are provided in the attached documents",
-  //     customer: "fd4d2c8e-3f3c-4868-b31d-79dda4741754",
-  //     due_date: "2023-11-01T12:00:00Z",
-  //     status: "REQUESTED",
-  //     files: [],
-  //   },
-  // };
 
   const handleCloseSidebar = () => {
     setIsOpen(false);

@@ -13,6 +13,7 @@ import SuccessIcon from "../../../../assets/icons/thank-you.png";
 import { API_URl } from '../../../../config'
 import axios from 'axios'
 import isEmpty from '../../../components/isEmpty'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginScreen = ({navigation, route}) => {
    const [phone_number, setPhone_number] = useState();
@@ -38,6 +39,7 @@ const LoginScreen = ({navigation, route}) => {
           .then((response) => {
             if (response.status === 200 || response.status === 201) {
               setLoading(false);
+              AsyncStorage.setItem('userType' , 'Agent')
               navigation.navigate("OtpScreenAgent", { phone_number: "+234"+phone_number });
             } else {
               setLoading(false);
