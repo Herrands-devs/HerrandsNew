@@ -10,7 +10,7 @@ import { SuccessErrorModal } from '../../../components/common/Modals'
 const { width, height } = Dimensions.get("window");
 import ErrorIcon from "../../../../assets/error-message.png";
 import SuccessIcon from "../../../../assets/icons/thank-you.png";
-import { API_URl } from '../@env'
+import { API_URl } from '@env'
 import axios from 'axios'
 import isEmpty from '../../../components/isEmpty'
 import AsyncStorage from '@react-native-async-storage/async-storage'

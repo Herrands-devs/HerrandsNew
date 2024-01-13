@@ -61,6 +61,7 @@ export const GlobalProvider = ({ children }) => {
   const getUserId = async () => {
     // AsyncStorage.removeItem("token");
     // AsyncStorage.removeItem("user_id");
+    // AsyncStorage.removeItem("userType");
     const user_id = await AsyncStorage.getItem("user_id");
     const userType = await AsyncStorage.getItem("userType");
     const Token = await AsyncStorage.getItem("token");
