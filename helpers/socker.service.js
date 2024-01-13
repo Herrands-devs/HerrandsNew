@@ -87,7 +87,7 @@ const useSocket = () => {
   };
 
   const handleSendMessage = (message) => {
-    if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+  if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       socketRef.current.send(JSON.stringify(message));
       console.log("message sent in socket", message);
     } else {
