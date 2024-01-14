@@ -1065,7 +1065,7 @@ export const SuccessErrorModal = ({
   const slideUp = () => {
     Animated.parallel([
       Animated.timing(translateY, {
-        toValue: Platform.OS === "android" ? 250 : 0,
+        toValue: 0,
         duration: 300,
         useNativeDriver: false,
       }),

@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, ActivityIndicator } from "react-native";
+import { TouchableOpacity, Text, ActivityIndicator, Platform } from "react-native";
 
 export const RoundedButton = ({
   text,
@@ -32,7 +32,7 @@ export const SquareButton = ({ text, styles, onPress, loading, textStyle }) => {
   return (
     <TouchableOpacity
       className={`w-[100%] 
-      p-[14px] flex flex-row justify-center rounded-[4px]`}
+      ${Platform.OS == 'ios' ? 'py-[14px]' : 'py-[12px]'} flex flex-row justify-center rounded-[4px]`}
       style={styles}
       onPress={onPress}
     >
@@ -40,7 +40,7 @@ export const SquareButton = ({ text, styles, onPress, loading, textStyle }) => {
         <ActivityIndicator />
       ) : (
         <Text
-          className={`text-white text-[14px] font-semibold font-montserratBold`}
+          className={`text-white  ${Platform.OS == 'ios' ? 'text-[14px]' : 'text-[12px]'}  font-semibold font-montserratBold`}
           style={textStyle}
         >
           {text}
@@ -92,7 +92,7 @@ export const LayeredBtn = ({
 }) => {
   return (
     <TouchableOpacity
-      className={`py-[21px] flex 
+      className={`${Platform.OS == 'ios' ?'py-[16px]' : 'py-12'} flex 
       rounded-[4px] border border-[#99C2FB] w-[45%]`}
       style={styles}
       onPress={onPress}

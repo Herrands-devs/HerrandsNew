@@ -35,7 +35,10 @@ import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useSocket from "../../../helpers/socket.service";
 import { NormalDropdown } from "../../components/common/NormalDropdown";
-import { LoadingModal, SuccessErrorModal } from "../../components/common/Modals";
+import {
+  LoadingModal,
+  SuccessErrorModal,
+} from "../../components/common/Modals";
 import ErrorIcon from "../../../assets/error-message.png";
 import SuccessIcon from "../../../assets/icons/thank-you.png";
 import { GOOGLE_MAP_APIKEY } from "@env";
@@ -43,12 +46,16 @@ import { API_URl } from "@env";
 import KeyboardAvoidingContainer from "../../components/common/KeyboardAvoidingContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { DataSelector, storeSubCategory } from "../../../reducers/dataReducer";
-import { fetchCategoriesAction, fetchSubCategories } from "../../../helpers/fetchData";
+import {
+  fetchCategoriesAction,
+  fetchSubCategories,
+} from "../../../helpers/fetchData";
 
 const { width, height } = Dimensions.get("window");
 
 const CustomerCreateErrand = ({ navigation }) => {
-  const { categories  , subcategories , vehicles , isLoading , subcategory}  = useSelector(DataSelector)
+  const { categories, subcategories, vehicles, isLoading, subcategory } =
+    useSelector(DataSelector);
   const [modalStates, setModalStates] = useState({
     routine: false,
     grocery: false,
@@ -57,7 +64,7 @@ const CustomerCreateErrand = ({ navigation }) => {
     houseHold: false,
   });
   const [selectedState, setSelectedState] = useState("");
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const {
     selectedCategory,
     itemAddress,
@@ -71,7 +78,6 @@ const CustomerCreateErrand = ({ navigation }) => {
   } = useContext(GlobalContext);
   const [userId, setUserId] = useState("");
   const { isConnected, sendMessage, fetchToken } = useSocket();
-
 
   const [pickItemsValues, setPickItemsValues] = useState({
     item_description: "",
@@ -100,7 +106,6 @@ const CustomerCreateErrand = ({ navigation }) => {
   const [cleanHouseAssistance, setCleanHouseAssistance] = useState("");
   const [cleanHouseHowLong, setCleanHouseHowLong] = useState("");
   const [timeType, setTimeType] = useState("hours");
-
 
   const cleanHouseMessage = {
     type: "create.household_chores",
@@ -247,8 +252,8 @@ const CustomerCreateErrand = ({ navigation }) => {
       setModalMessage("Cannot determine errand distance or duration.");
       setMessageType("error");
     } else {
-      if(!isConnected) {
-        fetchToken()
+      if (!isConnected) {
+        fetchToken();
       } else {
         sendMessage(message);
       }
@@ -264,7 +269,6 @@ const CustomerCreateErrand = ({ navigation }) => {
       console.log("No user Id");
     }
   };
-
 
   useEffect(() => {
     fetchID();
@@ -291,7 +295,6 @@ const CustomerCreateErrand = ({ navigation }) => {
               },
             ]}
             label={"Tell us how long"}
-            labelStyles={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
             disabled={true}
           />
         </View>
@@ -299,7 +302,6 @@ const CustomerCreateErrand = ({ navigation }) => {
           <PrimaryInput
             label={"When do you want this completed?"}
             placeHolder={"Select date and time"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
             bgColor={true}
           />
         </View>
@@ -307,7 +309,6 @@ const CustomerCreateErrand = ({ navigation }) => {
           <PrimaryInput
             label={"Please include more details"}
             placeHolder={"Tell us anything we need to know..."}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
             bgColor={true}
           />
         </View>
@@ -315,7 +316,6 @@ const CustomerCreateErrand = ({ navigation }) => {
           <PrimaryInput
             label={"Any relevcant file(s)"}
             placeHolder={"No file chosen"}
-            labelStyle={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
             bgColor={true}
           />
         </View>
@@ -325,16 +325,22 @@ const CustomerCreateErrand = ({ navigation }) => {
 
   useEffect(() => {
     setSelectedState(selectedCategory);
-    console.log(selectedCategory);
   }, [selectedCategory]);
 
   return (
-    <View
-      style={{  }}
-      className="bg-white"
-    >
-      <View>
-        {/* <View className={`px-[16px] flex-row items-center justify-between`}>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
+    style={{ flex: 1 }}>
+      <SafeAreaComponent>
+        <View className={`px-[16px] flex-row items-center justify-between`}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+              setSelectedState("");
+              setSelectedcategory("");
+            }}
+          >
+            <Image source={BackIcon} className={`w-[24px] h-[24px]`} />
+          </TouchableOpacity>
           {selectedState !== "" && (
             <TouchableOpacity
               onPress={() => {
@@ -349,247 +355,223 @@ const CustomerCreateErrand = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
           )}
-        </View> */}
-        <View className={`px-[16px] flex pt-5  h-[90vh]`}>
-          <KeyboardAvoidingContainer>
-            <View className={`z-10`}>
-              <DropDownPicker
-                defaultOption={"I want to"}
-                options={subcategories}
-                label={"What errand are you runnung today?"}
-                labelStyles={{
-                  fontFamily: "MontserratBold",
-                  fontSize: 16,
-                  color: "#6B7C97",
-                }}
-                bgColor={"#F7F7F7"}
-              />
-            </View>
+        </View>
+        <View className={`px-[14px] flex pt-5 gap-y-10`}>
+          <View className={`z-50`}>
+            <DropDownPicker
+              defaultOption={"I want to"}
+              options={subcategories}
+              label={"What errand are you runnung today?"}
+              labelStyles={{
+                color: "#6B7C97",
+              }}
+              bgColor={"#F7F7F7"}
+            />
+          </View>
 
-            <View className={`h-[90vh]`}>
-              {selectedState === "" ? (
-                <View>
-                  <Text className={`text-[16px] font-montserratSemiBold`}>
-                    Search by category
+          <View className="">
+            {selectedState === "" ? (
+              <View>
+                <Text className={`text-[16px] font-montserratSemiBold`}>
+                  Search by category
+                </Text>
+                <View
+                  style={{ marginTop: height * 0.047, paddingLeft: 10 }}
+                  className={`flex-row items-center flex-wrap gap-5`}
+                >
+                  {categories &&
+                    categories.map((category) => (
+                      <View className={``} key={category.id}>
+                        <CategoryButton
+                          icon={
+                            category.name === "Routine errands"
+                              ? RoutinIcon
+                              : category.name === "Outdoor errands"
+                              ? CartIcon
+                              : category.name === "Virtual errands"
+                              ? OfficeIcon
+                              : category.name === "Household errand"
+                              ? HouseIcon
+                              : null
+                          }
+                          title={category.name}
+                          onPress={() => {
+                            if (category.name === "Routine errands") {
+                              setModalStates({
+                                ...modalStates,
+                                routine: true,
+                              });
+                              fetchSubCategories(dispatch, category.id);
+                            }
+
+                            if (category.name === "Outdoor errands") {
+                              setModalStates({
+                                ...modalStates,
+                                grocery: true,
+                              });
+                              fetchSubCategories(dispatch, category.id);
+                            }
+
+                            // if (category.name === "Social media")
+                            //   setModalStates({
+                            //     ...modalStates,
+                            //     social: true,
+                            //   });
+                            if (category.name === "Virtual errands") {
+                              setModalStates({
+                                ...modalStates,
+                                office: true,
+                              });
+                              fetchSubCategories(dispatch, category.id);
+                            }
+
+                            if (category.name === "Household errand") {
+                              setModalStates({
+                                ...modalStates,
+                                houseHold: true,
+                              });
+                              fetchSubCategories(dispatch, category.id);
+                            }
+                          }}
+                        />
+                      </View>
+                    ))}
+                </View>
+              </View>
+            ) : selectedState === 1 ? (
+              <View className={`flex gap-y-5`}>
+                {/* <View> */}
+                <PrimaryInput
+                  label={"Item's description"}
+                  placeHolder={"What's the item to pick up?"}
+                  value={pickItemsValues.item_description}
+                  onChangeText={(text) =>
+                    setPickItemsValues({
+                      ...pickItemsValues,
+                      item_description: text,
+                    })
+                  }
+                  bgColor={true}
+                  type="default"
+                />
+
+                <View className={`z-20`}>
+                  <NormalDropdown
+                    defaultOption={"Select One"}
+                    options={vehicles}
+                    label={"What type of vehicle do you need?"}
+                    value={vehicleType}
+                    onSelect={() => setSelectedVehicle()}
+                  />
+                </View>
+                {/* </View> */}
+                <TouchableOpacity
+                  style={{ zIndex: 10 }}
+                  onPress={() =>
+                    navigation.navigate("SelectAddress", { type: "item" })
+                  }
+                >
+                  <Text
+                    className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                    style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
+                  >
+                    Item's address
                   </Text>
                   <View
-                    style={{ marginTop: height * 0.047, paddingLeft: 10 }}
-                    className={`flex-row items-center flex-wrap gap-5`}
+                    className={`border outline-none bg-[#F7F7F7] border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
                   >
-                    {categories &&
-                      categories.map((category) => (
-                        <View className={``} key={category.id}>
-                          <CategoryButton
-                            icon={
-                              category.name === "Routine errands"
-                                ? RoutinIcon
-                                : category.name === "Outdoor errands"
-                                ? CartIcon
-                                : category.name === "Virtual errands"
-                                ? OfficeIcon
-                                : category.name === "Household errand"
-                                ? HouseIcon
-                                : null
-                            }
-                            title={category.name}
-                            onPress={() => {
-                              if (category.name === "Routine errands") {
-                                setModalStates({
-                                  ...modalStates,
-                                  routine: true,
-                                });
-                                fetchSubCategories(dispatch ,category.id);
-                              }
-
-                              if (category.name === "Outdoor errands") {
-                                setModalStates({
-                                  ...modalStates,
-                                  grocery: true,
-                                });
-                                fetchSubCategories(dispatch ,category.id);
-                              }
-
-                              // if (category.name === "Social media")
-                              //   setModalStates({
-                              //     ...modalStates,
-                              //     social: true,
-                              //   });
-                              if (category.name === "Virtual errands") {
-                                setModalStates({
-                                  ...modalStates,
-                                  office: true,
-                                });
-                                fetchSubCategories(dispatch ,category.id);
-                              }
-
-                              if (category.name === "Household errand") {
-                                setModalStates({
-                                  ...modalStates,
-                                  houseHold: true,
-                                });
-                                fetchSubCategories(dispatch ,category.id);
-                              }
-                            }}
-                          />
-                        </View>
-                      ))}
+                    <Text
+                      className={`${
+                        itemAddress ? `text-[#000]` : `text-[#6B7C97]`
+                      } text-[14px] font-montserratRegular`}
+                    >
+                      {itemAddress === undefined
+                        ? "Where is the location of the item?"
+                        : itemAddress.description}
+                    </Text>
                   </View>
-                </View>
-              ) : selectedState === 1 ? (
-                <View className={`space-y-[26px]`}>
-                  {/* <View> */}
-                  <PrimaryInput
-                    label={"Item's description"}
-                    placeHolder={"What's the item to pick up?"}
-                    labelStyle={{
-                      fontSize: 16,
-                      fontFamily: "MontserratSemiBold",
-                    }}
-            
-                    value={pickItemsValues.item_description}
+                </TouchableOpacity>
+                <View>
+                  <PhoneNumberInput
+                    label={"Custodian's phone"}
+                    placeHolder={"Custodian of item's hotline?"}
+                    value={pickItemsValues.sendder_contact}
                     onChangeText={(text) =>
                       setPickItemsValues({
                         ...pickItemsValues,
-                        item_description: text,
+                        sendder_contact: text,
                       })
                     }
                     bgColor={true}
-                    type="default"
+                    type={"phone-pad"}
                   />
-
-                  <View className={`z-20`}>
-                    <NormalDropdown
-                      defaultOption={"Select One"}
-                      options={vehicles}
-                      label={"What type of vehicle do you need?"}
-                      value={vehicleType}
-                      onSelect={() => setSelectedVehicle()}
-                    />
-                  </View>
-                  {/* </View> */}
+                </View>
+                <View>
                   <TouchableOpacity
                     style={{ zIndex: 10 }}
                     onPress={() =>
-                      navigation.navigate("SelectAddress", { type: "item" })
+                      navigation.navigate("SelectAddress", {
+                        type: "recipient",
+                      })
                     }
                   >
                     <Text
                       className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
-                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
                     >
-                      Item's address
+                      Recipient's address
                     </Text>
                     <View
                       className={`border outline-none bg-[#F7F7F7] border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
                     >
                       <Text
                         className={`${
-                          itemAddress ? `text-[#000]` : `text-[#6B7C97]`
-                        } text-[14px] font-montserratSemiBold`}
+                          recipientAddress ? `text-[#000]` : `text-[#6B7C97]`
+                        } text-[14px] font-montserratRegular`}
                       >
-                        {itemAddress === undefined
-                          ? "Where is the location of the item?"
-                          : itemAddress.description}
+                        {recipientAddress === undefined
+                          ? "Where will the item be delivered?"
+                          : recipientAddress.description}
                       </Text>
                     </View>
                   </TouchableOpacity>
-                  <View>
-                    <PhoneNumberInput
-                      label={"Custodian's phone"}
-                      placeHolder={"Custodian of item's hotline?"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                      value={pickItemsValues.sendder_contact}
-                      onChangeText={(text) =>
-                        setPickItemsValues({
-                          ...pickItemsValues,
-                          sendder_contact: text,
-                        })
-                      }
-                      bgColor={true}
-                      type={"phone-pad"}
-                    />
-                  </View>
-                  <View>
-                    <TouchableOpacity
-                      style={{ zIndex: 10 }}
-                      onPress={() =>
-                        navigation.navigate("SelectAddress", {
-                          type: "recipient",
-                        })
-                      }
-                    >
-                      <Text
-                        className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
-                        style={{
-                          fontSize: 16,
-                          fontFamily: "MontserratSemiBold",
-                        }}
-                      >
-                        Recipient's address
-                      </Text>
-                      <View
-                        className={`border outline-none bg-[#F7F7F7] border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
-                      >
-                        <Text
-                          className={`${
-                            recipientAddress ? `text-[#000]` : `text-[#6B7C97]`
-                          } text-[14px] font-montserratSemiBold`}
-                        >
-                          {recipientAddress === undefined
-                            ? "Where will the item be delivered?"
-                            : recipientAddress.description}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                    <PhoneNumberInput
-                      label={"Recipient's phone"}
-                      placeHolder={"Recipient of the item's hotline?"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                      value={pickItemsValues.recipient_contact}
-                      onChangeText={(text) =>
-                        setPickItemsValues({
-                          ...pickItemsValues,
-                          recipient_contact: text,
-                        })
-                      }
-                      bgColor={true}
-                      type={"phone-pad"}
-                    />
-                  </View>
                 </View>
-              ) : selectedState === 2 ? (
-                <View className={`space-y-[26px]`}>
-                  <View className={`z-20`}>
-                    <NormalDropdown
-                      defaultOption={"Select One"}
-                      options={vehicles}
-                      label={"Which would you prefer?"}
-                      value={vehicleType}
-                      onSelect={() => setSelectedVehicle()}
-                    />
-                  </View>
-                  <View>
-                    <PrimaryInput
-                      label={"What items do you want to purcahse?"}
-                      placeHolder={"List the items to purchase"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                      value={itemsToPurchase}
-                      bgColor={true}
-                      onChangeText={(text) => setItemsToPurchase(text)}
-                    />
-                  </View>
-                  {/* <View>
+                <View>
+                  <PhoneNumberInput
+                    label={"Recipient's phone"}
+                    placeHolder={"Recipient of the item's hotline?"}
+                    value={pickItemsValues.recipient_contact}
+                    onChangeText={(text) =>
+                      setPickItemsValues({
+                        ...pickItemsValues,
+                        recipient_contact: text,
+                      })
+                    }
+                    bgColor={true}
+                    type={"phone-pad"}
+                  />
+                </View>
+              </View>
+            ) : selectedState === 2 ? (
+              <View className={`flex gap-y-5`}>
+                <View className={`z-20`}>
+                  <NormalDropdown
+                    defaultOption={"Select One"}
+                    options={vehicles}
+                    label={"Which would you prefer?"}
+                    value={vehicleType}
+                    onSelect={() => setSelectedVehicle()}
+                  />
+                </View>
+                <View>
+                  <PrimaryInput
+                    label={"What items do you want to purcahse?"}
+                    placeHolder={"List the items to purchase"}
+                    value={itemsToPurchase}
+                    bgColor={true}
+                    onChangeText={(text) => setItemsToPurchase(text)}
+                  />
+                </View>
+                {/* <View>
                     <PrimaryInput
                       label={"For how long?"}
                       placeHolder={"The number of hours this will take"}
@@ -599,185 +581,161 @@ const CustomerCreateErrand = ({ navigation }) => {
                       }}
                     />
                   </View> */}
-                  <View>
-                    <PrimaryInput
-                      label={"What is your Estimated price?"}
-                      placeHolder={"The amount you want to spend"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                      type={"phone-pad"}
-                      value={estimatedPrice}
-                      bgColor={true}
-                      onChangeText={(text) => setEstimatedPrice(text)}
-                    />
-                  </View>
-                  <View>
-                    <TouchableOpacity
-                      style={{ zIndex: 10 }}
-                      onPress={() =>
-                        navigation.navigate("SelectAddress", {
-                          type: "recipient",
-                        })
-                      }
-                    >
-                      <Text
-                        className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
-                        style={{
-                          fontSize: 16,
-                          fontFamily: "MontserratSemiBold",
-                        }}
-                      >
-                        Recipient's address
-                      </Text>
-                      <View
-                        className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
-                      >
-                        <Text
-                          className={`${
-                            recipientAddress ? `text-[#000]` : `text-[#e8e8e8]`
-                          } text-[14px] font-montserratSemiBold`}
-                        >
-                          {recipientAddress === undefined
-                            ? "Where will the item be delivered?"
-                            : recipientAddress.description}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                    <PrimaryInput
-                      label={"Your phone number"}
-                      placeHolder={"Give us a hotline to reach you"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                      value={groceryPhoneNumber}
-                      onChangeText={(text) => setGroceryPhoneNumber(text)}
-                      bgColor={true}
-                      type={"phone-pad"}
-                    />
-                  </View>
+                <View>
+                  <PrimaryInput
+                    label={"What is your Estimated price?"}
+                    placeHolder={"The amount you want to spend"}
+                    type={"phone-pad"}
+                    value={estimatedPrice}
+                    bgColor={true}
+                    onChangeText={(text) => setEstimatedPrice(text)}
+                  />
                 </View>
-              ) : selectedState === 3 ? (
-                <ManageEmailFields />
-              ) : selectedState === 4 ? (
-                <View className={`space-y-[26px]`}>
-                  <View className={`z-20`}>
-                    <NormalDropdown
-                      defaultOption={"Select One"}
-                      options={vehicles}
-                      label={"Which would you prefer?"}
-                      value={vehicleType}
-                      onSelect={() => setSelectedVehicle()}
-                    />
-                  </View>
-                  <View>
-                    <PrimaryInput
-                      label={"What do you need assistance with?"}
-                      placeHolder={"Please be specific with your tasks"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                      value={cleanHouseAssistance}
-                      onChangeText={(text) => setCleanHouseAssistance(text)}
-                    />
-                  </View>
-
-                  <View>
-                    <PrimaryInput
-                      label={"For how long?"}
-                      placeHolder={"The number of hours this will take"}
-                      labelStyle={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
-                      value={cleanHouseHowLong}
-                      onChangeText={(text) => setCleanHouseHowLong(text)}
-                      bgColor={true}
-                      type={"phone-pad"}
-                    />
-                  </View>
-
-                  <View className={`flex-row items-center space-x-[20px]`}>
-                    <TouchableOpacity
-                      className={`border rounded-[4px] p-[10px] ${
-                        timeType === "hours" && `bg-primaryColor border-0`
-                      }`}
-                      onPress={() => setTimeType("hours")}
-                    >
-                      <Text
-                        className={`${timeType === "hours" && `text-white`}`}
-                      >
-                        Hours
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      className={`border rounded-[4px] p-[10px] ${
-                        timeType === "days" && `bg-primaryColor border-0`
-                      }`}
-                      onPress={() => setTimeType("days")}
-                    >
-                      <Text
-                        className={`${timeType === "days" && `text-white`}`}
-                      >
-                        Days
-                      </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      className={`border rounded-[4px] p-[10px] ${
-                        timeType === "months" && `bg-primaryColor border-0`
-                      }`}
-                      onPress={() => setTimeType("months")}
-                    >
-                      <Text
-                        className={`${timeType === "months" && `text-white`}`}
-                      >
-                        Months
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
+                <View>
                   <TouchableOpacity
                     style={{ zIndex: 10 }}
                     onPress={() =>
-                      navigation.navigate("SelectAddress", { type: "item" })
+                      navigation.navigate("SelectAddress", {
+                        type: "recipient",
+                      })
                     }
                   >
                     <Text
                       className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
-                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
+                      style={{
+                        fontSize: 16,
+                        fontFamily: "MontserratSemiBold",
+                      }}
                     >
-                      Meet up address
+                      Recipient's address
                     </Text>
                     <View
                       className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
                     >
                       <Text
                         className={`${
-                          itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                          recipientAddress ? `text-[#000]` : `text-[#e8e8e8]`
                         } text-[14px] font-montserratSemiBold`}
                       >
-                        {itemAddress === undefined
-                          ? "Where should the Herrands agent meet you?"
-                          : itemAddress.description}
+                        {recipientAddress === undefined
+                          ? "Where will the item be delivered?"
+                          : recipientAddress.description}
                       </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
-              ) : null}
-            </View>
-          </KeyboardAvoidingContainer>
+                <View>
+                  <PrimaryInput
+                    label={"Your phone number"}
+                    placeHolder={"Give us a hotline to reach you"}
+                    value={groceryPhoneNumber}
+                    onChangeText={(text) => setGroceryPhoneNumber(text)}
+                    bgColor={true}
+                    type={"phone-pad"}
+                  />
+                </View>
+              </View>
+            ) : selectedState === 3 ? (
+              <ManageEmailFields />
+            ) : selectedState === 4 ? (
+              <View className={`flex gap-y-5`}>
+                <View className={`z-20`}>
+                  <NormalDropdown
+                    defaultOption={"Select One"}
+                    options={vehicles}
+                    label={"Which would you prefer?"}
+                    value={vehicleType}
+                    onSelect={() => setSelectedVehicle()}
+                  />
+                </View>
+                <View>
+                  <PrimaryInput
+                    label={"What do you need assistance with?"}
+                    placeHolder={"Please be specific with your tasks"}
+                    value={cleanHouseAssistance}
+                    onChangeText={(text) => setCleanHouseAssistance(text)}
+                  />
+                </View>
 
+                <View>
+                  <PrimaryInput
+                    label={"For how long?"}
+                    placeHolder={"The number of hours this will take"}
+                    value={cleanHouseHowLong}
+                    onChangeText={(text) => setCleanHouseHowLong(text)}
+                    bgColor={true}
+                    type={"phone-pad"}
+                  />
+                </View>
+
+                <View className={`flex-row items-center space-x-[20px]`}>
+                  <TouchableOpacity
+                    className={`border rounded-[4px] p-[10px] ${
+                      timeType === "hours" && `bg-primaryColor border-0`
+                    }`}
+                    onPress={() => setTimeType("hours")}
+                  >
+                    <Text className={`${timeType === "hours" && `text-white`}`}>
+                      Hours
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    className={`border rounded-[4px] p-[10px] ${
+                      timeType === "days" && `bg-primaryColor border-0`
+                    }`}
+                    onPress={() => setTimeType("days")}
+                  >
+                    <Text className={`${timeType === "days" && `text-white`}`}>
+                      Days
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    className={`border rounded-[4px] p-[10px] ${
+                      timeType === "months" && `bg-primaryColor border-0`
+                    }`}
+                    onPress={() => setTimeType("months")}
+                  >
+                    <Text
+                      className={`${timeType === "months" && `text-white`}`}
+                    >
+                      Months
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <TouchableOpacity
+                  style={{ zIndex: 10 }}
+                  onPress={() =>
+                    navigation.navigate("SelectAddress", { type: "item" })
+                  }
+                >
+                  <Text
+                    className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                    style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
+                  >
+                    Meet up address
+                  </Text>
+                  <View
+                    className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                  >
+                    <Text
+                      className={`${
+                        itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                      } text-[14px] font-montserratSemiBold`}
+                    >
+                      {itemAddress === undefined
+                        ? "Where should the Herrands agent meet you?"
+                        : itemAddress.description}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ) : null}
+          </View>
           <View
-            className={`h-[12%]`}
-            // style={{
-            //   marginTop: height * 0.227,
-            //   // marginBottom: selectedCategory === "" ? 0 : 100,
-            // }}
+            style={{
+              marginBottom: selectedCategory === "" ? 0 : 100,
+            }}
           >
             {selectedState && (
               <SquareButton
@@ -787,13 +745,9 @@ const CustomerCreateErrand = ({ navigation }) => {
                   console.log("category before sending:::", selectedCategory);
                   if (selectedCategory === 2) {
                     sendGroceryMessage();
-                  } else if (
-                    selectedCategory === 1
-                  ) {
+                  } else if (selectedCategory === 1) {
                     sendMessageAction();
-                  } else if (
-                    selectedCategory === 4
-                  ) {
+                  } else if (selectedCategory === 4) {
                     sendCleanHouseMessage();
                   }
                   //
@@ -809,9 +763,13 @@ const CustomerCreateErrand = ({ navigation }) => {
           closeModal={() => setModalStates({ ...modalStates, routine: false })}
           title={"Routine errands"}
           options={subcategory}
-          setSubCategories={() => dispatch(storeSubCategory({
-            data : ""
-          }))}
+          setSubCategories={() =>
+            dispatch(
+              storeSubCategory({
+                data: "",
+              })
+            )
+          }
         />
         <CategoryModal
           isVisible={modalStates.grocery}
@@ -819,9 +777,13 @@ const CustomerCreateErrand = ({ navigation }) => {
           closeModal={() => setModalStates({ ...modalStates, grocery: false })}
           title={"Outdoor errands"}
           options={subcategory}
-          setSubCategories={() => dispatch(storeSubCategory({
-            data : ""
-          }))}
+          setSubCategories={() =>
+            dispatch(
+              storeSubCategory({
+                data: "",
+              })
+            )
+          }
         />
         {/* <CategoryModal
           isVisible={modalStates.social}
@@ -836,9 +798,13 @@ const CustomerCreateErrand = ({ navigation }) => {
           closeModal={() => setModalStates({ ...modalStates, office: false })}
           title={"Virtual errands"}
           options={subcategory}
-          setSubCategories={() => dispatch(storeSubCategory({
-            data : ""
-          }))}
+          setSubCategories={() =>
+            dispatch(
+              storeSubCategory({
+                data: "",
+              })
+            )
+          }
         />
         <CategoryModal
           isVisible={modalStates.houseHold}
@@ -848,12 +814,15 @@ const CustomerCreateErrand = ({ navigation }) => {
           }
           title={"Household errands"}
           options={subcategory}
-          setSubCategories={() => dispatch(storeSubCategory({
-            data : ""
-          }))}
+          setSubCategories={() =>
+            dispatch(
+              storeSubCategory({
+                data: "",
+              })
+            )
+          }
         />
-      </View>
-
+      </SafeAreaComponent>
 
       <SuccessErrorModal
         isVisible={isModal}
@@ -876,7 +845,7 @@ const CustomerCreateErrand = ({ navigation }) => {
         }
       />
       <LoadingModal isVisible={isLoading} />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

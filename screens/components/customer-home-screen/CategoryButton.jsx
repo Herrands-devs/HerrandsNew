@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, Platform } from "react-native";
 import React from "react";
 
 const CategoryButton = ({ icon, title, onPress, style }) => {
   return (
     <TouchableOpacity
-      className={`flex-row items-center bg-primaryColor p-[10px] gap-x-2 justify-center  rounded-[4px]`}
+      className={`flex-row items-center bg-primaryColor p-2 gap-x-1 justify-center  rounded-[4px]`}
       style={style}
       onPress={onPress}
     >
-      <Image source={icon} className={`w-[24px] h-[24px]`} />
-      <Text className={`text-[14px] font-montserratSemiBold text-white`}>
+      <Image source={icon} className={`w-[24px] h-[20px]`} />
+      <Text className={`${Platform.OS == 'ios' ? 'text-[14px]' : 'text-[12px]'} font-montserratSemiBold text-white`}>
         {title}
       </Text>
     </TouchableOpacity>

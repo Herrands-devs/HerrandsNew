@@ -82,14 +82,14 @@ const CustomerHome = ({ navigation }) => {
           />
 
           <View
-            className={`absolute px-[16px]`}
+            className={`absolute px-3`}
             style={{
               bottom:
                 Platform.OS === "android" ? insets.bottom + 20 : insets.bottom,
             }}
           >
             <Text
-              className={`text-white font-montserratSemiBold text-[16px] text-center`}
+              className={`text-white font-montserratSemiBold ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[12px]'}  text-center`}
             >
               Send your errands in minutes and enjoy more quality
               time in your day.
@@ -162,7 +162,7 @@ const CustomerHome = ({ navigation }) => {
           >
             <Image
               source={Hamburger}
-              className={`w-[24px] h-[24px] fixed mt-[60px] ml-[30px]`}
+              className={`w-[24px] h-[24px] fixed ${Platform.OS == 'ios' ?  'mt-[60px] ml-[30px]' : 'mt-[20px] ml-[15px]'} `}
             />
           </TouchableOpacity>
           <Sidebar

@@ -94,6 +94,7 @@ const useSocket = () => {
       socket.onclose = (event) => {
         if (event.code === 1000) {
           console.log("WebSocket connection closed gracefully");
+          initializeSocket();
         } else {
 
           console.log(

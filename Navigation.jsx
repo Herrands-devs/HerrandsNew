@@ -145,7 +145,7 @@ const MainCustomer = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: true,
+        headerShown: false,
         headerTitle: "", // Remove the title
         headerBackTitle: "", // Remove the back button title
         headerStyle: {

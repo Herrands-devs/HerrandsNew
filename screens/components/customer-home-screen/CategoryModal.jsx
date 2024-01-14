@@ -104,7 +104,7 @@ const CategoryModal = ({
                         key={i}
                         className={`my-[16px]`}
                         onPress={() => {
-                          setSelectedcategory(text.name);
+                          setSelectedcategory(text.id);
                           console.log("selected category:::", text.name);
                           setSubTypeId(text.id);
                           slideOut();

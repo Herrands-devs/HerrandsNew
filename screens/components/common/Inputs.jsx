@@ -35,13 +35,13 @@ export const PrimaryInput = ({
           </TouchableOpacity>
         )}
         <Text
-          className="text-[#6B7C97] text-[14px] py-2 font-montserratSemiBold"
+          className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[14px]'} py-2 font-montserratSemiBold`}
           style={labelStyle}
         >
           {label}
         </Text>
       </View>
-      <View className={`${style} h-[45px] rounded-[4px]`}>
+      <View className={`${style}  ${Platform.OS == 'ios' ? 'h-[45px]' : 'h-[38px]'}  rounded-[4px]`}>
         <TextInput
           keyboardType={type}
           onFocus={() => setFocused(true)}
@@ -50,7 +50,7 @@ export const PrimaryInput = ({
           maxLength={maxLength}
           placeholder={placeHolder}
           placeholderTextColor="#6B7C97"
-          className={`w-full h-full ${bgColor && 'bg-[#F7F7F7]'} flex justify-center border text-[14px] px-2 font-montserratSemiBold`}
+          className={`w-full h-full ${bgColor && 'bg-[#F7F7F7]'} flex justify-center border text-[13px] px-2 font-montserratRegular`}
           style={[
             isFocused && {
               borderWidth: 2,
@@ -201,7 +201,7 @@ export const PhoneNumberInput = ({
     <View className="w-[100%] mb-3">
       {/* if Icon */}
       <View className="flex flex-row items-center gap-2">
-        <Text className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular">
+        <Text className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[14px]'} py-2 font-montserratMedium`}>
           {label}
         </Text>
       </View>

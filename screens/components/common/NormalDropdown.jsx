@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Platform,
 } from "react-native";
 import { GlobalContext } from "../../../context/context.store";
 import CarIcon from "../../../assets/icons/car.png";
@@ -39,7 +40,7 @@ export const NormalDropdown = ({
     <View className="relative w-[100%]" ref={viewRef}>
       <View className="flex z-0 flex-row items-center gap-2">
         <Text
-          className="text-[#6B7C97] text-[14px] font-montserratSemiBold py-2"
+          className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[14px]'} py-2 font-montserratSemiBold`}
           style={labelStyles}
         >
           {label}
@@ -48,7 +49,7 @@ export const NormalDropdown = ({
       <View
         onPress={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style} border h-[45px]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
+        className={`${style} border h-[45px] ${Platform.OS == 'ios' ? 'h-[45px]' : 'h-[38px]'}  -z-1 rounded-[4px] flex flex-row items-center px-2`}
         style={[
           isFocused && {
             borderWidth: 2,
@@ -99,7 +100,7 @@ export const NormalDropdown = ({
             ) : vehicleType ? (
               <></>
             ) : (
-              <Text className="text-[#6B7C97] font-montserratSemiBold">
+              <Text className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[15px]' : 'text-[13px]'} font-montserratMedium`}>
                 {defaultOption}
               </Text>
             )}
@@ -120,7 +121,7 @@ export const NormalDropdown = ({
       </View>
       {isActive && (
         <View className="absolute top-[100%] w-full">
-          <ScrollView className="w-full h-[150px] z-[100]  border border-[#c4c4c463] rounded-b-sm px-1 py-3 bg-white">
+          <ScrollView className="w-full z-[100]  border border-[#c4c4c463] rounded-b-sm px-1 py-3 bg-white">
             {options?.map((option, index) => (
               <TouchableOpacity
                 key={index}

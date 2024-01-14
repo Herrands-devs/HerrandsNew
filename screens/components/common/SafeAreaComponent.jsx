@@ -15,6 +15,7 @@ const SafeAreaComponent = ({ children, classes, scrollEnabled }) => {
       ]}
       className={`flex-1 ${classes}`}
       scrollEnabled={scrollEnabled}
+      keyboardShouldPersistTaps="handled"
     >
       {children}
     </ScrollView>
