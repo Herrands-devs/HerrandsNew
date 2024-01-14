@@ -92,7 +92,7 @@ export const LayeredBtn = ({
 }) => {
   return (
     <TouchableOpacity
-      className={`${Platform.OS == 'ios' ?'py-[16px]' : 'py-12'} flex 
+      className={`${Platform.OS == 'ios' ? 'py-[16px]' : 'py-[12px]'} flex 
       rounded-[4px] border border-[#99C2FB] w-[45%]`}
       style={styles}
       onPress={onPress}
