@@ -19,15 +19,7 @@ const SpinSplash = ({ navigation }) => {
     ).start();
 
     const navigateTimeout = setTimeout(() => {
-      if (isOnBoarded) {
-        if (isAuthenticated) {
-          navigation.replace("CustomerHome");
-        } else {
-          navigation.replace("SignInPhone");
-        }
-      } else {
         navigation.replace("Swapper");
-      }
     }, 5000);
 
     return () => clearTimeout(navigateTimeout);

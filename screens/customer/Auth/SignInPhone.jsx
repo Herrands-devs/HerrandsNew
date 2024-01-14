@@ -52,7 +52,7 @@ const SignInPhone = ({ navigation }) => {
         .catch((err) => {
           setLoading(false);
           if (err.response) {
-            console.log("Error response data:", err.response.data);
+            console.log("Error response data::", err.response.data);
             setIsModal(true);
             setMessage(err.response.data.error);
             setMessageType("error");

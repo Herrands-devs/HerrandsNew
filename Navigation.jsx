@@ -44,8 +44,10 @@ import InProgressBoard from "./screens/Agent/screens/Errands/InProgress";
 import ChatsScreen from "./screens/customer/Main/ChatsScreen";
 import ChatBoardCustomer from "./screens/customer/Main/ChatBoard";
 import { Image } from "react-native";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
+import { useSelector } from "react-redux";
+import { DataSelector } from "./reducers/dataReducer";
 
 const Stack = createNativeStackNavigator();
 
@@ -75,14 +77,13 @@ const Onboarding = () => {
   );
 };
 
-const Authentication = () => {
+const Authenticated = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      {/* <Stack.Screen name="SpinSplash" component={SpinSplash} /> */}
       <Stack.Screen name="SignInPhone" component={SignInPhone} />
       <Stack.Screen name="SignInEmail" component={SignInEmail} />
       <Stack.Screen name="OneMoreStep" component={OneMoreStep} />
@@ -90,41 +91,6 @@ const Authentication = () => {
       <Stack.Screen name="OtpScreen" component={OtpScreen} />
       <Stack.Screen name="CreateAccountCustomer" component={CreateAccount} />
       <Stack.Screen name="CompleteScreen" component={CompleteScreen} />
-      {/* <Stack.Screen name="SpinSplash" component={SpinSplash} /> */}
-      <Stack.Screen name="CustomerHome" component={CustomerHome} />
-      <Stack.Screen
-        name="CustomerErrandDetails"
-        component={CustomerErrandDetails}
-      />
-      <Stack.Screen name="CustomerPayments" component={CustomerPayments} />
-      <Stack.Screen name="CustomerAddCard" component={CustomerAddCard} />
-      <Stack.Screen name="CustomerErrandMap" component={CustomerErrandMap} />
-      <Stack.Screen
-        name="CustomerVirtualProcess"
-        component={CustomerVirtualProcess}
-      />
-
-      <Stack.Screen name="CustomerManageCard" component={CustomerManageCard} />
-      <Stack.Screen
-        name="CustomerCreateErrand"
-        component={CustomerCreateErrand}
-      />
-
-      <Stack.Screen name="ErrandCompleteRate" component={ErandCompleteRate} />
-      <Stack.Screen name="ThankYouScreen" component={ThankYou} />
-      <Stack.Screen name="PaymentSuccess" component={PaymentSuccess} />
-      <Stack.Screen
-        name="CustomerEditProfile"
-        component={CustomerEditProfile}
-      />
-      <Stack.Screen
-        name="CustomerDeleteAccount"
-        component={CustomerdeleteAccount}
-      />
-      <Stack.Screen name="MyErrandsCustomer" component={MyErrandsCustomer} />
-      <Stack.Screen name="SelectAddress" component={SelectAddress} />
-      <Stack.Screen name="ChatScreen" component={ChatsScreen} />
-      <Stack.Screen name="Chat" component={ChatBoardCustomer} />
     </Stack.Navigator>
   );
 };
@@ -170,7 +136,7 @@ const Agent = () => {
 };
 
 const MainCustomer = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const customHeaderBack = () => (
     <TouchableOpacity onPress={() => navigation.goBack()}>
       <AntDesign name="arrowleft" size={24} color="black" />
@@ -180,8 +146,8 @@ const MainCustomer = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: true,
-        headerTitle: '', // Remove the title
-        headerBackTitle: '', // Remove the back button title
+        headerTitle: "", // Remove the title
+        headerBackTitle: "", // Remove the back button title
         headerStyle: {
           borderBottomWidth: 0, // Remove the border
           elevation: 0, // Remove shadow on Android
@@ -190,15 +156,22 @@ const MainCustomer = () => {
         headerLeft: customHeaderBack,
       }}
     >
-      {/* <Stack.Screen name="SpinSplash" component={SpinSplash} /> */}
-      <Stack.Screen name="CustomerHome" component={CustomerHome}  options={{ headerShown: false, tabBarStyle: { display: "none" } }} />
+      <Stack.Screen
+        name="CustomerHome"
+        component={CustomerHome}
+        options={{ headerShown: false, tabBarStyle: { display: "none" } }}
+      />
       <Stack.Screen
         name="CustomerErrandDetails"
         component={CustomerErrandDetails}
       />
       <Stack.Screen name="CustomerPayments" component={CustomerPayments} />
       <Stack.Screen name="CustomerAddCard" component={CustomerAddCard} />
-      <Stack.Screen name="CustomerErrandMap" component={CustomerErrandMap} options={{ headerShown: false, tabBarStyle: { display: "none" } }} />
+      <Stack.Screen
+        name="CustomerErrandMap"
+        component={CustomerErrandMap}
+        options={{ headerShown: false, tabBarStyle: { display: "none" } }}
+      />
       <Stack.Screen
         name="CustomerVirtualProcess"
         component={CustomerVirtualProcess}
@@ -227,7 +200,11 @@ const MainCustomer = () => {
         component={CustomerdeleteAccount}
       />
       <Stack.Screen name="MyErrandsCustomer" component={MyErrandsCustomer} />
-      <Stack.Screen name="SelectAddress" component={SelectAddress}  options={{ headerShown: false, tabBarStyle: { display: "none" } }} />
+      <Stack.Screen
+        name="SelectAddress"
+        component={SelectAddress}
+        options={{ headerShown: false, tabBarStyle: { display: "none" } }}
+      />
       <Stack.Screen name="ChatScreen" component={ChatsScreen} />
       <Stack.Screen name="Chat" component={ChatBoardCustomer} />
     </Stack.Navigator>
@@ -235,16 +212,23 @@ const MainCustomer = () => {
 };
 
 const Navigation = () => {
-  const { userType, isNewUser, isOnBoarded, isAuthenticated } =
-    useContext(GlobalContext);
+  const { Authentication } = useSelector(DataSelector);
 
   return (
     <NavigationContainer>
-      {isNewUser ? 
+      {!Authentication.isBoard ? (
         <Onboarding />
-        :
-        <MainCustomer />
-      }
+      ) : Authentication.isAuth ? (
+        Authentication.user_type == "Customer" ? (
+          <MainCustomer />
+        ) : (
+          <Agent />
+        )
+      ) : Authentication.user_type == "Customer" ? (
+        <Authenticated />
+      ) : (
+        <AgentAuth />
+      )}
     </NavigationContainer>
   );
 };

@@ -151,7 +151,7 @@ const SignUpScreen = ({ navigation }) => {
   return (
     <>
       <KeyboardAvoidingContainer>
-        <View className="p-4 font-montserratRegular flex flex-row items-center gap-2">
+        <View className="p-4 font-montserratRegular h-[10vh] flex flex-row items-end gap-2">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Image source={angleLeft} />
           </TouchableOpacity>

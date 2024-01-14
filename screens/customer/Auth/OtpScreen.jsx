@@ -35,8 +35,10 @@ const OtpScreen = ({ navigation, route }) => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(null);
   const { setIsAuthenticated } = useContext(GlobalContext);
+  const [error , setError] = useState(false);
 
   const handleOtpChange = (newValues) => {
+    setError(false)
     setOtpValues(newValues);
   };
 
@@ -56,12 +58,10 @@ const OtpScreen = ({ navigation, route }) => {
       .post(`${API_URl}/accounts/validate-otp/`, data)
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
-          setLoading(false);
-          console.log(response.data);
           setIsAuthenticated(true);
-          AsyncStorage.setItem("user_id", response.data.user.id);
+          AsyncStorage.setItem("userType", response.data.user.user_type);
+          AsyncStorage.setItem("userId", response.data.user.id);
           AsyncStorage.setItem("token", response.data.token);
-          AsyncStorage.setItem("user_data", JSON.stringify(response.data.user));
         } else {
           setLoading(false);
           console.log("response error:::", response.data);
@@ -69,9 +69,11 @@ const OtpScreen = ({ navigation, route }) => {
       })
       .catch((err) => {
         setLoading(false);
+        setOtpValues(["", "", "", ""])
         if (err.response) {
-          console.log("Error response data:", err.response.data);
+          console.log("Error response data:::", err.response.data);
           setIsModal(true);
+          setError(true)
           setMessage(err.response.data.error);
           setMessageType("error");
         } else if (err.request) {
@@ -209,6 +211,7 @@ const OtpScreen = ({ navigation, route }) => {
             otpValues={otpValues}
             onOtpChange={handleOtpChange}
             onOtpComplete={handleOtpComplete}
+            error={error}
           />
         </View>
 

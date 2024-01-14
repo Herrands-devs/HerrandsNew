@@ -9,7 +9,14 @@ const dataSlice = createSlice({
       subcategory : [],
       vehicles : [],
       isLoading : false,
-      connectedSocket : false
+      connectedSocket : false,
+      Authentication : {
+         isBoard : false,
+         isAuth : false,
+         isNew : true,
+         userId : "",
+         user_type : ""
+      }
    },
    reducers: {
       storeCategories: (state, { payload }) => {
@@ -29,12 +36,15 @@ const dataSlice = createSlice({
       },
       toggleIsSocketConnected : (state , {payload}) => {
          state.connectedSocket = payload.data
+      },
+      storeAuthentication : (state , {payload}) => {
+         state.Authentication = payload.data
       }
        
    },
 });
 
 
-export const { storeCategories , storeSubCategories , storeVehincle , toggleIsLoading , toggleIsSocketConnected , storeSubCategory} = dataSlice.actions;
+export const { storeCategories , storeSubCategories , storeVehincle , toggleIsLoading , toggleIsSocketConnected , storeSubCategory , storeAuthentication} = dataSlice.actions;
 export const DataSelector = (state) => state.data;
 export default dataSlice.reducer;

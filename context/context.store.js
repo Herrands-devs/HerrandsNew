@@ -1,9 +1,14 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createContext, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { DataSelector, storeAuthentication } from "../reducers/dataReducer";
 
 export const GlobalContext = createContext();
 
 export const GlobalProvider = ({ children }) => {
+  const dispatch = useDispatch()
+
+  const {Authentication} = useSelector(DataSelector)
   const [cards, setCards] = useState([]);
   const [selectedCategory, setSelectedcategory] = useState("");
   const [selectedPreference, setSelectedPreference] = useState("");
@@ -49,33 +54,18 @@ export const GlobalProvider = ({ children }) => {
   const [isAcceptingErrand , setIsAccepting] = useState(false)
 
   const [socketRef , setSocket] = useState(null)
-
-  useEffect(() => {
-    if (isNewUser) {
-      setIsOnboarded(false);
-    } else {
-      setIsOnboarded(true);
-    }
-  }, [isNewUser]);
-
   const getUserId = async () => {
-    // AsyncStorage.removeItem("token");
-    // AsyncStorage.removeItem("user_id");
-    // AsyncStorage.removeItem("userType");
-    const user_id = await AsyncStorage.getItem("user_id");
+    const userId = await AsyncStorage.getItem("userId");
     const userType = await AsyncStorage.getItem("userType");
     const Token = await AsyncStorage.getItem("token");
-    setToken(Token);
-    setUserType(userType);
-    if (user_id !== null) {
-      setIsNewUser(false);
-      setUserId(user_id);
-    } else {
-      setIsNewUser(true);
+    if (Token) {
+      setToken(Token);
+      setUserType(userType);
+      dispatch(storeAuthentication({
+        data : {...Authentication , isBoard : true , isAuth : true , isNew : false, userId : userId , user_type : userType}
+      }))
     }
-    console.log("asyncStorage userid:::", user_id);
-    console.log("asyncStorage usertype:::", userType);
-    console.log("asyncStorage token:::", Token);
+    console.log("Authentication:::", Authentication);
   };
 
   const getToken = async () => {
@@ -90,23 +80,14 @@ export const GlobalProvider = ({ children }) => {
       setIsAuthenticated(false);
     }
   };
-
-  useEffect(() => {
-    console.log("User type:::", userType);
-  }, [userType]);
-
   useEffect(() => {
     getToken();
   }, [isToken]);
 
   useEffect(() => {
-    // AsyncStorage.removeItem("user_id");
-    // AsyncStorage.removeItem("token");
-    // AsyncStorage.removeItem("userType");
-    // setErrandAccepted(false);
-    console.log("Errand accepted state:::", errandAccepted);
+    // AsyncStorage.removeItem("token")
     getUserId();
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <GlobalContext.Provider

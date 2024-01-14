@@ -17,6 +17,8 @@ import { useRef } from "react";
 import { useContext } from "react";
 import { GlobalContext } from "../../../context/context.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DataSelector, storeAuthentication } from "../../../reducers/dataReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const { width, height } = Dimensions.get("window");
 
@@ -27,6 +29,8 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
   const opacity = useRef(new Animated.Value(0)).current;
   const { setIsAuthenticated, setToken } = useContext(GlobalContext);
   const [userData, setUserData] = useState();
+  const dispatch = useDispatch()
+  const {Authentication} = useSelector(DataSelector)
 
   useEffect(() => {
     (async () => {
@@ -234,9 +238,11 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => {
-                        setIsAuthenticated(false);
-                        setLogoutModal(false);
+                        setIsAuthenticated(false)
                         AsyncStorage.removeItem("token");
+                        dispatch(storeAuthentication({
+                          data : {...Authentication , isBoard : true , isAuth : false }
+                        }))
                       }}
                     >
                       <Text

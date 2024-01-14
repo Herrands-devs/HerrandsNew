@@ -53,7 +53,7 @@ const OtpScreenAgent = ({ navigation, route }) => {
       otp: strippedOtp,
     };
 
-    console.log("otp data:::", data);
+    console.log("otp data agent:::", data);
 
     axios
       .post(`${API_URl}/accounts/validate-otp/`, data)
@@ -80,7 +80,7 @@ const OtpScreenAgent = ({ navigation, route }) => {
       .catch((err) => {
         setLoading(false);
         if (err.response) {
-          console.log("Error response data:", err.response.data);
+          console.log("Error response data:::", err.response.data);
           setIsModal(true);
           setMessage(err.response.data.error);
           setMessageType("error");

@@ -252,10 +252,11 @@ export const PhoneNumberInput = ({
   );
 };
 
-export const OtpInputs = ({ otpValues, onOtpChange, onOtpComplete }) => {
+export const OtpInputs = ({ otpValues, onOtpChange, onOtpComplete , error }) => {
   const [isFocused, setFocused] = useState(false);
   const inputRefs = useRef(new Array(4).fill(null));
   const [focusedIndex, setFocusedIndex] = useState(0);
+  console.log(error)
 
   const handleInputChange = (text, index) => {
     if (/^\d*$/.test(text)) {
@@ -280,6 +281,15 @@ export const OtpInputs = ({ otpValues, onOtpChange, onOtpComplete }) => {
     }
   }, [otpValues]);
 
+  useEffect(() => {
+    if (error) {
+      setFocusedIndex(0);
+      inputRefs.current[0].focus();
+    }
+  },[error])
+
+
+
   return (
     <View className="w-[100%]">
       <View className="flex flex-row justify-between">
@@ -291,9 +301,22 @@ export const OtpInputs = ({ otpValues, onOtpChange, onOtpComplete }) => {
             style={[
               i === focusedIndex && {
                 borderWidth: 2,
-                borderColor: "#0066F5",
+                borderColor: error ? "#F44336" : "#0066F5",
                 backgroundColor: "white",
               },
+              error && {
+                shadowOffset: {
+                  width: 0,
+                  height: 0,
+                },
+                borderWidth: 2,
+                backgroundColor: "white",
+                shadowOpacity: 0.2, // Use 0.12 for 12% opacity
+                shadowRadius: 10,
+                elevation: 10, // This is for Android to achieve a similar effect
+                borderColor: error && "#F44336",
+                shadowColor: error && "#FF5309",
+              }
             ]}
             onFocus={() => setFocusedIndex(i)}
             keyboardType="phone-pad"

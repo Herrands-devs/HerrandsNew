@@ -256,7 +256,7 @@ const CustomerCreateErrand = ({ navigation }) => {
   };
 
   const fetchID = async () => {
-    const res = await AsyncStorage.getItem("user_id");
+    const res = await AsyncStorage.getItem("userId");
 
     if (res !== null) {
       setUserId(res);

@@ -32,15 +32,15 @@ export default function App() {
     return null;
   }
   return (
-    <GlobalProvider>
-      <StatusBar
-        hidden={false}
-        backgroundColor="#0066F5"
-        barStyle="light-content"
-      />
-      <Provider store={store}>
+    <Provider store={store}>
+      <GlobalProvider>
+        <StatusBar
+          hidden={false}
+          backgroundColor="#0066F5"
+          barStyle="light-content"
+        />
         <Navigation />
-      </Provider>
-    </GlobalProvider>
+      </GlobalProvider>
+    </Provider>
   );
 }
