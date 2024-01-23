@@ -1033,7 +1033,7 @@ export const LoadingModal = ({ isVisible, closeModal }) => {
             <View>
               <AnimatedLoader
                 visible={true}
-                overlayColor="rgba(0,0,0,0.5)"
+                overlayColor="rgba(0,0,0,0.1)"
                 source={require("../../../assets/loader.json")}
                 animationStyle={styles.lottie}
                 speed={2}
@@ -1145,12 +1145,14 @@ export const SuccessErrorModal = ({
 
               <View className={`mt-[32px]`}>
                 <TouchableOpacity
-                  className={`border border-green flex-row 
+                  className={` bg-[#0066F5] text-white flex-row 
                   justify-center py-[11px] rounded-full w-full`}
                   onPress={slideDown}
                 >
                   <Text
-                    className={`uppercase text-[16px] font-montserratSemiBold`}
+                    className={`uppercase ${
+                      Platform.OS == "ios" ? "text-[16px]" : "text-[12px] "
+                    }  text-white font-montserratSemiBold`}
                   >
                     {btnTxet}
                   </Text>

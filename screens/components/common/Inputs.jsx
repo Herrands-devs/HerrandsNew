@@ -18,7 +18,7 @@ export const PrimaryInput = ({
   disabled,
   classes,
   labelStyle,
-  isError,
+  error,
   maxLength,
   mainType,
   bgColor,
@@ -35,13 +35,13 @@ export const PrimaryInput = ({
           </TouchableOpacity>
         )}
         <Text
-          className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[14px]'} py-2 font-montserratSemiBold`}
+          className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[12px]'} py-2 font-montserratSemiBold`}
           style={labelStyle}
         >
           {label}
         </Text>
       </View>
-      <View className={`${style}  ${Platform.OS == 'ios' ? 'h-[45px]' : 'h-[38px]'}  rounded-[4px]`}>
+      <View className={`${style}  ${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'}  rounded-[4px]`}>
         <TextInput
           keyboardType={type}
           onFocus={() => setFocused(true)}
@@ -50,10 +50,10 @@ export const PrimaryInput = ({
           maxLength={maxLength}
           placeholder={placeHolder}
           placeholderTextColor="#6B7C97"
-          className={`w-full h-full ${bgColor && 'bg-[#F7F7F7]'} flex justify-center border text-[13px] px-2 font-montserratRegular`}
+          className={`w-full h-full ${bgColor && 'bg-[#F7F7F7]'} text-[#6B7C97] font-montserratMedium flex justify-center ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[12px] '} px-2`}
           style={[
             isFocused && {
-              borderWidth: 2,
+              borderWidth: 1.5,
               borderRadius: 4,
               borderColor: "#0066F5",
               backgroundColor : bgColor ? 'white' : ''
@@ -63,10 +63,18 @@ export const PrimaryInput = ({
               borderColor: "#E9E9E9",
             },
             disabled && { backgroundColor: "#C6C6C6", color: "white" },
-            isError && {
-              borderWidth: 2,
-              borderRadius: 4,
-              borderColor: "red",
+            error && {
+              shadowOffset: {
+                width: 0,
+                height: 0,
+              },
+              borderWidth: 1.5,
+              backgroundColor: "white",
+              shadowOpacity: 0.2, // Use 0.12 for 12% opacity
+              shadowRadius: 10,
+              elevation: 10, // This is for Android to achieve a similar effect
+              borderColor: error && "#F44336",
+              shadowColor: error && "#FF5309",
             }
           ]}
           editable={!disabled}
@@ -97,7 +105,7 @@ export const RoundedInput = ({
   return (
     <View className={`w-[100%] ${classes}`}>
       {/* if Icon */}
-      <View className={`${style} h-[40px] rounded-full`}>
+      <View className={`${style}  ${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'} rounded-full`}>
         <TextInput
           keyboardType={type}
           onFocus={() => setFocused(true)}
@@ -105,10 +113,10 @@ export const RoundedInput = ({
           value={value}
           placeholder={placeHolder}
           placeholderTextColor="#C6C6C6"
-          className="w-full h-full flex justify-center border text-[14px] px-2 font-montserratRegular"
+          className="w-full h-full flex justify-center text-[14px] px-2 font-montserratMedium"
           style={[
             isFocused && {
-              borderWidth: 2,
+              borderWidth: 1.5,
               borderRadius: 100,
               borderColor: "#0066F5",
             },
@@ -149,7 +157,7 @@ export const DoubleInput = ({
             <Ionicons name={iconName} size={iconSize} color={iconColor} />
           </TouchableOpacity>
         )}
-        <Text className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular">
+        <Text className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratMedium">
           {label}
         </Text>
       </View>
@@ -161,10 +169,10 @@ export const DoubleInput = ({
           value={value}
           placeholder={placeHolder}
           placeholderTextColor="#C6C6C6"
-          className="w-full h-full flex justify-center border text-[14px] px-2 font-montserratRegular"
+          className="w-full h-full flex justify-center  text-[14px] px-2 font-montserratMedium "
           style={[
             isFocused && {
-              borderWidth: 2,
+              borderWidth: 1.5,
               borderRadius: 4,
               borderColor: "#0066F5",
             },
@@ -198,22 +206,22 @@ export const PhoneNumberInput = ({
 }) => {
   const [isFocused, setFocused] = useState(false);
   return (
-    <View className="w-[100%] mb-3">
+    <View className="w-[100%]">
       {/* if Icon */}
       <View className="flex flex-row items-center gap-2">
-        <Text className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[14px]'} py-2 font-montserratMedium`}>
+        <Text className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[12px]'} py-2 font-montserratSemiBold`}>
           {label}
         </Text>
       </View>
       <View
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style} h-[45px] ${bgColor && 'bg-[#F7F7F7]'} border  rounded-[4px] flex flex-row items-center px-2 ${
-          isFocused && "shadow-sm"
+        className={`${style}  ${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'} ${bgColor && 'bg-[#F7F7F7]'}  rounded-[4px] flex flex-row items-center px-2 ${
+          isFocused && "shadow-md"
         }`}
         style={[
           isFocused && {
-            borderWidth: 2,
+            borderWidth: 1.5,
             borderRadius: 4,
             borderColor: "#0066F5",
             backgroundColor : bgColor ? 'white' : ''
@@ -231,7 +239,7 @@ export const PhoneNumberInput = ({
         </TouchableOpacity>
 
         <View className="w-[10%] h-full flex justify-center items-center">
-          <Text className="text-[#082552] font-medium text-[12px] font-montserratRegular">
+          <Text className="text-[#6B7C97] font-medium text-[12px] font-montserratMedium">
             +234
           </Text>
         </View>
@@ -240,9 +248,9 @@ export const PhoneNumberInput = ({
           value={value}
           maxLength={10}
           placeholder={placeHolder}
-          placeholderTextColor="#C6C6C6"
-          className="w-[70%] h-full flex justify-center text-[14px] 
-          px-2 font-montserratRegular"
+          placeholderTextColor="#6B7C97"
+          className={`w-[70%] h-full flex text-[#6B7C97] justify-center ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[12px] '}
+          px-2 font-montserratMedium`}
           onChangeText={onChangeText}
           {...rest}
           editable={disabled}
@@ -344,6 +352,7 @@ export const UploadInp = ({
   onPress,
   selectFile, 
   setSelectedFile,
+  bgColor,
   ...rest
 }) => {
   const [isFocused, setFocused] = useState(false);
@@ -359,9 +368,7 @@ export const UploadInp = ({
       const url= response.assets[0]["uri"];
       const type= response.assets[0]["mimeType"];
       setFileName(response.assets[0]["name"])
-      const filePath = Platform.OS === 'android' ? url : url.replace("file://" , "");
-      const base64 = await FileSystem.readAsStringAsync(filePath, {encoding : FileSystem?.EncodingType?.Base64})
-      setSelectedFile("data:"+type+";base64,"+base64);
+      setSelectedFile(response.assets[0]["name"]);
     } catch (err) {
       console.warn(err);
     }
@@ -372,8 +379,8 @@ export const UploadInp = ({
       <TouchableOpacity
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style} h-[45px] border rounded-[4px] flex flex-row items-center ${
-          isFocused && "shadow-sm"
+        className={`${style}  ${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'} ${bgColor && 'bg-[#F7F7F7]'}  rounded-[4px] flex flex-row items-center px-2 ${
+          isFocused && "shadow-md"
         }`}
         style={[
           isFocused && {
@@ -388,17 +395,17 @@ export const UploadInp = ({
         onPress={handleDocumentSelection}
       >
         <View className="w-[30%] h-full flex justify-center items-center">
-          <View className="bg-[#F7F7F7] h-[35px] flex justify-center items-center p-2 font-medium text-[12px] font-montserratRegular">
-            <Text>Choose files</Text>
+          <View className="bg-[#0066F5] h-[35px] flex justify-center rounded-md items-center p-2">
+            <Text className="font-montserratMedium text-[#ffffff] text-[12px]">Choose files</Text>
           </View>
         </View>
         <TextInput
           keyboardType={type}
           value={value}
-          placeholder={fileName || placeHolder}
+          placeholder={fileName.replaceAll(fileName.slice(15,50) , '.....') || placeHolder}
           placeholderTextColor="#C6C6C6"
           className="w-[70%] h-full flex justify-center text-[14px] 
-          px-2 font-montserratRegular"
+          px-2 font-montserratMedium"
           editable={!disabled}
         />
       </TouchableOpacity>
@@ -421,14 +428,14 @@ export const CheckBox = ({ label , idType , setIdType ,value  }) => {
   return (
     <View className="flex flex-row gap-2 mb-6 items-center">
       <TouchableOpacity
-        className={`w-[20px] h-[20px] flex justify-center ${
-          check && idType == value ? "bg-[#0066F5] border-[#0066F5]" : "border-[#D5D7DA]"
-        } items-center border-2`}
+        className={`w-[25px] h-[25px] flex justify-center ${
+          check && idType == value ? "bg-[#0066F5]" : "bg-[#e0e0e0]"
+        } items-center`}
         onPress={handleClick}
       >
         <Ionicons name="checkmark-sharp" size={15} color="white" />
       </TouchableOpacity>
-      <Text className="text-[#6B7C97] text-[16px]">{label}</Text>
+      <Text className={`text-[#6B7C97] font-montserratMedium  ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[12px] '}`}>{label}</Text>
     </View>
   );
 };

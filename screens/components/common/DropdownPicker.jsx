@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { GlobalContext } from "../../../context/context.store";
 import { Platform } from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 
 export const DropDownPicker = ({
   style,
@@ -18,7 +19,7 @@ export const DropDownPicker = ({
   defaultOption,
   options,
   labelStyles,
-  bgColor
+  bgColor,
 }) => {
   const viewRef = useRef();
   useEffect(() => {
@@ -31,10 +32,12 @@ export const DropDownPicker = ({
     useContext(GlobalContext);
 
   return (
-    <View className={`relative w-[100%]`}  ref={viewRef}>
+    <View className={`relative w-[100%]`} ref={viewRef}>
       <View className="flex z-0 flex-row items-center gap-2">
         <Text
-          className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[14px]'} py-2 font-montserratSemiBold`}
+          className={`text-[#6B7C97] ${
+            Platform.OS == "ios" ? "text-[16px]" : "text-[14px]"
+          } py-2 font-montserratSemiBold`}
           style={labelStyles}
         >
           {label}
@@ -43,7 +46,9 @@ export const DropDownPicker = ({
       <View
         onPress={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style} border ${Platform.OS == 'ios' ? 'h-[45px]' : 'h-[38px]'} bg-[${bgColor}]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
+        className={`${style}  ${
+          Platform.OS == "ios" ? 'h-[50px]' : 'h-[45px]'
+        } bg-[${bgColor}]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
         style={[
           isFocused && {
             borderWidth: 2,
@@ -59,39 +64,56 @@ export const DropDownPicker = ({
         {!isActive ? (
           <TouchableOpacity
             onPress={() => setIsActive(!isActive)}
-            className="w-full h-full flex justify-center cursor-pointer"
+            className="w-full h-full flex justify-center cursor-pointer flex-row items-center"
           >
-            <Text className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[15px]' : 'text-[13px]'}  font-montserratMedium`}>
+            <Text
+              className={`text-[#6B7C97] w-[90%] ${
+                Platform.OS == "ios" ? "text-[15px]" : "text-[13px]"
+              }  font-montserratMedium`}
+            >
               {value
                 ? value
                 : selectedCategory
                 ? selectedCategory
                 : defaultOption}
             </Text>
+            <View className="w-[10%]">
+              <FontAwesome name="angle-down" size={20} color="#C6C6C6" />
+            </View>
           </TouchableOpacity>
         ) : (
-          <TextInput
-            onBlur={() => setIsActive(false)}
-            type={type}
-            value={value}
-            placeholder={placeHolder}
-            placeholderTextColor="#6B7C97"
-            className="w-full h-full flex justify-center text-[14px] px-2 font-montserratRegular"
-            style={[disabled && { backgroundColor: "#C6C6C6", color: "white" }]}
-            editable={!disabled}
-            onChangeText={(text) => {
-              if (text === "") {
-                setSelectedcategory("");
-              } else {
-                setValue(text);
-              }
-            }}
-          />
+          <>
+            <TextInput
+              onBlur={() => setIsActive(false)}
+              type={type}
+              value={value}
+              placeholder={placeHolder}
+              placeholderTextColor="#6B7C97"
+              className="w-[90%] h-full flex justify-center text-[14px] px-2 font-montserratRegular"
+              style={[
+                disabled && { backgroundColor: "#C6C6C6", color: "white" },
+              ]}
+              editable={!disabled}
+              onChangeText={(text) => {
+                if (text === "") {
+                  setSelectedcategory("");
+                } else {
+                  setValue(text);
+                }
+              }}
+            />
+            <View className="w-[10%]">
+              <FontAwesome name="angle-down" size={20} color="#C6C6C6" />
+            </View>
+          </>
         )}
       </View>
       {isActive && (
         <View className="absolute top-[100%] w-full">
-          <ScrollView className="w-full flex-1  z-[100]  border border-[#c4c4c463] rounded-b-sm px-1 py-3 bg-white" nestedScrollEnabled={false}>
+          <ScrollView
+            className="w-full flex-1  z-[100]  border border-[#c4c4c463] rounded-b-sm px-1 py-3 bg-white"
+            nestedScrollEnabled={false}
+          >
             {options?.map((option, index) => (
               <TouchableOpacity
                 key={index}
@@ -103,7 +125,9 @@ export const DropDownPicker = ({
                 }}
                 className={`mb-[10px]`}
               >
-                <Text className="p-2 text-[#6B7C97] font-montserratRegular">{option.name}</Text>
+                <Text className="p-2 text-[#6B7C97] font-montserratRegular">
+                  {option.name}
+                </Text>
               </TouchableOpacity>
             ))}
           </ScrollView>

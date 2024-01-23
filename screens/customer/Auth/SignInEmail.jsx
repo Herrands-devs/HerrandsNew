@@ -12,43 +12,42 @@ const SignInEmail = ({ navigation }) => {
   return (
     <SafeAreaComponent>
       <View style={{ height: height * 0.75 }}>
-        <View className={`items-center`}>
-          <Text
-            className={`text-[24px] font-montserratBold text-center text-black`}
-            style={{ marginTop: height * 0.2, maxWidth: width * 0.5 }}
-          >
-            Enter your registered email
-          </Text>
-        </View>
+        <View className={`mt-[40px] w-[100%] p-4`}>
+          <View className={`items-center`}>
+            <Text
+              className={`text-[24px] font-montserratBold text-center text-black`}
+              style={{ marginTop: height * 0.2, maxWidth: width * 0.5 }}
+            >
+              Enter your registered email
+            </Text>
+          </View>
 
-        <View
-          className={`items-center mt-[40px]`}
-          style={{
-            paddingHorizontal: width * 0.0569,
-          }}
-        >
-          <PrimaryInput
-            iconName={"mail"}
-            label={"Email"}
-            iconColor={colors.subTitle}
-            placeHolder={"Enter your email"}
-            type={"email-address"}
-          />
-        </View>
-        <View
-          className={`items-center mt-[70px]`}
-          style={{
-            paddingHorizontal: width * 0.0569,
-          }}
-        >
-          <RoundedButton
-            text={"Sign in"}
-            onPress={() => navigation.navigate("OtpScreen")}
-            styles={{
-              backgroundColor: colors.primaryColor,
-              // width: "80%",
+          <View
+            className={`items-center mt-[40px]`}
+            style={{
+              paddingHorizontal: width * 0.0569,
             }}
-          />
+          >
+            <PrimaryInput
+              iconName={"mail"}
+              label={"Email"}
+              iconColor={colors.subTitle}
+              placeHolder={"Enter your email"}
+              type={"email-address"}
+            />
+          </View>
+          <View
+            className={`items-center mt-[70px]`}
+          >
+            <RoundedButton
+              text={"Sign in"}
+              onPress={() => navigation.navigate("OtpScreen")}
+              styles={{
+                backgroundColor: colors.primaryColor,
+                // width: "80%",
+              }}
+            />
+          </View>
         </View>
       </View>
     </SafeAreaComponent>

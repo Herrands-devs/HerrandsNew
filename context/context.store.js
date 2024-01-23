@@ -85,7 +85,7 @@ export const GlobalProvider = ({ children }) => {
   }, [isToken]);
 
   useEffect(() => {
-    // AsyncStorage.removeItem("token")
+    // AsyncStorage.removeItem("userType")
     getUserId();
   }, [isAuthenticated]);
 

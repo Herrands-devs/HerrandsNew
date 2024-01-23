@@ -13,6 +13,7 @@ import CarIcon from "../../../assets/icons/car.png";
 import BikeIcon from "../../../assets/icons/bike.png";
 import VanIcon from "../../../assets/icons/van.png";
 import SomeoneIcon from "../../../assets/icons/someone.png";
+import { FontAwesome } from "@expo/vector-icons";
 
 export const NormalDropdown = ({
   style,
@@ -49,10 +50,10 @@ export const NormalDropdown = ({
       <View
         onPress={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style} border h-[45px] ${Platform.OS == 'ios' ? 'h-[45px]' : 'h-[38px]'}  -z-1 rounded-[4px] flex flex-row items-center px-2`}
+        className={`${style}  h-[45px] ${Platform.OS == 'ios' ? 'h-[45px]' : 'h-[38px]'}  -z-1 rounded-[4px] flex flex-row items-center px-2`}
         style={[
           isFocused && {
-            borderWidth: 2,
+            borderWidth: 1,
             borderRadius: "4px",
             borderColor: "#0066F5",
             backgroundColor : 'White'
@@ -80,43 +81,56 @@ export const NormalDropdown = ({
               <View className={`flex-row items-center`}>
                 <Image source={CarIcon} />
                 <Text className="p-2 text-[#6B7C97]">
-                  i need a car for this errand
+                  I need a car for this errand
                 </Text>
               </View>
             ) : value === "bike" ? (
               <View className={`flex-row items-center`}>
                 <Image source={BikeIcon} />
                 <Text className="p-2 text-[#6B7C97]">
-                  i need a bike for this errand
+                  I need a bike for this errand
                 </Text>
               </View>
             ) : value === "someone" ? (
               <View className={`flex-row items-center`}>
-                <Image source={SomeoneIcon} />
-                <Text className="p-2 text-[#6B7C97]">
-                  i need someone for this errand
+                <Image source={SomeoneIcon} className="w-[15px] h-[15px]" />
+                <Text className="p-2 text-[14px] font-montserratMedium text-[#6B7C97]">
+                  I need someone for this errand
                 </Text>
               </View>
             ) : vehicleType ? (
               <></>
             ) : (
+              <View className="w-full flex-row items-center justify-between">
               <Text className={`text-[#6B7C97] ${Platform.OS == 'ios' ? 'text-[15px]' : 'text-[13px]'} font-montserratMedium`}>
                 {defaultOption}
               </Text>
+              <View className="w-[10%]">
+              <FontAwesome name="angle-down" size={20} color="#C6C6C6" />
+              </View>
+              </View>
+              
+          
             )}
           </TouchableOpacity>
         ) : (
+          <>
           <TextInput
             onBlur={() => setIsActive(false)}
             type={type}
             value={value}
             placeholder={placeHolder}
             placeholderTextColor="#6B7C97"
-            className="w-full h-full flex justify-center font-montserratSemiBold text-[14px] px-2"
+            className="w-[90%] h-full flex justify-center font-montserratSemiBold text-[14px] px-2"
             style={[disabled && { backgroundColor: "#C6C6C6", color: "white" }]}
             editable={!disabled}
             onChangeText={onChangeText}
           />
+          <View className="w-[10%]">
+            <FontAwesome name="angle-down" size={20} color="#C6C6C6" />
+          </View>
+          </>
+          
         )}
       </View>
       {isActive && (
@@ -125,7 +139,7 @@ export const NormalDropdown = ({
             {options?.map((option, index) => (
               <TouchableOpacity
                 key={index}
-                className={`mb-[10px]`}
+                className={`p-2`}
                 onPress={() => {
                   // setValue(option.name);
                   setIsActive(false);
@@ -137,31 +151,31 @@ export const NormalDropdown = ({
                   <View className={`flex-row items-center`}>
                     <Image source={CarIcon} />
                     <Text className="p-2 text-[#6B7C97]">
-                      i need a car for this errand
+                      I need a car for this errand
                     </Text>
                   </View>
                 )}
                 {option.vehicle_type === "bike" && (
                   <View className={`flex-row items-center`}>
-                    <Image source={BikeIcon} />
+                    <Image source={BikeIcon}  />
                     <Text className="p-2 text-[#6B7C97]">
-                      i need a bike for this errand
+                      I need a bike for this errand
                     </Text>
                   </View>
                 )}
                 {option.vehicle_type === "van" && (
                   <View className={`flex-row items-center`}>
-                    <Image source={VanIcon} />
+                    <Image source={VanIcon}/>
                     <Text className="p-2 text-[#6B7C97]">
-                      i need a van for this errand
+                      I need a van for this errand
                     </Text>
                   </View>
                 )}
                 {option.vehicle_type === "someone" && (
                   <View className={`flex-row items-center`}>
-                    <Image source={SomeoneIcon} />
+                    <Image source={SomeoneIcon}  />
                     <Text className="p-2 text-[#6B7C97]">
-                      i need someone for this errand
+                      I need someone for this errand
                     </Text>
                   </View>
                 )}

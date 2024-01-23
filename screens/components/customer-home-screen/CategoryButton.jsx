@@ -4,7 +4,7 @@ import React from "react";
 const CategoryButton = ({ icon, title, onPress, style }) => {
   return (
     <TouchableOpacity
-      className={`flex-row items-center bg-primaryColor p-2 gap-x-1 justify-center  rounded-[4px]`}
+      className={`flex-row items-center bg-primaryColor p-2 py-3 gap-x-1 justify-center  rounded-[4px]`}
       style={style}
       onPress={onPress}
     >

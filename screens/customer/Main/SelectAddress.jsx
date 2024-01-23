@@ -25,11 +25,12 @@ const SelectAddress = ({ navigation, route }) => {
           paddingHorizontal: 15,
         },
       ]}
+      className="w-full"
     >
       <Pressable onPress={() => navigation.goBack()} className="py-4">
         <MaterialIcons name="cancel" size={24} color="#E1E1E1" />
       </Pressable>
-      <View className="flex-row w-full gap-x-2 items-center">
+      <View className="flex w-full h-full">
         <GooglePlacesAutocomplete
           styles={{
             container: {
@@ -69,7 +70,41 @@ const SelectAddress = ({ navigation, route }) => {
           placeholder="What's the location of the item?"
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={200}
-        />
+        >
+          {({
+            getInputProps,
+            suggestions,
+            getSuggestionItemProps,
+            loading,
+          }) => (
+            <div>
+              <input {...getInputProps({ placeholder: "Type location..." })} />
+              <div>
+                {loading ? <div>Loading...</div> : null}
+
+                {suggestions.map((suggestion) => {
+                  const style = {
+                    backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                  };
+                  return (
+                    <div {...getSuggestionItemProps(suggestion, { style })}>
+                      {suggestion.description}
+                    </div>
+                  );
+                })}
+
+                {/* Add icon or message when no suggestions are available */}
+                {suggestions.length === 0 && (
+                  <div>
+                    <FontAwesomeIcon icon={faExclamationCircle} />
+                    No results found
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </GooglePlacesAutocomplete>
+
       </View>
     </View>
   );

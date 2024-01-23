@@ -50,10 +50,12 @@ import {
   fetchCategoriesAction,
   fetchSubCategories,
 } from "../../../helpers/fetchData";
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 
-const CustomerCreateErrand = ({ navigation }) => {
+const CustomerCreateErrand = ({}) => {
+  const navigation = useNavigation();
   const { categories, subcategories, vehicles, isLoading, subcategory } =
     useSelector(DataSelector);
   const [modalStates, setModalStates] = useState({
@@ -252,11 +254,7 @@ const CustomerCreateErrand = ({ navigation }) => {
       setModalMessage("Cannot determine errand distance or duration.");
       setMessageType("error");
     } else {
-      if (!isConnected) {
-        fetchToken();
-      } else {
-        sendMessage(message);
-      }
+      sendMessage(message);
     }
   };
 
@@ -328,13 +326,18 @@ const CustomerCreateErrand = ({ navigation }) => {
   }, [selectedCategory]);
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}
-    style={{ flex: 1 }}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
       <SafeAreaComponent>
-        <View className={`px-[16px] flex-row items-center justify-between`}>
+        <View
+          className={`px-[16px] h-[5vh] flex-row items-center justify-between`}
+        >
           <TouchableOpacity
             onPress={() => {
               navigation.goBack();
+              console.log("yessss");
               setSelectedState("");
               setSelectedcategory("");
             }}
@@ -356,222 +359,221 @@ const CustomerCreateErrand = ({ navigation }) => {
             </TouchableOpacity>
           )}
         </View>
-        <View className={`px-[14px] flex pt-5 gap-y-10`}>
-          <View className={`z-50`}>
-            <DropDownPicker
-              defaultOption={"I want to"}
-              options={subcategories}
-              label={"What errand are you runnung today?"}
-              labelStyles={{
-                color: "#6B7C97",
-              }}
-              bgColor={"#F7F7F7"}
-            />
-          </View>
+        <View className={`px-[14px] flex min-h-[350px]`}>
+          <View className="flex">
+            <View className={`z-50 mb-10`}>
+              <DropDownPicker
+                defaultOption={"I want to"}
+                options={subcategories}
+                label={"What errand are you runnung today?"}
+                labelStyles={{
+                  color: "#6B7C97",
+                }}
+                bgColor={"#F7F7F7"}
+              />
+            </View>
 
-          <View className="">
-            {selectedState === "" ? (
-              <View>
-                <Text className={`text-[16px] font-montserratSemiBold`}>
-                  Search by category
-                </Text>
-                <View
-                  style={{ marginTop: height * 0.047, paddingLeft: 10 }}
-                  className={`flex-row items-center flex-wrap gap-5`}
-                >
-                  {categories &&
-                    categories.map((category) => (
-                      <View className={``} key={category.id}>
-                        <CategoryButton
-                          icon={
-                            category.name === "Routine errands"
-                              ? RoutinIcon
-                              : category.name === "Outdoor errands"
-                              ? CartIcon
-                              : category.name === "Virtual errands"
-                              ? OfficeIcon
-                              : category.name === "Household errand"
-                              ? HouseIcon
-                              : null
-                          }
-                          title={category.name}
-                          onPress={() => {
-                            if (category.name === "Routine errands") {
-                              setModalStates({
-                                ...modalStates,
-                                routine: true,
-                              });
-                              fetchSubCategories(dispatch, category.id);
-                            }
-
-                            if (category.name === "Outdoor errands") {
-                              setModalStates({
-                                ...modalStates,
-                                grocery: true,
-                              });
-                              fetchSubCategories(dispatch, category.id);
-                            }
-
-                            // if (category.name === "Social media")
-                            //   setModalStates({
-                            //     ...modalStates,
-                            //     social: true,
-                            //   });
-                            if (category.name === "Virtual errands") {
-                              setModalStates({
-                                ...modalStates,
-                                office: true,
-                              });
-                              fetchSubCategories(dispatch, category.id);
-                            }
-
-                            if (category.name === "Household errand") {
-                              setModalStates({
-                                ...modalStates,
-                                houseHold: true,
-                              });
-                              fetchSubCategories(dispatch, category.id);
-                            }
-                          }}
-                        />
-                      </View>
-                    ))}
-                </View>
-              </View>
-            ) : selectedState === 1 ? (
-              <View className={`flex gap-y-5`}>
-                {/* <View> */}
-                <PrimaryInput
-                  label={"Item's description"}
-                  placeHolder={"What's the item to pick up?"}
-                  value={pickItemsValues.item_description}
-                  onChangeText={(text) =>
-                    setPickItemsValues({
-                      ...pickItemsValues,
-                      item_description: text,
-                    })
-                  }
-                  bgColor={true}
-                  type="default"
-                />
-
-                <View className={`z-20`}>
-                  <NormalDropdown
-                    defaultOption={"Select One"}
-                    options={vehicles}
-                    label={"What type of vehicle do you need?"}
-                    value={vehicleType}
-                    onSelect={() => setSelectedVehicle()}
-                  />
-                </View>
-                {/* </View> */}
-                <TouchableOpacity
-                  style={{ zIndex: 10 }}
-                  onPress={() =>
-                    navigation.navigate("SelectAddress", { type: "item" })
-                  }
-                >
-                  <Text
-                    className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
-                    style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-                  >
-                    Item's address
+            <View className="">
+              {selectedState === "" ? (
+                <View>
+                  <Text className={`text-[16px] font-montserratSemiBold`}>
+                    Search by category
                   </Text>
                   <View
-                    className={`border outline-none bg-[#F7F7F7] border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                    style={{ marginTop: height * 0.047, paddingLeft: 10 }}
+                    className={`flex-row items-center flex-wrap gap-5`}
                   >
-                    <Text
-                      className={`${
-                        itemAddress ? `text-[#000]` : `text-[#6B7C97]`
-                      } text-[14px] font-montserratRegular`}
-                    >
-                      {itemAddress === undefined
-                        ? "Where is the location of the item?"
-                        : itemAddress.description}
-                    </Text>
+                    {categories &&
+                      categories.map((category) => (
+                        <View className={``} key={category.id}>
+                          <CategoryButton
+                            icon={
+                              category.name === "Routine errands"
+                                ? RoutinIcon
+                                : category.name === "Outdoor errands"
+                                ? CartIcon
+                                : category.name === "Virtual errands"
+                                ? OfficeIcon
+                                : category.name === "Household errand"
+                                ? HouseIcon
+                                : null
+                            }
+                            title={category.name}
+                            onPress={() => {
+                              if (category.name === "Routine errands") {
+                                setModalStates({
+                                  ...modalStates,
+                                  routine: true,
+                                });
+                                fetchSubCategories(dispatch, category.id);
+                              }
+
+                              if (category.name === "Outdoor errands") {
+                                setModalStates({
+                                  ...modalStates,
+                                  grocery: true,
+                                });
+                                fetchSubCategories(dispatch, category.id);
+                              }
+
+                              // if (category.name === "Social media")
+                              //   setModalStates({
+                              //     ...modalStates,
+                              //     social: true,
+                              //   });
+                              if (category.name === "Virtual errands") {
+                                setModalStates({
+                                  ...modalStates,
+                                  office: true,
+                                });
+                                fetchSubCategories(dispatch, category.id);
+                              }
+
+                              if (category.name === "Household errand") {
+                                setModalStates({
+                                  ...modalStates,
+                                  houseHold: true,
+                                });
+                                fetchSubCategories(dispatch, category.id);
+                              }
+                            }}
+                          />
+                        </View>
+                      ))}
                   </View>
-                </TouchableOpacity>
-                <View>
-                  <PhoneNumberInput
-                    label={"Custodian's phone"}
-                    placeHolder={"Custodian of item's hotline?"}
-                    value={pickItemsValues.sendder_contact}
+                </View>
+              ) : selectedState === 1 ? (
+                <View className={`flex gap-y-5`}>
+                  {/* <View> */}
+                  <PrimaryInput
+                    label={"Item's description"}
+                    placeHolder={"What's the item to pick up?"}
+                    value={pickItemsValues.item_description}
                     onChangeText={(text) =>
                       setPickItemsValues({
                         ...pickItemsValues,
-                        sendder_contact: text,
+                        item_description: text,
                       })
                     }
                     bgColor={true}
-                    type={"phone-pad"}
+                    type="default"
                   />
-                </View>
-                <View>
+
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select One"}
+                      options={vehicles}
+                      label={"Which would you prefer?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
+                    />
+                  </View>
+                  {/* </View> */}
                   <TouchableOpacity
                     style={{ zIndex: 10 }}
                     onPress={() =>
-                      navigation.navigate("SelectAddress", {
-                        type: "recipient",
-                      })
+                      navigation.navigate("SelectAddress", { type: "item" })
                     }
                   >
                     <Text
-                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
+                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratSemiBold"
+                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
                     >
-                      Recipient's address
+                      Item's address
                     </Text>
                     <View
-                      className={`border outline-none bg-[#F7F7F7] border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                      className={`outline-none bg-[#F7F7F7] border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
                     >
                       <Text
                         className={`${
-                          recipientAddress ? `text-[#000]` : `text-[#6B7C97]`
-                        } text-[14px] font-montserratRegular`}
+                          itemAddress ? `text-[#6B7C97]` : `text-[#6B7C97]`
+                        } text-[14px] font-montserratMedium`}
                       >
-                        {recipientAddress === undefined
-                          ? "Where will the item be delivered?"
-                          : recipientAddress.description}
+                        {itemAddress === undefined
+                          ? "Where is the location of the item?"
+                          : itemAddress.description}
                       </Text>
                     </View>
                   </TouchableOpacity>
+                  <View>
+                    <PhoneNumberInput
+                      label={"Custodian's phone"}
+                      placeHolder={"Custodian of item's hotline?"}
+                      value={pickItemsValues.sendder_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          sendder_contact: text,
+                        })
+                      }
+                      bgColor={true}
+                      type={"phone-pad"}
+                    />
+                  </View>
+                  <View>
+                    <TouchableOpacity
+                      style={{ zIndex: 10 }}
+                      onPress={() =>
+                        navigation.navigate("SelectAddress", {
+                          type: "recipient",
+                        })
+                      }
+                    >
+                      <Text className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratSemiBold">
+                        Recipient's address
+                      </Text>
+                      <View
+                        className={`outline-none bg-[#F7F7F7] border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                      >
+                        <Text
+                          className={`${
+                            recipientAddress ? `text-[#000]` : `text-[#6B7C97]`
+                          } text-[14px] font-montserratMedium`}
+                        >
+                          {recipientAddress === undefined
+                            ? "Where will the item be delivered?"
+                            : recipientAddress.description}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <PhoneNumberInput
+                      label={"Recipient's phone"}
+                      placeHolder={"Recipient of the item's hotline?"}
+                      value={pickItemsValues.recipient_contact}
+                      onChangeText={(text) =>
+                        setPickItemsValues({
+                          ...pickItemsValues,
+                          recipient_contact: text,
+                        })
+                      }
+                      bgColor={true}
+                      type={"phone-pad"}
+                    />
+                  </View>
                 </View>
-                <View>
-                  <PhoneNumberInput
-                    label={"Recipient's phone"}
-                    placeHolder={"Recipient of the item's hotline?"}
-                    value={pickItemsValues.recipient_contact}
-                    onChangeText={(text) =>
-                      setPickItemsValues({
-                        ...pickItemsValues,
-                        recipient_contact: text,
-                      })
-                    }
-                    bgColor={true}
-                    type={"phone-pad"}
-                  />
-                </View>
-              </View>
-            ) : selectedState === 2 ? (
-              <View className={`flex gap-y-5`}>
-                <View className={`z-20`}>
-                  <NormalDropdown
-                    defaultOption={"Select One"}
-                    options={vehicles}
-                    label={"Which would you prefer?"}
-                    value={vehicleType}
-                    onSelect={() => setSelectedVehicle()}
-                  />
-                </View>
-                <View>
-                  <PrimaryInput
-                    label={"What items do you want to purcahse?"}
-                    placeHolder={"List the items to purchase"}
-                    value={itemsToPurchase}
-                    bgColor={true}
-                    onChangeText={(text) => setItemsToPurchase(text)}
-                  />
-                </View>
-                {/* <View>
+              ) : selectedState === 2 ? (
+                <View className={`flex gap-y-5`}>
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select One"}
+                      options={vehicles}
+                      label={"Which would you prefer?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
+                    />
+                  </View>
+                  <View>
+                    <PrimaryInput
+                      label={"What items do you want to purcahse?"}
+                      placeHolder={"List the items to purchase"}
+                      value={itemsToPurchase}
+                      bgColor={true}
+                      onChangeText={(text) => setItemsToPurchase(text)}
+                    />
+                  </View>
+                  {/* <View>
                     <PrimaryInput
                       label={"For how long?"}
                       placeHolder={"The number of hours this will take"}
@@ -581,179 +583,185 @@ const CustomerCreateErrand = ({ navigation }) => {
                       }}
                     />
                   </View> */}
-                <View>
-                  <PrimaryInput
-                    label={"What is your Estimated price?"}
-                    placeHolder={"The amount you want to spend"}
-                    type={"phone-pad"}
-                    value={estimatedPrice}
-                    bgColor={true}
-                    onChangeText={(text) => setEstimatedPrice(text)}
-                  />
+                  <View>
+                    <PrimaryInput
+                      label={"What is your Estimated price?"}
+                      placeHolder={"The amount you want to spend"}
+                      type={"phone-pad"}
+                      value={estimatedPrice}
+                      bgColor={true}
+                      onChangeText={(text) => setEstimatedPrice(text)}
+                    />
+                  </View>
+                  <View>
+                    <TouchableOpacity
+                      style={{ zIndex: 10 }}
+                      onPress={() =>
+                        navigation.navigate("SelectAddress", {
+                          type: "recipient",
+                        })
+                      }
+                    >
+                      <Text
+                        className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratMedium"
+                        style={{
+                          fontSize: 16,
+                          fontFamily: "MontserratSemiBold",
+                        }}
+                      >
+                        Recipient's address
+                      </Text>
+                      <View
+                        className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
+                      >
+                        <Text
+                          className={`${
+                            recipientAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                          } text-[14px] font-montserratSemiBold`}
+                        >
+                          {recipientAddress === undefined
+                            ? "Where will the item be delivered?"
+                            : recipientAddress.description}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <PrimaryInput
+                      label={"Your phone number"}
+                      placeHolder={"Give us a hotline to reach you"}
+                      value={groceryPhoneNumber}
+                      onChangeText={(text) => setGroceryPhoneNumber(text)}
+                      bgColor={true}
+                      type={"phone-pad"}
+                    />
+                  </View>
                 </View>
-                <View>
+              ) : selectedState === 3 ? (
+                <ManageEmailFields />
+              ) : selectedState === 4 ? (
+                <View className={`flex gap-y-5`}>
+                  <View className={`z-20`}>
+                    <NormalDropdown
+                      defaultOption={"Select One"}
+                      options={vehicles}
+                      label={"Which would you prefer?"}
+                      value={vehicleType}
+                      onSelect={() => setSelectedVehicle()}
+                    />
+                  </View>
+                  <View>
+                    <PrimaryInput
+                      label={"What do you need assistance with?"}
+                      placeHolder={"Please be specific with your tasks"}
+                      value={cleanHouseAssistance}
+                      onChangeText={(text) => setCleanHouseAssistance(text)}
+                    />
+                  </View>
+
+                  <View>
+                    <PrimaryInput
+                      label={"For how long?"}
+                      placeHolder={"The number of hours this will take"}
+                      value={cleanHouseHowLong}
+                      onChangeText={(text) => setCleanHouseHowLong(text)}
+                      bgColor={true}
+                      type={"phone-pad"}
+                    />
+                  </View>
+
+                  <View className={`flex-row items-center space-x-[20px]`}>
+                    <TouchableOpacity
+                      className={`border rounded-[4px] p-[10px] ${
+                        timeType === "hours" && `bg-primaryColor border-0`
+                      }`}
+                      onPress={() => setTimeType("hours")}
+                    >
+                      <Text
+                        className={`${timeType === "hours" && `text-white`}`}
+                      >
+                        Hours
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className={`border rounded-[4px] p-[10px] ${
+                        timeType === "days" && `bg-primaryColor border-0`
+                      }`}
+                      onPress={() => setTimeType("days")}
+                    >
+                      <Text
+                        className={`${timeType === "days" && `text-white`}`}
+                      >
+                        Days
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className={`border rounded-[4px] p-[10px] ${
+                        timeType === "months" && `bg-primaryColor border-0`
+                      }`}
+                      onPress={() => setTimeType("months")}
+                    >
+                      <Text
+                        className={`${timeType === "months" && `text-white`}`}
+                      >
+                        Months
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
                   <TouchableOpacity
                     style={{ zIndex: 10 }}
                     onPress={() =>
-                      navigation.navigate("SelectAddress", {
-                        type: "recipient",
-                      })
+                      navigation.navigate("SelectAddress", { type: "item" })
                     }
                   >
                     <Text
-                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
-                      style={{
-                        fontSize: 16,
-                        fontFamily: "MontserratSemiBold",
-                      }}
+                      className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratMedium"
+                      style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
                     >
-                      Recipient's address
+                      Meet up address
                     </Text>
                     <View
                       className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
                     >
                       <Text
                         className={`${
-                          recipientAddress ? `text-[#000]` : `text-[#e8e8e8]`
+                          itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
                         } text-[14px] font-montserratSemiBold`}
                       >
-                        {recipientAddress === undefined
-                          ? "Where will the item be delivered?"
-                          : recipientAddress.description}
+                        {itemAddress === undefined
+                          ? "Where should the Herrands agent meet you?"
+                          : itemAddress.description}
                       </Text>
                     </View>
                   </TouchableOpacity>
                 </View>
-                <View>
-                  <PrimaryInput
-                    label={"Your phone number"}
-                    placeHolder={"Give us a hotline to reach you"}
-                    value={groceryPhoneNumber}
-                    onChangeText={(text) => setGroceryPhoneNumber(text)}
-                    bgColor={true}
-                    type={"phone-pad"}
-                  />
-                </View>
-              </View>
-            ) : selectedState === 3 ? (
-              <ManageEmailFields />
-            ) : selectedState === 4 ? (
-              <View className={`flex gap-y-5`}>
-                <View className={`z-20`}>
-                  <NormalDropdown
-                    defaultOption={"Select One"}
-                    options={vehicles}
-                    label={"Which would you prefer?"}
-                    value={vehicleType}
-                    onSelect={() => setSelectedVehicle()}
-                  />
-                </View>
-                <View>
-                  <PrimaryInput
-                    label={"What do you need assistance with?"}
-                    placeHolder={"Please be specific with your tasks"}
-                    value={cleanHouseAssistance}
-                    onChangeText={(text) => setCleanHouseAssistance(text)}
-                  />
-                </View>
-
-                <View>
-                  <PrimaryInput
-                    label={"For how long?"}
-                    placeHolder={"The number of hours this will take"}
-                    value={cleanHouseHowLong}
-                    onChangeText={(text) => setCleanHouseHowLong(text)}
-                    bgColor={true}
-                    type={"phone-pad"}
-                  />
-                </View>
-
-                <View className={`flex-row items-center space-x-[20px]`}>
-                  <TouchableOpacity
-                    className={`border rounded-[4px] p-[10px] ${
-                      timeType === "hours" && `bg-primaryColor border-0`
-                    }`}
-                    onPress={() => setTimeType("hours")}
-                  >
-                    <Text className={`${timeType === "hours" && `text-white`}`}>
-                      Hours
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    className={`border rounded-[4px] p-[10px] ${
-                      timeType === "days" && `bg-primaryColor border-0`
-                    }`}
-                    onPress={() => setTimeType("days")}
-                  >
-                    <Text className={`${timeType === "days" && `text-white`}`}>
-                      Days
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    className={`border rounded-[4px] p-[10px] ${
-                      timeType === "months" && `bg-primaryColor border-0`
-                    }`}
-                    onPress={() => setTimeType("months")}
-                  >
-                    <Text
-                      className={`${timeType === "months" && `text-white`}`}
-                    >
-                      Months
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-
-                <TouchableOpacity
-                  style={{ zIndex: 10 }}
-                  onPress={() =>
-                    navigation.navigate("SelectAddress", { type: "item" })
-                  }
-                >
-                  <Text
-                    className="text-[#6B7C97] text-[14px] font-medium py-2 font-montserratRegular"
-                    style={{ fontSize: 16, fontFamily: "MontserratSemiBold" }}
-                  >
-                    Meet up address
-                  </Text>
-                  <View
-                    className={`border outline-none border-[#E9E9E9] rounded-[4px] h-[45px] px-2 flex-row items-center`}
-                  >
-                    <Text
-                      className={`${
-                        itemAddress ? `text-[#000]` : `text-[#e8e8e8]`
-                      } text-[14px] font-montserratSemiBold`}
-                    >
-                      {itemAddress === undefined
-                        ? "Where should the Herrands agent meet you?"
-                        : itemAddress.description}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ) : null}
-          </View>
-          <View
-            style={{
-              marginBottom: selectedCategory === "" ? 0 : 100,
-            }}
-          >
-            {selectedState && (
-              <SquareButton
-                text={"Send"}
-                styles={{ backgroundColor: colors.primaryColor }}
-                onPress={() => {
-                  console.log("category before sending:::", selectedCategory);
-                  if (selectedCategory === 2) {
-                    sendGroceryMessage();
-                  } else if (selectedCategory === 1) {
-                    sendMessageAction();
-                  } else if (selectedCategory === 4) {
-                    sendCleanHouseMessage();
-                  }
-                  //
-                }}
-              />
-            )}
+              ) : null}
+            </View>
+            <View
+              style={{
+                marginBottom: selectedCategory === "" ? 0 : 100,
+              }}
+              className="mt-10"
+            >
+              {selectedState && (
+                <SquareButton
+                  text={"Send"}
+                  styles={{ backgroundColor: colors.primaryColor }}
+                  onPress={() => {
+                    console.log("category before sending:::", selectedCategory);
+                    if (selectedCategory === 2) {
+                      sendGroceryMessage();
+                    } else if (selectedCategory === 1) {
+                      sendMessageAction();
+                    } else if (selectedCategory === 4) {
+                      sendCleanHouseMessage();
+                    }
+                    //
+                  }}
+                />
+              )}
+            </View>
           </View>
         </View>
 

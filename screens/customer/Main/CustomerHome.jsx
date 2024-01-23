@@ -159,6 +159,7 @@ const CustomerHome = ({ navigation }) => {
               // handleButtonClick();
               // sendMessage(message);
             }}
+            
           >
             <Image
               source={Hamburger}

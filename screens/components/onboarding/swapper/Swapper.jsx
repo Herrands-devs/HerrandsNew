@@ -17,6 +17,7 @@ import { colors } from "../../../../themes/colors";
 import BackIcon from "../../../../assets/icons/back-icon.png";
 import * as Notifications from "expo-notifications";
 import * as Location from "expo-location";
+import { Platform } from "react-native";
 
 const Swapper = ({ navigation }) => {
   const swiperRef = React.createRef();
@@ -90,7 +91,7 @@ const Swapper = ({ navigation }) => {
         {currentIndex > 0 && (
           <TouchableOpacity
             onPress={handlePrevious}
-            className={`absolute mt-[50px] ml-[16px] z-20`}
+            className={`absolute ${Platform.OS == 'ios' ? 'mt-[60px]' : 'mt-[20px]' }  ml-[16px] z-20`}
           >
             <Image source={BackIcon} className={`w-[24px] h-[24px]`} />
           </TouchableOpacity>
@@ -137,15 +138,17 @@ const Swapper = ({ navigation }) => {
               </View>
             ) : (
               <TouchableOpacity
-                className={`flex-row items-center text-center justify-center`}
+                className={`flex-row p-2 items-center text-center justify-center`}
                 onPress={handleNext}
               >
                 <Text
-                  className={`text-[14px] font-montserratBold text-primaryColor`}
+                  className={`${Platform.Os == 'ios' ? 'text-[16px]' : 'text-[14px]'}  font-montserratBold text-primaryColor`}
                 >
                   Next
                 </Text>
-                <Image source={NextArrow} />
+                <View className="h-full flex justify-center items-center pt-[1px]">
+                  <Image source={NextArrow} size={16} />
+                </View>
               </TouchableOpacity>
             )}
           </View>

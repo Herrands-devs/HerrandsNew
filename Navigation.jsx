@@ -146,20 +146,11 @@ const MainCustomer = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        headerTitle: "", // Remove the title
-        headerBackTitle: "", // Remove the back button title
-        headerStyle: {
-          borderBottomWidth: 0, // Remove the border
-          elevation: 0, // Remove shadow on Android
-          shadowOpacity: 0, // Remove shadow on iOS
-        },
-        headerLeft: customHeaderBack,
       }}
     >
       <Stack.Screen
         name="CustomerHome"
         component={CustomerHome}
-        options={{ headerShown: false, tabBarStyle: { display: "none" } }}
       />
       <Stack.Screen
         name="CustomerErrandDetails"
@@ -170,7 +161,6 @@ const MainCustomer = () => {
       <Stack.Screen
         name="CustomerErrandMap"
         component={CustomerErrandMap}
-        options={{ headerShown: false, tabBarStyle: { display: "none" } }}
       />
       <Stack.Screen
         name="CustomerVirtualProcess"
@@ -181,11 +171,6 @@ const MainCustomer = () => {
       <Stack.Screen
         name="CustomerCreateErrand"
         component={CustomerCreateErrand}
-        options={{
-          headerBackImage: () => (
-            <AntDesign name="arrowleft" size={24} color="black" />
-          ),
-        }}
       />
 
       <Stack.Screen name="ErrandCompleteRate" component={ErandCompleteRate} />

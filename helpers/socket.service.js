@@ -120,6 +120,7 @@ const useSocket = () => {
         data: true,
       })
     );
+    setMessageToSend(message)
     if (socketRef && socketRef.readyState === WebSocket.OPEN) {
       socketRef.send(JSON.stringify(message));
       console.log("message sent in socket", message);

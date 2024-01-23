@@ -9,6 +9,7 @@ const KeyboardAvoidingContainer = ({children , style}) => {
          <KeyboardAvoidingView 
             style={{flex : 1}}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            className="bg-white"
          >
             <ScrollView
                showsVerticalScrollIndicator={false}

@@ -28,16 +28,17 @@ export const RoundedButton = ({
   );
 };
 
-export const SquareButton = ({ text, styles, onPress, loading, textStyle }) => {
+export const SquareButton = ({ text, styles, onPress, loading, textStyle , disabled }) => {
   return (
     <TouchableOpacity
-      className={`w-[100%] 
-      ${Platform.OS == 'ios' ? 'py-[14px]' : 'py-[12px]'} flex flex-row justify-center rounded-[4px]`}
+      className={`w-[100%] ${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'} ${disabled ? 'bg-disabledBtn' : 'bg-[#0066F5]'} flex flex-row justify-center items-center rounded-[4px]`}
       style={styles}
-      onPress={onPress}
+      onPress={disabled ? () => {
+        return;
+      } : onPress}
     >
       {loading ? (
-        <ActivityIndicator />
+        <ActivityIndicator color={'#ffffff'}/>
       ) : (
         <Text
           className={`text-white  ${Platform.OS == 'ios' ? 'text-[14px]' : 'text-[12px]'}  font-semibold font-montserratBold`}
@@ -92,13 +93,13 @@ export const LayeredBtn = ({
 }) => {
   return (
     <TouchableOpacity
-      className={`${Platform.OS == 'ios' ? 'py-[16px]' : 'py-[12px]'} flex 
-      rounded-[4px] border border-[#99C2FB] w-[45%]`}
+      className={`${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'}  flex justify-center items-center 
+      rounded-[4px] border border-[#99C2FB] shadow-lg w-[45%]`}
       style={styles}
       onPress={onPress}
     >
       <Text
-        className={`${textClass} text-[14px] font-semibold font-montserratBold`}
+        className={`${textClass} ${Platform.OS == 'ios' ? 'text-[14px]' : 'text-[12px]'} font-semibold font-montserratBold`}
       >
         {text}
       </Text>
