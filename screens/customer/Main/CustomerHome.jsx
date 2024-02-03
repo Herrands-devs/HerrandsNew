@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Modal,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { Video } from "expo-av";
@@ -19,29 +20,44 @@ import { GOOGLE_MAP_APIKEY } from "@env";
 import { Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
-import { connectToSocket, fetchAllSubCategories, fetchCategoriesAction, fetchVehicleTypes } from "../../../helpers/fetchData";
-import { toggleIsSocketConnected } from "../../../reducers/dataReducer";
+import {
+  connectToSocket,
+  fetchAllSubCategories,
+  fetchCategoriesAction,
+  fetchVehicleTypes,
+} from "../../../helpers/fetchData";
+import  { DataSelector, toggleIsSocketConnected, toggleModal } from "../../../reducers/dataReducer";
+import { AntDesign } from "@expo/vector-icons";
+import CategoryButton from "../../components/customer-home-screen/CategoryButton";
 
 const CustomerHome = ({ navigation }) => {
   const videoRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { isConnected , fetchToken } = useSocket();
-  const insets = useSafeAreaInsets();
-
-  const dispatch = useDispatch()
+  const { isConnected, fetchToken } = useSocket();
+  const {isModal} = useSelector(DataSelector)
+  const dispatch = useDispatch();
   useEffect(() => {
-    fetchCategoriesAction(dispatch)
-    fetchAllSubCategories(dispatch)
-    fetchVehicleTypes(dispatch)
-    fetchToken()
-    if(isConnected) {
-      dispatch(toggleIsSocketConnected({
-        data : isConnected
-      }))
-      console.log("Heyy, This is socker", isConnected);
+    fetchCategoriesAction(dispatch);
+    fetchAllSubCategories(dispatch);
+    fetchVehicleTypes(dispatch);
+    fetchToken();
+    if (isConnected) {
+      dispatch(
+        toggleIsSocketConnected({
+          data: isConnected,
+        })
+      );
+      console.log("Heyy, This is socket", isConnected);
     }
-  },[]);
+  }, []);
 
+  useEffect(() => {
+    dispatch(
+      toggleModal({
+        data: true,
+      })
+    );
+  },[])
 
   const handleCloseSidebar = () => {
     setIsOpen(false);
@@ -55,6 +71,8 @@ const CustomerHome = ({ navigation }) => {
       await videoRef.current.playAsync();
     })();
   }, []);
+
+  const [modalHeight, setModalHeight] = useState(false);
 
   return (
     <View className={`flex-1`}>
@@ -72,107 +90,57 @@ const CustomerHome = ({ navigation }) => {
           isLooping
           isMuted
         />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}
-          // keyboardVerticalOffset={Platform.OS === "ios" ? -64 : 0}
-        >
-          <View
-            className={`absolute bottom-0 top-0 left-0 right-0 bg-[#0000009f]`}
-          />
-
-          <View
-            className={`absolute px-3`}
-            style={{
-              bottom:
-                Platform.OS === "android" ? insets.bottom + 20 : insets.bottom,
-            }}
-          >
-            <Text
-              className={`text-white font-montserratSemiBold ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[12px]'}  text-center`}
-            >
-              Send your errands in minutes and enjoy more quality
-              time in your day.
-            </Text>
-
-            <View className={`flex-row justify-center mt-[35px]`}>
-              <SquareButton
-                text={"Let's go"}
-                styles={{ backgroundColor: colors.primaryColor, width: "100%" }}
-                onPress={() => navigation.navigate("CustomerCreateErrand")}
-              />
-            </View>
-          </View>
-
-          {/* <View
-            className={`absolute bottom-0 bg-white w-full px-[16px] pt-[8.5px] pb-[120px]`}
-          >
-            <Text className={`text-[16px] font-montserratBold`}>
-              Where are you going???
-            </Text>
-
-            <View className={`z-10 mt-[8px]`}>
-              <GooglePlacesAutocomplete
-                styles={{
-                  container: {
-                    flex: 0,
-                  },
-                  textInput: {
-                    fontSize: 16,
-                    backgroundColor: "#F7F7F7",
-                  },
-                }}
-                query={{
-                  key: GOOGLE_MAP_APIKEY,
-                  language: "en",
-                }}
-                minLength={3}
-                onPress={(data, details = null) => {
-                  // setOrigin({
-                  //   location: details.geometry.location,
-                  //   description: data.description,
-                  // });
-                  // setDestination(null);
-                  console.log("location:::", details.geometry.location);
-                  console.log("description:::", data.description);
-                }}
-                fetchDetails={true}
-                returnKeyType={"search"}
-                enablePoweredByContainer={false}
-                placeholder="Select your city"
-                nearbyPlacesAPI="GooglePlacesSearch"
-                debounce={200}
-              />
-            </View>
-
-            <View className={`mt-[28px]`}>
-              <SquareButton
-                text={"Let's go"}
-                styles={{ backgroundColor: colors.primaryColor, width: "100%" }}
-                onPress={() => navigation.navigate("CustomerCreateErrand")}
-              />
-            </View>
-          </View> */}
+      </KeyboardAvoidingView>
+      <Modal
+        visible={isModal}
+        animationType="slide"
+        transparent={true}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.9)", padding: 20 }}
+      >
+        <View className="flex-1 bg-[#00000082] relative z-20 justify-end">
           <TouchableOpacity
             onPress={() => {
               setIsOpen(true);
               // handleButtonClick();
               // sendMessage(message);
             }}
-            
+            className={`p-2 flex justify-center items-center absolute bg-white shadow-lg rounded-full top-0  ${
+              Platform.OS == "ios"
+                ? "mt-[60px] ml-[30px]"
+                : "mt-[20px] ml-[15px]"
+            } `}
           >
-            <Image
-              source={Hamburger}
-              className={`w-[24px] h-[24px] fixed ${Platform.OS == 'ios' ?  'mt-[60px] ml-[30px]' : 'mt-[20px] ml-[15px]'} `}
-            />
+            <AntDesign name="bars" size={24} color="black" />
           </TouchableOpacity>
           <Sidebar
             isOpen={isOpen}
             onClose={handleCloseSidebar}
             navigation={navigation}
           />
-        </KeyboardAvoidingView>
-      </KeyboardAvoidingView>
+          <View
+            className={`absolute px-5 pt-10 ${Platform.OS == 'ios' ? 'min-h-[15vh]' : 'min-h-[20vh]'}  bg-white shadow-xl w-full rounded-t-3xl flex space-y-[20px]`}
+          >
+            <View>
+              <TouchableOpacity
+                onPress={() => setModalHeight(!modalHeight)}
+                className="h-[48px] w-full flex-row space-x-[10px] items-center px-2 bg-[#ebeaea] rounded-md shadow-sm"
+              >
+                <View className="min-w-[30px] flex-row justify-center items-center h-[30px] rounded-full bg-white">
+                  <AntDesign name="search1" size={15} color="black" />
+                </View>
+                <View>
+                  <Text className={`${Platform.OS === 'ios' ? 'text-[16px]' : 'text-[13px]'} font-montserratMedium`}>
+                    What errand are you runnung today ?
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            {modalHeight && (
+              <CategoryButton />
+            )}
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };

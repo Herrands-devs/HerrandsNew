@@ -61,6 +61,7 @@ export const GlobalProvider = ({ children }) => {
     if (Token) {
       setToken(Token);
       setUserType(userType);
+      setUserId(userId)
       dispatch(storeAuthentication({
         data : {...Authentication , isBoard : true , isAuth : true , isNew : false, userId : userId , user_type : userType}
       }))
@@ -82,13 +83,36 @@ export const GlobalProvider = ({ children }) => {
   };
   useEffect(() => {
     getToken();
+
   }, [isToken]);
 
+  // PickUp
+  const [pickItemsValues, setPickItemsValues] = useState({
+    item_description: "",
+    pick_up_lat: "",
+    pick_up_long: "",
+    pick_up_address: "",
+    drop_off_address: "",
+    drop_off_lat: "",
+    drop_off_long: "",
+    recipient_number: "",
+    custodian_number: "",
+    describe_errand: "",
+    estimated_drop_off_time: "",
+  });
+
   useEffect(() => {
-    // AsyncStorage.removeItem("userType")
+    // AsyncStorage.removeItem("token")
     getUserId();
+    console.log("UserId:::" , userId)
   }, [isAuthenticated]);
 
+
+  useEffect(() => {
+    // AsyncStorage.removeItem("token")
+    getUserId();
+    console.log("UserId:::" , userId)
+  }, []);
   return (
     <GlobalContext.Provider
       value={{
@@ -169,7 +193,9 @@ export const GlobalProvider = ({ children }) => {
         isAcceptingErrand, 
         setIsAccepting,
         socketRef , 
-        setSocket
+        setSocket,
+        pickItemsValues,
+        setPickItemsValues
       }}
     >
       {children}

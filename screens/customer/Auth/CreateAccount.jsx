@@ -74,7 +74,7 @@ const CreateAccount = ({ navigation }) => {
               <Text
                 className={`text-[14px] font-montserratRegular text-center text-black mt-[8px]`}
               >
-                It's easy, quick and saf
+                It's easy, quick and safe!
               </Text>
             </View>
 

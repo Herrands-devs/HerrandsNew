@@ -34,7 +34,7 @@ const OtpScreen = ({ navigation, route }) => {
   const [isModal, setIsModal] = useState(false);
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(null);
-  const { setIsAuthenticated } = useContext(GlobalContext);
+  const { setToken } = useContext(GlobalContext);
   const [error , setError] = useState(false);
 
   const handleOtpChange = (newValues) => {
@@ -58,10 +58,10 @@ const OtpScreen = ({ navigation, route }) => {
       .post(`${API_URl}/accounts/validate-otp/`, data)
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
-          setIsAuthenticated(true);
           AsyncStorage.setItem("userType", response.data.user.user_type);
-          AsyncStorage.setItem("userId", response.data.user.id);
+          AsyncStorage.setItem("user_id", response.data.user.id);
           AsyncStorage.setItem("token", response.data.token);
+          setToken(response.data.token);
         } else {
           setLoading(false);
           console.log("response error:::", response.data);

@@ -31,6 +31,7 @@ const useSocket = () => {
   };
 
   const initializeSocket = () => {
+    console.log('connecting........')
     if (!token) return;
     console.log("Connecting websocket");
     const SOCKET_URL = `https://jellyfish-app-gd9q8.ondigitalocean.app/errand/?token=${token}`;
@@ -74,7 +75,7 @@ const useSocket = () => {
           }
           if (parsedData.data) {
             if (parsedData.data.describe_errand === null) {
-              navigation.navigate("CustomerErrandMap");
+              navigation.navigate("NoteOrder");
             } else {
               return;
             }
@@ -127,7 +128,6 @@ const useSocket = () => {
     } else {
       // Socket is not open, connect it and then send the message
       setIsConnected(false)
-      console.log("Socket is not ready. Connecting...");
       initializeSocket();
     }
   };

@@ -56,13 +56,14 @@ const SelectAddress = ({ navigation, route }) => {
                 description: data.description,
                 details: details.geometry.location,
               });
+              navigation.navigate("Item");
             } else {
               setRecipientAddress({
                 description: data.description,
                 details: details.geometry.location,
               });
+              navigation.navigate("DropOff");
             }
-            navigation.goBack();
           }}
           fetchDetails={true}
           returnKeyType={"search"}
@@ -104,7 +105,6 @@ const SelectAddress = ({ navigation, route }) => {
             </div>
           )}
         </GooglePlacesAutocomplete>
-
       </View>
     </View>
   );

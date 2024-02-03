@@ -64,8 +64,10 @@ const OneMoreStep = ({ navigation, route }) => {
           const userId = response.data.user.id;
           AsyncStorage.setItem("user_id", userId);
           AsyncStorage.setItem("user_data", JSON.stringify(response.data.user));
-          setIsNewUser(false);
           setIsAuthenticated(true);
+          navigation.navigate("OtpScreen", {
+            phone_number: phone_number,
+          });
         } else {
           setLoading(false);
           console.log("response error:::", response.data);

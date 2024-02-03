@@ -145,7 +145,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
                 className={`rounded-full w-[60px] h-[60px]`}
               />
               <View className={`space-y-1`}>
-                <Text className={`text-sidebarText font-montserratBold`}>
+                <Text className={`text-sidebarText font-montserratSemiBold`}>
                   {userData?.first_name} {userData?.last_name}
                 </Text>
                 <TouchableOpacity
@@ -155,7 +155,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
                   }}
                 >
                   <Text
-                    className={`text-primaryColor font-montserratRegular text-[12px]`}
+                    className={`text-primaryColor font-montserratSemiBold text-[12px]`}
                   >
                     Edit profile
                   </Text>
@@ -166,7 +166,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
             <View className={`mt-[28px] bg-[#F7F7F7]`}>
               {sidebarItems.map((item) => (
                 <TouchableOpacity
-                  className={`flex-row items-center space-x-[6px] p-[18px]`}
+                  className={`flex-row items-center space-x-[10px] p-[18px]`}
                   key={item.title}
                   onPress={() => {
                     if (item.title === "Log out") {
@@ -178,7 +178,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
                   }}
                 >
                   <Image source={item.icon} className={`w-[24px] h-[24px]`} />
-                  <Text className={`font-montserratBold text-sidebarText`}>
+                  <Text className={`font-montserratSemiBold text-[14px] text-sidebarText`}>
                     {item.title}
                   </Text>
                 </TouchableOpacity>
@@ -241,7 +241,7 @@ const Sidebar = ({ isOpen, onClose, navigation }) => {
                         setIsAuthenticated(false)
                         AsyncStorage.removeItem("token");
                         dispatch(storeAuthentication({
-                          data : {...Authentication , isBoard : true , isAuth : false }
+                          data : {...Authentication , isBoard : true , isAuth : false , userId : "" }
                         }))
                       }}
                     >

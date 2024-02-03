@@ -180,14 +180,18 @@ const OtpScreenAgent = ({ navigation, route }) => {
     <>
       <SafeAreaComponent classes={`px-[16px] py-[18px]`}>
         <View style={{ height: height * 0.05 }}>
-          <Text className={`text-[16px] font-montserratBold`}>Enter Code</Text>
+          <Text className={`${
+                Platform.OS == "ios" ? "text-[16px]" : "text-[14px] "
+              } font-montserratMedium text-subTitle`}>Enter Code</Text>
         </View>
 
         <View className={``} style={{ height: height * 0.2 }}>
           <Text className={`text-[14px] font-montserratBold text-subTitle`}>
             A code was sent to
           </Text>
-          <Text className={`text-[16px] font-montserratBold mt-[4px]`}>
+          <Text className={`${
+                Platform.OS == "ios" ? "text-[26px]" : "text-[24px] "
+              }  font-montserratBold mt-[4px] text-subTitle`}>
             {phone_number}
           </Text>
           <TouchableOpacity
@@ -195,7 +199,9 @@ const OtpScreenAgent = ({ navigation, route }) => {
             onPress={() => navigation.navigate("LoginScreen")}
           >
             <Text
-              className={`text-primaryColor text-[14px] font-montserratMedium`}
+              className={`text-primaryColor ${
+                Platform.OS == "ios" ? "text-[16px]" : "text-[12px] "
+              } font-montserratMedium`}
             >
               Edit phone number
             </Text>

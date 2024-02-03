@@ -22,9 +22,11 @@ export const PrimaryInput = ({
   maxLength,
   mainType,
   bgColor,
+  onFocus,
   ...rest
 }) => {
   const [isFocused, setFocused] = useState(false);
+// The empty dependency array ensures this effect runs only once on mount
   return (
     <View className={`w-[100%] ${classes}`}>
       {/* if Icon */}
@@ -304,7 +306,7 @@ export const OtpInputs = ({ otpValues, onOtpChange, onOtpComplete , error }) => 
         {otpValues.map((digit, i) => (
           <TextInput
             key={i}
-            className="w-[76px] h-[64px] rounded-[5px] flex justify-center 
+            className="w-[66px] h-[54px] rounded-[5px] flex justify-center 
           items-center  text-center text-xl font-bold bg-[#D5D7DA]"
             style={[
               i === focusedIndex && {

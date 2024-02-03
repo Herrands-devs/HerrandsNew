@@ -48,6 +48,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 import { DataSelector } from "./reducers/dataReducer";
+import Transport from "./screens/customer/Errands/Transport";
+import Item from "./screens/customer/Errands/Item";
+import DropOff from "./screens/customer/Errands/DropOff";
+import CompletionOrder from "./screens/customer/Errands/CompletionOrder";
+import Note from "./screens/customer/Errands/Note";
 
 const Stack = createNativeStackNavigator();
 
@@ -137,11 +142,6 @@ const Agent = () => {
 
 const MainCustomer = () => {
   const navigation = useNavigation();
-  const customHeaderBack = () => (
-    <TouchableOpacity onPress={() => navigation.goBack()}>
-      <AntDesign name="arrowleft" size={24} color="black" />
-    </TouchableOpacity>
-  );
   return (
     <Stack.Navigator
       screenOptions={{
@@ -192,6 +192,13 @@ const MainCustomer = () => {
       />
       <Stack.Screen name="ChatScreen" component={ChatsScreen} />
       <Stack.Screen name="Chat" component={ChatBoardCustomer} />
+
+      {/* New Board Screen */}
+      <Stack.Screen name="Transport" component={Transport} />
+      <Stack.Screen name="Item" component={Item} />
+      <Stack.Screen name="DropOff" component={DropOff} />
+      <Stack.Screen name="CompletionOrder" component={CompletionOrder} />
+      <Stack.Screen name="NoteOrder" component={Note} />
     </Stack.Navigator>
   );
 };

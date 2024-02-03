@@ -146,7 +146,6 @@ const SignInPhone = ({ navigation }) => {
                 className={`${
                   Platform.OS == "ios" ? "text-[16px]" : "text-[12px] "
                 } font-montserratSemiBold text-primaryColor`}
-                onPress={() => navigation.navigate("SignInEmail")}
               >
                 Sign in with email
               </Text>

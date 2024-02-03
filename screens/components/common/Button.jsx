@@ -31,7 +31,7 @@ export const RoundedButton = ({
 export const SquareButton = ({ text, styles, onPress, loading, textStyle , disabled }) => {
   return (
     <TouchableOpacity
-      className={`w-[100%] ${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'} ${disabled ? 'bg-disabledBtn' : 'bg-[#0066F5]'} flex flex-row justify-center items-center rounded-[4px]`}
+      className={`w-[100%] ${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'} ${disabled ? 'bg-disabledBtn' : 'bg-[#0066F5]'} flex flex-row justify-center items-center rounded-[50px]`}
       style={styles}
       onPress={disabled ? () => {
         return;

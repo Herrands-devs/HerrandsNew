@@ -10,6 +10,7 @@ const dataSlice = createSlice({
       vehicles : [],
       isLoading : false,
       connectedSocket : false,
+      isModal : false,
       Authentication : {
          isBoard : false,
          isAuth : false,
@@ -39,12 +40,15 @@ const dataSlice = createSlice({
       },
       storeAuthentication : (state , {payload}) => {
          state.Authentication = payload.data
+      },
+      toggleModal : (state , {payload}) => {
+         state.isModal = payload.data
       }
        
    },
 });
 
 
-export const { storeCategories , storeSubCategories , storeVehincle , toggleIsLoading , toggleIsSocketConnected , storeSubCategory , storeAuthentication} = dataSlice.actions;
+export const { storeCategories , storeSubCategories , storeVehincle , toggleIsLoading , toggleIsSocketConnected , storeSubCategory , storeAuthentication , toggleModal} = dataSlice.actions;
 export const DataSelector = (state) => state.data;
 export default dataSlice.reducer;
