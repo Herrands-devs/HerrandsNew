@@ -646,9 +646,6 @@ export const RideAddNotes = ({
 
 export const SearchinAgentModal = ({
   isVisible,
-  closeModal,
-  onPress,
-  openDetails,
 }) => {
   const translateY = useRef(new Animated.Value(500)).current;
   const opacity = useRef(new Animated.Value(0)).current;
@@ -685,9 +682,7 @@ export const SearchinAgentModal = ({
         duration: 300,
         useNativeDriver: false,
       }),
-    ]).start(() => {
-      closeModal();
-    });
+    ]).start();
   };
 
   useEffect(() => {
@@ -713,7 +708,7 @@ export const SearchinAgentModal = ({
                 transform: [{ translateY }],
               },
             ]}
-            className="px-6 relative bottom-0 h-[60%]"
+            className="px-6 relative bottom-0 h-[65%]"
           >
             <View className={`items-center pt-[8px] pb-[22px]`}>
               <TouchableOpacity

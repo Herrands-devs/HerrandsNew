@@ -32,12 +32,14 @@ import isEmpty from "../../components/isEmpty";
 import { TextInput } from "react-native";
 import { GOOGLE_MAP_APIKEY } from "@env";
 import { SearchinAgentModal } from "../../components/common/Modals";
+import useSocket from "../../../helpers/socket.service";
 
 const Note = ({ navigation }) => {
   const dispatch = useDispatch();
   const { rides, addNote, itemAddress, setAddNote , searchModal, setSearchModal } = useContext(GlobalContext);
   const [notes, setNotes] = useState("");
   const [radiusMap, setRadiusMap] = useState(5000);
+  const { isConnected, sendMessage, initializeSocket } = useSocket();
 
   const message = {
     type: "complete.routine_errand",
@@ -48,17 +50,10 @@ const Note = ({ navigation }) => {
   };
 
   const completeErrandCreation = async () => {
+    initializeSocket()
     sendMessage(message);
     console.log("main message sent...", message);
     setSearchModal(true);
-    setTimeout(() => {
-      dispatch(
-        toggleIsLoading({
-          data: false,
-        })
-      );
-      setSearchModal(true);
-    }, 3000);
   };
   return (
     <View>
@@ -139,7 +134,7 @@ const Note = ({ navigation }) => {
                 </View>
                 <View className="flex-row justify-between my-4">
                   <Text className="font-montserratBold">Total Cost</Text>
-                  <Text>{rides?.total_cost}</Text>
+                  <Text className="font-montserratBold text-[18px]">₦{rides?.total_cost}</Text>
                 </View>
 
                 <View className="bg-white my-2">

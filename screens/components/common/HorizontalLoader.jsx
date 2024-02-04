@@ -66,8 +66,8 @@ const styles = StyleSheet.create({
   },
   loaderContainer: {
     width: "100%",
-    height: 5,
-    borderRadius: 4,
+    height: 4,
+    borderRadius: 3,
     backgroundColor: "#99C2FB",
   },
   loader: {

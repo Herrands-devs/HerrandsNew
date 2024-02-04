@@ -164,6 +164,7 @@ const Item = ({ navigation }) => {
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{flex : 1}}
       >
         <Modal
           visible={isOpen}
