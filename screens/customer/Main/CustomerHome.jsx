@@ -33,24 +33,9 @@ import CategoryButton from "../../components/customer-home-screen/CategoryButton
 const CustomerHome = ({ navigation }) => {
   const videoRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { isConnected, fetchToken } = useSocket();
+
   const {isModal} = useSelector(DataSelector)
   const dispatch = useDispatch();
-  useEffect(() => {
-    fetchCategoriesAction(dispatch);
-    fetchAllSubCategories(dispatch);
-    fetchVehicleTypes(dispatch);
-    fetchToken();
-    if (isConnected) {
-      dispatch(
-        toggleIsSocketConnected({
-          data: isConnected,
-        })
-      );
-      console.log("Heyy, This is socket", isConnected);
-    }
-  }, []);
-
   useEffect(() => {
     dispatch(
       toggleModal({

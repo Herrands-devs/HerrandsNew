@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { GOOGLE_MAP_APIKEY } from "@env";
 import { Platform } from "react-native";
@@ -8,11 +8,17 @@ import { GlobalContext } from "../../../context/context.store";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const SelectAddress = ({ navigation, route }) => {
+  const googlePlacesRef = useRef(null)
   const insets = useSafeAreaInsets();
   const { setItemAddress, setRecipientAddress } = useContext(GlobalContext);
+  const countryRestriction = { country: 'NG' }; // 'NG' is the country code for Nigeria
   const { type } = route.params;
 
   console.log("type:::", type);
+
+  const clearTextInput = () => {
+    googlePlacesRef.current?.setAddressText('');
+  };
 
   return (
     <View
@@ -32,6 +38,7 @@ const SelectAddress = ({ navigation, route }) => {
       </Pressable>
       <View className="flex w-full h-full">
         <GooglePlacesAutocomplete
+          ref={googlePlacesRef}
           styles={{
             container: {
               flex: 1,
@@ -62,6 +69,7 @@ const SelectAddress = ({ navigation, route }) => {
                 description: data.description,
                 details: details.geometry.location,
               });
+              clearTextInput()
               navigation.navigate("DropOff");
             }
           }}
@@ -71,40 +79,10 @@ const SelectAddress = ({ navigation, route }) => {
           placeholder="What's the location of the item?"
           nearbyPlacesAPI="GooglePlacesSearch"
           debounce={200}
-        >
-          {({
-            getInputProps,
-            suggestions,
-            getSuggestionItemProps,
-            loading,
-          }) => (
-            <div>
-              <input {...getInputProps({ placeholder: "Type location..." })} />
-              <div>
-                {loading ? <div>Loading...</div> : null}
-
-                {suggestions.map((suggestion) => {
-                  const style = {
-                    backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
-                  };
-                  return (
-                    <div {...getSuggestionItemProps(suggestion, { style })}>
-                      {suggestion.description}
-                    </div>
-                  );
-                })}
-
-                {/* Add icon or message when no suggestions are available */}
-                {suggestions.length === 0 && (
-                  <div>
-                    <FontAwesomeIcon icon={faExclamationCircle} />
-                    No results found
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-        </GooglePlacesAutocomplete>
+          autocompletionRequest={{ componentRestrictions: countryRestriction }}
+          keepResultsAfterBlur={true}
+        />
+          
       </View>
     </View>
   );

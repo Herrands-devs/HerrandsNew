@@ -18,7 +18,10 @@ const useSocket = () => {
     setAgentInfo,
     setErrandId,
     socketRef, 
-    setSocket
+    setSocket,
+    setReceiveErrand,
+    setAcceptedErrand,
+    userId
   } = useContext(GlobalContext);
   const navigation = useNavigation();
 
@@ -26,12 +29,11 @@ const useSocket = () => {
 
   const fetchToken = async () => {
     const asyncToken = await getAsyncToken();
-    // console.log("token:::", asyncToken);
     setToken(asyncToken);
   };
 
   const initializeSocket = () => {
-    console.log('connecting........')
+    console.log('connecting........', token)
     if (!token) return;
     console.log("Connecting websocket");
     const SOCKET_URL = `https://jellyfish-app-gd9q8.ondigitalocean.app/errand/?token=${token}`;
@@ -51,8 +53,8 @@ const useSocket = () => {
       };
 
       socket.onmessage = (event) => {
-        console.log(event)
         if (event.data) {
+          console.log(event.data)
           const parsedData = JSON.parse(event.data);
           console.log("parsed data:::", parsedData);
           console.log("typess:::", parsedData.type);
@@ -60,7 +62,6 @@ const useSocket = () => {
             console.log("Errand has been accepted");
             setErrandAccepted(true);
             setSearchModal(false);
-            setRideDetailsModal(true);
             setAgentInfo(parsedData.data.agent);
             setErrandId(parsedData.data.id);
           }
@@ -72,6 +73,21 @@ const useSocket = () => {
                 data: false,
               })
             );
+          }
+          if (
+            parsedData.type === "errand.requested" &&
+            parsedData.data.status === "REQUESTED"
+          ) {
+            setReceiveErrand(parsedData.data);
+            setAcceptedErrand([]);
+          } else if (
+            parsedData.type === "errand.accepted" &&
+            parsedData.data.status === "ACCEPTED" &&
+            parsedData.data.agent?.id == userId
+          ) {
+            setReceiveErrand([]);
+            setAcceptedErrand(parsedData.data);
+            console.log("woll");
           }
           if (parsedData.data) {
             if (parsedData.data.describe_errand === null) {

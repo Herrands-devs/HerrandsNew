@@ -36,10 +36,6 @@ const Transport = ({ navigation }) => {
     );
   }, []);
 
-  useEffect(() => {
-    console.log(itemAddress);
-  },[itemAddress])
- 
   const getImageSource = (vehicleType) => {
     switch (vehicleType) {
       case "car":
@@ -50,6 +46,9 @@ const Transport = ({ navigation }) => {
         break;
       case "someone":
         return require(`../../../assets/someone.png`);
+        break;
+        case "van":
+        return require(`../../../assets/van.png`);
         break;
       // Add cases for other vehicle types as needed
       default:

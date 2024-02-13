@@ -5,9 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 const KeyboardAvoidingContainer = ({children , style}) => {
    return (
-      <View style={{flex : 1}}>
+      <View>
          <KeyboardAvoidingView 
-            style={{flex : 1}}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             className="bg-white"
          >

@@ -61,14 +61,7 @@ const DashboardScreen = ({ navigation }) => {
       .catch((err) => console.log(err));
   }, [API_URl]);
 
-  useEffect(() => {
-    handleButtonClick();
-    if (isConnected) {
-      console.log("yes");
-    } else {
-      console.log("no");
-    }
-  });
+
   const handleClick = () => {
     sendMessage({
       type: "echo.message",

@@ -54,7 +54,6 @@ const OtpScreenAgent = ({ navigation, route }) => {
     };
 
     console.log("otp data agent:::", data);
-
     axios
       .post(`${API_URl}/accounts/validate-otp/`, data)
       .then((response) => {
@@ -190,7 +189,7 @@ const OtpScreenAgent = ({ navigation, route }) => {
             A code was sent to
           </Text>
           <Text className={`${
-                Platform.OS == "ios" ? "text-[26px]" : "text-[24px] "
+                Platform.OS == "ios" ? "text-[18px]" : "text-[20px] "
               }  font-montserratBold mt-[4px] text-subTitle`}>
             {phone_number}
           </Text>

@@ -52,7 +52,7 @@ export const PrimaryInput = ({
           maxLength={maxLength}
           placeholder={placeHolder}
           placeholderTextColor="#6B7C97"
-          className={`w-full h-full ${bgColor && 'bg-[#F7F7F7]'} text-[#6B7C97] font-montserratMedium flex justify-center ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[12px] '} px-2`}
+          className={`w-full h-full ${bgColor && 'bg-[#F7F7F7]'} bg-[#F7F7F7] text-[#1b1d20] font-montserratMedium flex justify-center ${Platform.OS == 'ios' ? 'text-[16px]' : 'text-[12px] '} px-2`}
           style={[
             isFocused && {
               borderWidth: 1.5,
@@ -218,7 +218,7 @@ export const PhoneNumberInput = ({
       <View
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        className={`${style}  ${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'} ${bgColor && 'bg-[#F7F7F7]'}  rounded-[4px] flex flex-row items-center px-2 ${
+        className={`${style}  ${Platform.OS == 'ios' ? 'h-[50px]' : 'h-[45px]'} ${bgColor && 'bg-[#F7F7F7]'} bg-[#F7F7F7] rounded-[4px] flex flex-row items-center px-2 ${
           isFocused && "shadow-md"
         }`}
         style={[
@@ -370,7 +370,8 @@ export const UploadInp = ({
       const url= response.assets[0]["uri"];
       const type= response.assets[0]["mimeType"];
       setFileName(response.assets[0]["name"])
-      setSelectedFile(response.assets[0]["name"]);
+      setSelectedFile(response.assets[0]["uri"]);
+     
     } catch (err) {
       console.warn(err);
     }
@@ -404,7 +405,7 @@ export const UploadInp = ({
         <TextInput
           keyboardType={type}
           value={value}
-          placeholder={fileName.replaceAll(fileName.slice(15,50) , '.....') || placeHolder}
+          placeholder={fileName.replaceAll(fileName.slice(10,50) , '.....') && placeHolder}
           placeholderTextColor="#C6C6C6"
           className="w-[70%] h-full flex justify-center text-[14px] 
           px-2 font-montserratMedium"

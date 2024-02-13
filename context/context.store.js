@@ -55,6 +55,7 @@ export const GlobalProvider = ({ children }) => {
 
   const [socketRef , setSocket] = useState(null)
   const getUserId = async () => {
+    console.log('Yes, Connection')
     const userId = await AsyncStorage.getItem("userId");
     const userType = await AsyncStorage.getItem("userType");
     const Token = await AsyncStorage.getItem("token");
@@ -71,11 +72,10 @@ export const GlobalProvider = ({ children }) => {
 
   const getToken = async () => {
     const token = await AsyncStorage.getItem("token");
-
+    console.log(token)
     if (token !== null) {
-      setToken(token);
-      setIsAuthenticated(true);
-      // console.log("asyncStorage token:::", token);
+      getUserId()
+      console.log("asyncStorage token:::", token);
     } else {
       setToken("");
       setIsAuthenticated(false);
@@ -83,7 +83,6 @@ export const GlobalProvider = ({ children }) => {
   };
   useEffect(() => {
     getToken();
-
   }, [isToken]);
 
   // PickUp
@@ -102,16 +101,8 @@ export const GlobalProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    // AsyncStorage.removeItem("token")
+    AsyncStorage.removeItem("token")
     getUserId();
-    console.log("UserId:::" , userId)
-  }, [isAuthenticated]);
-
-
-  useEffect(() => {
-    // AsyncStorage.removeItem("token")
-    getUserId();
-    console.log("UserId:::" , userId)
   }, []);
   return (
     <GlobalContext.Provider

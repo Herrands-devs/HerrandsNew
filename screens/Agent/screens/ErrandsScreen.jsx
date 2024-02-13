@@ -82,9 +82,9 @@ const FirstRoute = (navigation, isLoading, errandsData, refreshing, handleRefres
         <View className="flex items-center w-full h-screen  bg-white pt-24">
           <Image
             source={require("../../../assets/gifs/question.gif")}
-            className={`w-[151px] h-[151px]`}
+            className={`w-[131px] h-[131px]`}
           />
-          <Text className="font-montserratBold text-lg mt-3">
+          <Text className="font-montserratBold text-[16px] mt-3">
             No Errands yet!!
           </Text>
         </View>
@@ -163,9 +163,9 @@ const SecondRoute = (navigation, isFetching, completedErrands, refreshing) => {
         <View className="flex items-center w-full h-screen  bg-white pt-24">
           <Image
             source={require("../../../assets/gifs/question.gif")}
-            className={`w-[151px] h-[151px]`}
+            className={`w-[131px] h-[131px]`}
           />
-          <Text className="font-montserratBold text-lg mt-3">
+          <Text className="font-montserratBold text-[16px] mt-3">
             No Errands yet!!
           </Text>
         </View>
@@ -191,7 +191,7 @@ export const ErrandsScreen = ({ navigation }) => {
   const renderTabBar = (props) => (
     <TabBar
       {...props}
-      indicatorStyle={{ backgroundColor: "white", height: 5 }}
+      indicatorStyle={{ backgroundColor: "white", height: 3 }}
       style={{ backgroundColor: "#0066F5" }}
     />
   );
@@ -254,10 +254,10 @@ export const ErrandsScreen = ({ navigation }) => {
     <View className="h-full">
       <View
         className={`${
-          Platform.OS == "ios" ? "h-[150px]" : "h-[130px]"
+          Platform.OS == "ios" ? "h-[80px]" : "h-[70px]"
         } flex justify-end px-3 bg-[#0066F5]`}
       >
-        <Text className="text-white h-[50px] text-[24px] font-montserratBold">
+        <Text className="text-white h-[50px] text-[22px] font-montserratBold">
           Errands
         </Text>
       </View>

@@ -39,7 +39,7 @@ const Note = ({ navigation }) => {
   const { rides, addNote, itemAddress, setAddNote , searchModal, setSearchModal } = useContext(GlobalContext);
   const [notes, setNotes] = useState("");
   const [radiusMap, setRadiusMap] = useState(5000);
-  const { isConnected, sendMessage, initializeSocket } = useSocket();
+  const { isConnected, sendMessage, handleButtonClick } = useSocket();
 
   const message = {
     type: "complete.routine_errand",
@@ -50,11 +50,12 @@ const Note = ({ navigation }) => {
   };
 
   const completeErrandCreation = async () => {
-    initializeSocket()
+    handleButtonClick()
     sendMessage(message);
-    console.log("main message sent...", message);
     setSearchModal(true);
   };
+
+  console.log("I am heefds", rides)
   return (
     <View>
       <View className="bg-white shadow-2xl w-full min-h-[60vh] rounded-[10px]">
@@ -135,6 +136,11 @@ const Note = ({ navigation }) => {
                 <View className="flex-row justify-between my-4">
                   <Text className="font-montserratBold">Total Cost</Text>
                   <Text className="font-montserratBold text-[18px]">₦{rides?.total_cost}</Text>
+                </View>
+
+                <View className="flex-row justify-between my-4">
+                  <Text className="font-montserratBold">Sending</Text>
+                  <Text className="font-montserratBold text-[18px]">{rides?.vehicleDetails?.vehicle_type}</Text>
                 </View>
 
                 <View className="bg-white my-2">

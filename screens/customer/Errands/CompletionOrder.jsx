@@ -10,33 +10,24 @@ import {
   Pressable,
   Platform,
 } from "react-native";
-import SafeAreaComponent from "../../components/common/SafeAreaComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { DataSelector, toggleModal } from "../../../reducers/dataReducer";
 import {
   AntDesign,
-  EvilIcons,
   Feather,
-  Octicons,
-  FontAwesome5,
 } from "@expo/vector-icons";
 import { GlobalContext } from "../../../context/context.store";
 import { SquareButton } from "../../components/common/Button";
 import { colors } from "../../../themes/colors";
 import MapView, { Circle, Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import * as Location from "expo-location";
-import { PrimaryInput } from "../../components/common/Inputs";
-import SelectAddress from "../Main/SelectAddress";
 import AnimatedLottieView from "lottie-react-native";
-import isEmpty from "../../components/isEmpty";
-import { TextInput } from "react-native";
 import { GOOGLE_MAP_APIKEY } from "@env";
 import useSocket from "../../../helpers/socket.service";
 
 const CompletionOrder = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { isConnected, sendMessage, initializeSocket } = useSocket();
-  const { vehicles , isLoading } = useSelector(DataSelector);
+  const { sendMessage, initializeSocket } = useSocket();
+  const { isLoading } = useSelector(DataSelector);
   const {
     itemAddress,
     recipientAddress,
@@ -181,9 +172,15 @@ const CompletionOrder = ({ navigation }) => {
           >
             <View className={`w-full min-h-[40vh] space-y-5 bg-white rounded-lg shadow-lg p-4`}>
               <View className="relative border flex-col  justify-between border-[#0066ff] bg-[#0066ff15] py-8 mt-3 px-4 rounded-2xl">
-                <Text className="text-[20px] font-montserratSemiBold mb-2">
-                  Errand's Summary
-                </Text>
+                <View className="flex-row justify-between items-center">
+                  <Text className="text-[20px] font-montserratSemiBold mb-2">
+                    Errand's Summary
+                  </Text>
+
+                  <View className="bg-white shadow-md p-3 rounded-full">
+                    <AntDesign name="edit" size={16} color="#0066ff" />
+                  </View>
+                </View>
                 <View className="relative border flex-col  justify-between border-[#0066ff] bg-[#0066ff15] py-8 mt-3 px-4 rounded-2xl">
                   <Text className="text-[14px] font-montserratSemiBold mb-2">
                     Pick up Summary
@@ -197,7 +194,7 @@ const CompletionOrder = ({ navigation }) => {
                         style={{ width: 40, height: 40 }}
                       />
                     </View>
-                    <View className="h-[40px] w-[60%] flex justify-center">
+                    <View className="w-[60%] flex justify-center">
                       <Text>{itemAddress.description}</Text>
                     </View>
                   </View>
@@ -225,7 +222,7 @@ const CompletionOrder = ({ navigation }) => {
                         style={{ width: 40, height: 40 }}
                       />
                     </View>
-                    <View className="h-[40px] w-[60%] flex justify-center">
+                    <View className="w-[60%] flex justify-center">
                       <Text>{recipientAddress.description}</Text>
                     </View>
                   </View>

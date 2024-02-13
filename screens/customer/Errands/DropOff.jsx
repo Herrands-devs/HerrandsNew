@@ -94,10 +94,10 @@ const DropOff = ({ navigation }) => {
     }
   };
 
-  const ToastMessage = ({ message }) => {
+  const ToastMessage = ( message ) => {
     if (Platform.OS === "android") {
       ToastAndroid.showWithGravityAndOffset(
-        "Field(s) can not be empty",
+        message,
         ToastAndroid.LONG,
         ToastAndroid.TOP,
         25,
@@ -105,7 +105,7 @@ const DropOff = ({ navigation }) => {
       );
     } else if (Platform.OS === "ios") {
       ToastIOS.showWithGravity(
-        "Field(s) can not be empty",
+        message,
         ToastIOS.LONG,
         ToastIOS.TOP,
         25,
@@ -204,14 +204,14 @@ const DropOff = ({ navigation }) => {
                       style={{ width: 40, height: 40 }}
                     />
                   </View>
-                  <View className="h-[40px] w-[60%] flex justify-center">
+                  <View className="w-[60%] flex justify-center">
                     <Text>
                       {isEmpty(recipientAddress)
                         ? "Select Address to drop off"
                         : recipientAddress.description}
                     </Text>
                   </View>
-                  <View className="h-[40px]  flex justify-center items-center">
+                  <View className="flex justify-center items-center">
                     {!isEmpty(pickItemsValues.drop_off_address) ? (
                       <Pressable
                         onPress={() =>

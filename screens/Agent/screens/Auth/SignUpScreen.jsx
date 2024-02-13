@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
+  Alert,
   Dimensions,
   Image,
   Platform,
@@ -32,12 +33,12 @@ import { GlobalContext } from "../../../../context/context.store";
 import isEmpty from "../../../components/isEmpty";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SuccessErrorModal } from "../../../components/common/Modals";
-import Loading from "../../../components/common/Loading";
 import ErrorIcon from "../../../../assets/error-message.png";
 import SuccessIcon from "../../../../assets/icons/thank-you.png";
 const { width, height } = Dimensions.get("window");
 import BackIcon from "../../../../assets/icons/back-icon-black.png";
-import SafeAreaComponent from "../../../components/common/SafeAreaComponent";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { firebase } from "../../../../helpers/firebase";
 
 const SignUpScreen = ({ navigation }) => {
   const [preferences, setPreferences] = useState([]);
@@ -54,6 +55,7 @@ const SignUpScreen = ({ navigation }) => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(null);
   const [check, setCheck] = useState(false);
+  const [urlfile, setUrl] = useState("")
 
   const [tempPhone, setPhone] = useState("");
   const [user, setUser] = useState({
@@ -82,7 +84,25 @@ const SignUpScreen = ({ navigation }) => {
     preference: selectedPreference,
     id_type: idType,
     state: seletedState,
-    id_file: selectFile,
+    id_file: urlfile,
+  };
+
+  const uploadDoc = async () => {
+    const uploadUrl = selectFile;
+    const response = await fetch(uploadUrl) 
+    const blob = await response.blob();
+    let fileName = uploadUrl.substring(uploadUrl.lastIndexOf("/") + 1);
+    let ref = firebase.storage().ref().child(fileName).put(blob);
+
+    try {
+      await ref;
+      const downloadURL = await firebase.storage().ref(fileName).getDownloadURL()
+
+      console.log('File uploaded successfully. Download URL:', downloadURL);
+      setUrl(downloadURL)
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -94,7 +114,7 @@ const SignUpScreen = ({ navigation }) => {
       !isEmpty(data.services) &&
       !isEmpty(data.preference) &&
       !isEmpty(data.id_type) &&
-      !isEmpty(data.id_file) &&
+      !isEmpty(selectFile) &&
       !isEmpty(data.state)
     ) {
       setError(true);
@@ -104,10 +124,9 @@ const SignUpScreen = ({ navigation }) => {
     }
   });
 
-  console.log(user)
-  const handleSubmit = () => {
-    console.log(user.phone_number)
+  const handleSubmit = async () => {
     setLoading(true);
+    uploadDoc();
     axios
       .post(`${API_URl}/accounts/register/agent/`, data)
       .then((response) => {
@@ -115,9 +134,11 @@ const SignUpScreen = ({ navigation }) => {
         setLoading(false);
         if (response.status === 200 || response.status === 201) {
           const userId = response.data.user.id;
-          AsyncStorage.setItem("user_id", userId);
+          AsyncStorage.setItem("userType", response.data.user.user_type);
+          AsyncStorage.setItem("user_id", response.data.user.id);
+          AsyncStorage.setItem("token", response.data.token);
           navigation.navigate("OtpScreenAgent", {
-            phone_number: user.phone_number,
+            phone_number: user?.phone_number,
           });
         } else {
           setLoading(false);
@@ -153,9 +174,9 @@ const SignUpScreen = ({ navigation }) => {
       });
   };
   return (
-    <>
+    <SafeAreaView>
       <KeyboardAvoidingContainer>
-        <SafeAreaComponent>
+        <View className="h-full">
           <View className="p-4 font-montserratRegular flex flex-row  items-end gap-x-5">
             <TouchableOpacity onPress={() => navigation.goBack()}>
               <Image source={BackIcon} className={`w-[24px] h-[24px]`} />
@@ -221,7 +242,6 @@ const SignUpScreen = ({ navigation }) => {
                     setUser({ ...user, phone_number: "+234" + text })
                   }
                   onBlur={() => {
-                    const phoneNumber = user.phone_number;
                     if (user.phone_number === "") {
                       return;
                     } else if (user.phone_number.includes("+234")) {
@@ -359,6 +379,11 @@ const SignUpScreen = ({ navigation }) => {
                     setSelectedFile={setSelectedFile}
                     bgColor={true}
                   />
+                {selectFile &&
+                  <View className="w-[70px] bg-[#F7F7F7] h-[70px] rounded-md m-3">
+                    <Image source={{uri : selectFile}}  className="w-full h-full rounded-md"/>
+                  </View>
+                }
                 </View>
               </View>
               <View className="w-full">
@@ -417,7 +442,7 @@ const SignUpScreen = ({ navigation }) => {
               </View>
             </View>
           </View>
-        </SafeAreaComponent>
+        </View>
       </KeyboardAvoidingContainer>
       <SuccessErrorModal
         isVisible={isModal}
@@ -439,7 +464,7 @@ const SignUpScreen = ({ navigation }) => {
             : "Okay"
         }
       />
-    </>
+    </SafeAreaView>
   );
 };
 

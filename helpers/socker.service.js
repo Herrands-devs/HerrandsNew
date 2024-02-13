@@ -24,6 +24,7 @@ const useSocket = () => {
   };
 
   const initializeSocket = () => {
+    console.log("Connecting..." , token)
     if (!token) return;
 
     const SOCKET_URL = `https://herrand-backend-5a39ee15054e.herokuapp.com/${socketUrl}/?token=${token}`;
@@ -101,12 +102,6 @@ const useSocket = () => {
 
   useEffect(() => {
     initializeSocket();
-
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close();
-      }
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]); // Run the effect whenever the token changes
 

@@ -32,7 +32,7 @@ export const NoOrder = () => {
       </View>
 
       <View className="flex flex-row gap-4">
-        <View className="w-[10%] py-6 flex justify-center items-center gap-2">
+        <View className="w-[10%] py-6 flex justify-center items-center gap-y-4">
           <View className="flex justify-center items-center w-[28px] h-[28px] bg-[#0066f52f]  rounded-full">
             <View className="w-[10px] h-[10px] rounded-full bg-[#0066F5]"></View>
           </View>
@@ -52,14 +52,14 @@ export const NoOrder = () => {
         <View className="w-[80%] flex gap-3 items-center justify-center">
           <View className="w-full">
             <RoundedInput
-              style={"w-full"}
+              style={"w-full border border-[#C6C6C6]"}
               placeHolder={"Pick up here..."}
               disabled={true}
             />
           </View>
           <View className="w-full">
             <RoundedInput
-              style={"w-full"}
+              style={"w-full border border-[#C6C6C6]"}
               placeHolder={"Deliver here..."}
               disabled={true}
             />
@@ -72,17 +72,8 @@ export const NoOrder = () => {
 
 export const IncomeOrder = ({ data }) => {
   const {isAcceptingErrand, setIsAccepting} = useContext(GlobalContext)
-  const { sendMessage, handleButtonClick, isConnected, set } = useSocket();
+  const { sendMessage } = useSocket();
   const { userId } = useContext(GlobalContext);
-  useEffect(() => {
-    handleButtonClick();
-    if (isConnected) {
-      console.log("yes");
-    } else {
-      console.log("no");
-    }
-  });
-  console.log("ID :::", userId);
   const handleAcceptErrand = () => {
     setIsAccepting(true)
     setTimeout(() => {

@@ -19,6 +19,7 @@ import LoadingData from "../../components/common/LoadingData";
 import isEmpty from "../../components/isEmpty";
 import { GlobalContext } from "../../../context/context.store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Platform } from "react-native";
 const { width } = Dimensions.get("window");
 
 const Profilescreen = ({ navigation }) => {
@@ -46,16 +47,17 @@ const Profilescreen = ({ navigation }) => {
     })();
   }, []);
 
+  console.log(Agent)
   return (
-    <SafeAreaComponent className="bg-white h-full">
+    <SafeAreaComponent className="bg-red pb-[60px]">
       <TouchableOpacity
-        className="p-6 font-montserratRegular flex flex-row items-center gap-5"
+        className="p-4 font-montserratRegular flex flex-row items-center gap-5"
         onPress={() => navigation.goBack()}
       >
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={angleLeft} />
         </TouchableOpacity>
-        <Text className="text-[24px] text-[#000E23] font-semibold font-MontserratMedium">
+        <Text className="text-[20px] font-montserratBold text-[#000E23]">
           Profile
         </Text>
       </TouchableOpacity>
@@ -66,7 +68,7 @@ const Profilescreen = ({ navigation }) => {
           <View className="relative w-[118px] h-[118px]">
             <Image
               source={
-                { uri: Agent.agent.id_file } ||
+                { uri: Agent.agent.photo } ||
                 require("../../../assets/herrand-profile.png")
               }
               className="rounded-full object-cover w-full h-full"
@@ -79,18 +81,18 @@ const Profilescreen = ({ navigation }) => {
             </View>
           </View>
           <View>
-            <Text className="text-center text-[#000E23] font-semibold text-[16px]">
+            <Text className="text-center font-montserratSemiBold text-[#000E23] text-[16px]">
               {Agent.first_name} {Agent.last_name}
             </Text>
           </View>
           <View className="flex flex-row justify-center w-full text-center">
             <View className="w-[50%] flex flex-row justify-end pr-2">
-              <Text className="text-end text-[#000E23] font-medium">
+              <Text className="text-end text-[#000E23] font-montserratRegular">
                 12 Errands
               </Text>
             </View>
             <View className="flex flex-row w-[50%] pl-2 border-l border-[#000E23 justify-start">
-              <Text className="mr-2 text-[#000E23] font-medium">
+              <Text className="mr-2 text-[#000E23] font-montserratRegular">
                 Ranting : 4.5
               </Text>
               <Image
@@ -105,28 +107,28 @@ const Profilescreen = ({ navigation }) => {
               onPress={() => navigation.navigate("EditProfile")}
             >
               <Text
-                className={`text-primaryColor font-montserratRegular text-[16px] font-bold`}
+                className={`text-primaryColor font-montserratRegular`}
               >
                 Edit profile
               </Text>
               <FontAwesome5 name="pencil-alt" size={13} color="#0066F5" />
             </TouchableOpacity>
           </View>
-          <View className="w-full flex justify-center items-center">
-            <View className="w-[90%] flex flex-col gap-y-8">
+          <View className={`w-full  flex justify-center items-center ${Platform.OS == 'android' && 'h-[500px]'}`}>
+            <View className="w-[90%] flex flex-col space-y-[40px]">
               <View className="flex flex-row justify-between items-center w-full">
                 <View className="flex flex-row gap-8 items-center">
                   <Image source={webIcon} resizeMode="cover" />
-                  <Text className="text-[18px] font-montserratRegular">
+                  <Text className="font-montserratRegular">
                     Language
                   </Text>
                 </View>
-                <Text className="text-[16px] text-[#C6C6C6]">ENG</Text>
+                <Text className="text-[#C6C6C6] font-montserratRegular">ENG</Text>
               </View>
               <View className="flex flex-row justify-between items-center w-full">
                 <View className="flex flex-row gap-8 items-center">
                   <Image source={switchIcon} resizeMode="contain" />
-                  <Text className="text-[18px] font-montserratRegular">
+                  <Text className="font-montserratRegular">
                     Out of office
                   </Text>
                 </View>
@@ -135,7 +137,7 @@ const Profilescreen = ({ navigation }) => {
               <View className="flex flex-row justify-between items-center w-full">
                 <View className="flex flex-row gap-8 items-center">
                   <Image source={webIcon} />
-                  <Text className="text-[18px] font-montserratRegular">
+                  <Text className="font-montserratRegular">
                     Notifications
                   </Text>
                 </View>
@@ -147,7 +149,7 @@ const Profilescreen = ({ navigation }) => {
               >
                 <View className="flex flex-row gap-8 items-center">
                   <Image source={supportIcon} />
-                  <Text className="text-[18px] font-montserratRegular">
+                  <Text className="font-montserratRegular">
                     Support
                   </Text>
                 </View>
@@ -163,7 +165,7 @@ const Profilescreen = ({ navigation }) => {
                   onPress={() => setLogoutModal(true)}
                 >
                   <Image source={logoutIcon} />
-                  <Text className="text-[18px] font-montserratRegular">
+                  <Text className="font-montserratRegular">
                     Log out
                   </Text>
                 </View>
@@ -179,7 +181,7 @@ const Profilescreen = ({ navigation }) => {
                     size={24}
                     color="#6B7C97"
                   />
-                  <Text className="text-[18px] text-[#6B7C97] font-montserratRegular">
+                  <Text className="text-[#6B7C97] font-montserratRegular">
                     Delete Account
                   </Text>
                 </View>

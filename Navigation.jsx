@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import SpinSplash from "./screens/components/onboarding/SpinSplash";
 import Swapper from "./screens/components/onboarding/swapper/Swapper";
@@ -46,13 +46,20 @@ import ChatBoardCustomer from "./screens/customer/Main/ChatBoard";
 import { Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
-import { DataSelector } from "./reducers/dataReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { DataSelector, toggleIsSocketConnected } from "./reducers/dataReducer";
 import Transport from "./screens/customer/Errands/Transport";
 import Item from "./screens/customer/Errands/Item";
 import DropOff from "./screens/customer/Errands/DropOff";
 import CompletionOrder from "./screens/customer/Errands/CompletionOrder";
 import Note from "./screens/customer/Errands/Note";
+import {
+  connectToSocket,
+  fetchAllSubCategories,
+  fetchCategoriesAction,
+  fetchVehicleTypes,
+} from "./helpers/fetchData";
+import useSocket from "./helpers/socket.service";
 
 const Stack = createNativeStackNavigator();
 
@@ -117,6 +124,22 @@ const AgentAuth = () => {
 };
 
 const Agent = () => {
+  const { isConnected, fetchToken } = useSocket();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    fetchCategoriesAction(dispatch);
+    fetchAllSubCategories(dispatch);
+    fetchVehicleTypes(dispatch);
+    fetchToken();
+    if (isConnected) {
+      dispatch(
+        toggleIsSocketConnected({
+          data: isConnected,
+        })
+      );
+      console.log("Heyy, This is socket", isConnected);
+    }
+  }, []);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -141,27 +164,36 @@ const Agent = () => {
 };
 
 const MainCustomer = () => {
-  const navigation = useNavigation();
+  const { isConnected, fetchToken } = useSocket();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    fetchCategoriesAction(dispatch);
+    fetchAllSubCategories(dispatch);
+    fetchVehicleTypes(dispatch);
+    fetchToken();
+    if (isConnected) {
+      dispatch(
+        toggleIsSocketConnected({
+          data: isConnected,
+        })
+      );
+      console.log("Heyy, This is socket", isConnected);
+    }
+  }, []);
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="CustomerHome"
-        component={CustomerHome}
-      />
+      <Stack.Screen name="CustomerHome" component={CustomerHome} />
       <Stack.Screen
         name="CustomerErrandDetails"
         component={CustomerErrandDetails}
       />
       <Stack.Screen name="CustomerPayments" component={CustomerPayments} />
       <Stack.Screen name="CustomerAddCard" component={CustomerAddCard} />
-      <Stack.Screen
-        name="CustomerErrandMap"
-        component={CustomerErrandMap}
-      />
+      <Stack.Screen name="CustomerErrandMap" component={CustomerErrandMap} />
       <Stack.Screen
         name="CustomerVirtualProcess"
         component={CustomerVirtualProcess}

@@ -78,10 +78,10 @@ const Item = ({ navigation }) => {
     console.log(pickItemsValues);
   }, [pickItemsValues]);
 
-  const ToastMessage = ({ message }) => {
+  const ToastMessage = ( message ) => {
     if (Platform.OS === "android") {
       ToastAndroid.showWithGravityAndOffset(
-        "Field(s) can not be empty",
+        message,
         ToastAndroid.LONG,
         ToastAndroid.TOP,
         25,
@@ -89,7 +89,7 @@ const Item = ({ navigation }) => {
       );
     } else if (Platform.OS === "ios") {
       ToastIOS.showWithGravity(
-        "Field(s) can not be empty",
+        message,
         ToastIOS.LONG,
         ToastIOS.TOP,
         25,

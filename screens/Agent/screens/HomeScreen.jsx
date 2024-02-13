@@ -46,10 +46,10 @@ const HomeScreen = () => {
         tabBarActiveTintColor: "#0066F5",
         tabBarInactiveTintColor: "gray",
         tabBarStyle: {
-          height: Platform.OS == "ios" ? 90 : 100,
-          paddingBottom: Platform.OS == "android" ? 40 : 35,
+          height: Platform.OS == "ios" ? 90 : 60,
+          paddingBottom: Platform.OS == "android" ? 10 : 35,
         },
-        tabBarLabelStyle: { fontSize: 12, fontWeight: "700" },
+        tabBarLabelStyle: { fontSize: 10, fontWeight: "800" },
         headerShown: false,
       })}
     >

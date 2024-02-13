@@ -78,7 +78,10 @@ const LoginScreen = ({ navigation, route }) => {
   };
   return (
     <SafeAreaView className="bg-white h-screen">
-      <View className="p-4 font-montserratRegular flex flex-row items-center gap-5" style={{ marginBottom: height * 0.0377 }}>
+      <View
+        className="p-4 font-montserratRegular flex flex-row items-center gap-5"
+        style={{ marginBottom: height * 0.0377 }}
+      >
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={angleLeft} />
         </TouchableOpacity>
@@ -91,9 +94,12 @@ const LoginScreen = ({ navigation, route }) => {
         >
           Welcome Back !
         </Text>
-        <Text style={{ color: colors.primaryColor }} className={`${
+        <Text
+          style={{ color: colors.primaryColor }}
+          className={`${
             Platform.OS == "ios" ? "text-[16px]" : "text-[12px]"
-          } font-montserratRegular  text-black`}>
+          } font-montserratRegular  text-black`}
+        >
           Please enter your registered phone number
         </Text>
         <View className="flex w-full items-center  h-[150px] justify-between">
@@ -134,15 +140,15 @@ const LoginScreen = ({ navigation, route }) => {
         <View className={`items-center`} style={{ height: height * 0.35 }}>
           <View className={`flex-row items-center mt-[18px] space-x-1`}>
             <Text
-             className={`${
-              Platform.OS == "ios" ? "text-[16px]" : "text-[12px] "
-            } font-montserratMedium  text-subTitle`}
+              className={`${
+                Platform.OS == "ios" ? "text-[16px]" : "text-[12px] "
+              } font-montserratMedium  text-subTitle`}
             >
               Don't have an account?
             </Text>
             <TouchableOpacity>
               <Text
-                 className={`${
+                className={`${
                   Platform.OS == "ios" ? "text-[16px]" : "text-[12px] "
                 } font-montserratMedium  text-primaryColor`}
                 onPress={() => navigation.navigate("SignUpScreen")}

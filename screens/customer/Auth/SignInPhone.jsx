@@ -68,6 +68,9 @@ const SignInPhone = ({ navigation }) => {
             setMessage(err.response.data.error);
             setMessageType("error");
           } else if (err.request) {
+            setIsModal(true);
+            setMessage("Internet connection error , Try again");
+            setMessageType("error");
             console.log("No response received:", err.request);
           } else {
             console.log("Request error:", err.message);

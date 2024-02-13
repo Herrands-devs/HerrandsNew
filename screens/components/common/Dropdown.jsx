@@ -49,7 +49,7 @@ export const DropDownPicker = ({
         onBlur={() => setFocused(false)}
         className={`${style}  ${
           Platform.OS == "ios" ? "h-[50px]" : "h-[45px]"
-        } bg-[${bgColor}]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
+        } bg-[${bgColor}] bg-[#F7F7F7]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
         style={[
           isFocused && {
             borderWidth: 2,
@@ -74,7 +74,7 @@ export const DropDownPicker = ({
             >
               {value ? value : defaultOption}
             </Text>
-            <View className="w-[10%]">
+            <View className="w-[5%]">
               <FontAwesome name="angle-down" size={20} color="#C6C6C6" />
             </View>
           </TouchableOpacity>
@@ -102,7 +102,7 @@ export const DropDownPicker = ({
                 }
               }}
             />
-            <View className="w-[10%]">
+            <View className="w-[5%]">
               <FontAwesome name="angle-down" size={20} color="#C6C6C6" />
             </View>
           </>
@@ -188,7 +188,7 @@ export const DropDownPickerMultiple = ({
         onBlur={() => setFocused(false)}
         className={`${style}  ${
           Platform.OS == "ios" ? "h-[50px]" : "h-[45px]"
-        } bg-[${bgColor}]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
+        } bg-[${bgColor}] bg-[#F7F7F7]  -z-1 rounded-[4px] flex flex-row items-center px-2`}
         style={[
           isFocused && {
             borderWidth: 2,
@@ -217,7 +217,7 @@ export const DropDownPickerMultiple = ({
                 ? selectedCategory
                 : defaultOption}
             </Text>
-            <View className="w-[10%]">
+            <View className="w-[5%]">
               <FontAwesome name="angle-down" size={20} color="#C6C6C6" />
             </View>
           </TouchableOpacity>

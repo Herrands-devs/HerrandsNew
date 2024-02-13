@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   Image,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
 } from "react-native";
 import { View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { iconsPack } from "../../../components/icons";
 import { colors } from "../../../../themes/colors";
 import {
@@ -16,10 +16,7 @@ import {
 } from "../../../components/common/Inputs";
 import { SquareButton } from "../../../components/common/Button";
 import { DropDownPicker } from "../../../components/common/Dropdown";
-import KeyboardAvoidingContainer from "../../../components/common/KeyboardAvoidingContainer";
-import { API_URl } from "@env";
 import { GlobalContext } from "../../../../context/context.store";
-import axios from "axios";
 import LoadingData from "../../../components/common/LoadingData";
 import isEmpty from "../../../components/isEmpty";
 import SafeAreaComponent from "../../../components/common/SafeAreaComponent";
@@ -28,35 +25,34 @@ const { width, height } = Dimensions.get("window");
 const EditProfile = ({ navigation }) => {
   const { angleLeft } = iconsPack();
   const {
-    isToken,
     seletedState,
-    setSelectedState,
-    selectedPreference,
-    setSelectedPreference,
     Agent,
   } = useContext(GlobalContext);
   return (
     <SafeAreaComponent>
       <TouchableOpacity
-        className="p-6 font-montserratRegular flex flex-row items-center gap-5"
+        className="p-4 font-montserratRegular flex flex-row items-center gap-5"
         onPress={() => navigation.goBack()}
       >
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={angleLeft} />
         </TouchableOpacity>
-        <Text className="text-[24px] text-[#000E23] font-semibold font-MontserratMedium">
+        <Text className="text-[20px] font-montserratBold text-[#000E23]">
           Edit Profile
         </Text>
       </TouchableOpacity>
       {isEmpty(Agent) ? (
         <LoadingData />
       ) : (
-        <View style={styles.container} className="p-3 gap-2">
-          <View className="relative  flex flex-col w-full gap-2 items-center">
+        <View style={styles.container} className={`p-3 gap-2`}>
+          <View className={`relative flex flex-col w-full gap-2 items-center bg-red ${Platform.OS == 'android' && 'h-[500px]'}`}>
             <View className="w-full py-6 flex justify-center items-center">
               <View className="relative w-[118px] h-[118px]">
                 <Image
-                  source={require("../../../../assets/herrand-profile.png")}
+                  source={
+                    { uri: Agent?.agent.photo } ||
+                    require("../../../../assets/herrand-profile.png")
+                  }
                   className="rounded-full object-cover w-full h-full"
                 />
                 <View
